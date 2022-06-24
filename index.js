@@ -3,30 +3,42 @@ require("dotenv").config()
 const text = require("./const")
 
 const fs = require('fs');
-
+const { stringify } = require('querystring');
+let bt_id;
 const bot = new Telegraf(process.env.bot_token)
 bot.start((ctx) => ctx.reply("Hi"))
 bot.help((ctx) => ctx.reply(text.commands))
-bot.command("positions", (ctx)=>{
+bot.command("positions", (ctx) => {
     ctx.replyWithHTML('<b>Виберіть позицію про яку хочете дізнатися інформацію</b>', Markup.inlineKeyboard(
         [
-            [Markup.button.callback("Nut","btn_nut")]
+            [Markup.button.callback("Горішок", "btn_nut"), Markup.button.callback("Трубочка", "btn_tubule"), Markup.button.callback("Торт вафельний", "btn_wafer")]
         ]
     ))
 })
-
-bot.on('sticker', (ctx) => ctx.reply('👍'))
-bot.hears('hi', (ctx) => ctx.reply("Hi, bro"))
-
-bot.action('btn_nut', async (ctx)=>{
-    await ctx.answerCbQuery()
+bot.use(async (ctx, next) => {
+    if (ctx.callbackQuery.data) {
+        bt_id = ctx.callbackQuery.data
+        console.log(bt_id)
+        await ctx.answerCbQuery()
     try {
-        ctx.reply(text.nut)
+        ctx.reply(text[bt_id]) 
     } catch (e){
-        console.loge(e)
+        console.log(e)
     }
-    
+}
+
+    return next()
 })
+
+// bot.action('btn_nut', async (ctx)=>{
+//     await ctx.answerCbQuery()
+//     try {
+//         ctx.reply(text.btn_nut)
+//     } catch (e){
+//         console.loge(e)
+//     }
+
+// })
 
 bot.launch()
 
