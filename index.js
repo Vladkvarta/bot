@@ -4,47 +4,70 @@ const text = require("./const")
 
 const fs = require('fs');
 const { stringify } = require('querystring');
+const { createContext } = require('vm');
 let bt_id;
 let photo_id;
 let msg;
 
+let msg_id = 0;
+
 const bot = new Telegraf(process.env.bot_token)
 bot.start((ctx) => ctx.reply("Hi"))
 bot.help((ctx) => ctx.reply(text.commands))
-bot.command("positions", (ctx) => {
-    ctx.replyWithHTML('<b>Виберіть позицію про яку хочете дізнатися інформацію</b>', Markup.inlineKeyboard(
-        [
-            [Markup.button.callback("Горішок", "btn_nut"), Markup.button.callback("Трубочка", "btn_tubule"), Markup.button.callback("Торт вафельний", "btn_wafer")]
-        ]
-    ))
-})
+bot.command("positions", (ctx) =>
+    ctx.replyWithHTML('<b>Виберіть позицію про яку хочете дізнатися інформацію</b>',
+        Markup.inlineKeyboard(
+            [
+                [
+                    Markup.button.callback("Горішок", "btn_nut"),
+                    Markup.button.callback("Трубочка", "btn_tubule"),
+                    Markup.button.callback("Торт вафельний", "btn_wafer")
+                ]
+            ]
+        ))
+)
+
+
 
 function replyButton() {
     bot.use(async (ctx, next) => {
-        if (ctx.callbackQuery.data) {
-            await ctx.answerCbQuery()
-            try {
-                if (ctx.callbackQuery.data) {
-                    bt_id = ctx.callbackQuery.data;
-                    photo_id = "./img/" + bt_id + ".jpg";
-                    msg = text[bt_id];
-                    //console.log([bt_id,photo_id,msg])
-                }
-                ctx.replyWithPhoto({ source:  photo_id}, {
+        try {
+            if (ctx.callbackQuery.data) {
+                bt_id = ctx.callbackQuery.data;
+                photo_id = "./img/" + bt_id + ".jpg";
+                msg = text[bt_id];
+            }
+
+            await ctx.replyWithPhoto(
+                {
+                    source: photo_id
+                },
+                {
                     caption: msg,
                     parse_mode: 'Markdown'
                 })
-            } catch (e) {
-                console.log(e)
-            }
+
+        } catch (e) {
+            console.log(e)
         }
+        await ctx.telegram.deleteMessage(ctx.callbackQuery.message.chat.id, ctx.callbackQuery.message.message_id);
+        await ctx.replyWithHTML('<b>Виберіть позицію про яку хочете дізнатися інформацію</b>',
+        Markup.inlineKeyboard(
+            [
+                [
+                    Markup.button.callback("Горішок", "btn_nut"),
+                    Markup.button.callback("Трубочка", "btn_tubule"),
+                    Markup.button.callback("Торт вафельний", "btn_wafer")
+                ]
+            ]
+        ))
 
         return next()
     })
 }
 
 replyButton()
-
+//bot.action('delete', (ctx) => ctx.deleteMessage())
 bot.launch()
 
 // Enable graceful stop
