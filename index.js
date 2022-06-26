@@ -5,6 +5,9 @@ const text = require("./const")
 const fs = require('fs');
 const { stringify } = require('querystring');
 let bt_id;
+let photo_id;
+let msg;
+
 const bot = new Telegraf(process.env.bot_token)
 bot.start((ctx) => ctx.reply("Hi"))
 bot.help((ctx) => ctx.reply(text.commands))
@@ -15,30 +18,32 @@ bot.command("positions", (ctx) => {
         ]
     ))
 })
-bot.use(async (ctx, next) => {
-    if (ctx.callbackQuery.data) {
-        bt_id = ctx.callbackQuery.data
-        console.log(bt_id)
-        await ctx.answerCbQuery()
-    try {
-        ctx.reply(text[bt_id]) 
-    } catch (e){
-        console.log(e)
-    }
+
+function replyButton() {
+    bot.use(async (ctx, next) => {
+        if (ctx.callbackQuery.data) {
+            await ctx.answerCbQuery()
+            try {
+                if (ctx.callbackQuery.data) {
+                    bt_id = ctx.callbackQuery.data;
+                    photo_id = "./img/" + bt_id + ".jpg";
+                    msg = text[bt_id];
+                    //console.log([bt_id,photo_id,msg])
+                }
+                ctx.replyWithPhoto({ source:  photo_id}, {
+                    caption: msg,
+                    parse_mode: 'Markdown'
+                })
+            } catch (e) {
+                console.log(e)
+            }
+        }
+
+        return next()
+    })
 }
 
-    return next()
-})
-
-// bot.action('btn_nut', async (ctx)=>{
-//     await ctx.answerCbQuery()
-//     try {
-//         ctx.reply(text.btn_nut)
-//     } catch (e){
-//         console.loge(e)
-//     }
-
-// })
+replyButton()
 
 bot.launch()
 
