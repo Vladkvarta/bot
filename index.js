@@ -1,10 +1,26 @@
 const { Telegraf, Markup } = require('telegraf')
-require("dotenv").config()
+const fs = require('fs')
+const path = require('path')
 const text = require("./const")
+const positions = require('./options')
+const { stringify } = require('querystring')
+require("dotenv").config()
 
 let bt_id;
 let photo_id;
 let msg;
+
+const qwe = {
+    "nut": {
+        "name": "Горішок з згущеним молоком",
+        "weight": "20 грммів",
+        "best_before_date": "7 днів",
+        "Compound": "Згущене молоко, фундук дроблений, пісочне печиво",
+        "description": "тут должно быть описание"
+    }
+}
+
+//fs.writeFile('qwerty.json', JSON.stringify(qwe), (err) => { if (err) console.log('error') });
 
 const bot = new Telegraf(process.env.bot_token)
 bot.start((ctx) => ctx.reply(text.commands))
@@ -29,7 +45,7 @@ function replyButton() {
             if (ctx.callbackQuery.data) {
                 bt_id = ctx.callbackQuery.data;
                 photo_id = "./img/" + bt_id + ".jpg";
-                msg = text[bt_id];
+                msg = createMSG(bt_id)//text[bt_id];
             }
 
             await ctx.replyWithPhoto(
@@ -46,18 +62,34 @@ function replyButton() {
         }
         await ctx.telegram.deleteMessage(ctx.callbackQuery.message.chat.id, ctx.callbackQuery.message.message_id);
         await ctx.replyWithHTML('<b>Виберіть позицію про яку хочете дізнатися інформацію</b>',
-        Markup.inlineKeyboard(
-            [
+            Markup.inlineKeyboard(
                 [
-                    Markup.button.callback("Горішок", "btn_nut"),
-                    Markup.button.callback("Трубочка", "btn_tubule"),
-                    Markup.button.callback("Торт вафельний", "btn_wafer")
+                    [
+                        Markup.button.callback("Горішок", "btn_nut"),
+                        Markup.button.callback("Трубочка", "btn_tubule"),
+                        Markup.button.callback("Торт вафельний", "btn_wafer")
+                    ]
                 ]
-            ]
-        ))
+            ))
 
         return next()
     })
+}
+
+function createMSG(id) {
+    let q;
+    console.log(id);
+    console.log(positions);
+    try {
+        q = positions[id].name
+            + "\n" + "Вага: " + positions[id].weight + " гр." + '\n'
+            + "Термін придатності: " + positions[id].best_before_date + '\n'
+            + "Склад: " + positions[id].Compound + '\n'
+            + "Опис: " + positions[id].description + '\n'
+            + "Ціна: " + positions[id].price + " грн";
+        console.log(q)
+    } catch (e) { q = "щось трапилось Т_Т"; console.log("щось трапилось Т_Т") }
+    return (q)
 }
 
 replyButton()
