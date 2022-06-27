@@ -1,6 +1,5 @@
 const command = `
 /start - перезапустить бота
-/help - помощь
 /positions - список товаров
 `
 const nut= `
