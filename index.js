@@ -2,18 +2,12 @@ const { Telegraf, Markup } = require('telegraf')
 require("dotenv").config()
 const text = require("./const")
 
-const fs = require('fs');
-const { stringify } = require('querystring');
-const { createContext } = require('vm');
 let bt_id;
 let photo_id;
 let msg;
 
-let msg_id = 0;
-
 const bot = new Telegraf(process.env.bot_token)
-bot.start((ctx) => ctx.reply("Hi"))
-bot.help((ctx) => ctx.reply(text.commands))
+bot.start((ctx) => ctx.reply(text.commands))
 bot.command("positions", (ctx) =>
     ctx.replyWithHTML('<b>Виберіть позицію про яку хочете дізнатися інформацію</b>',
         Markup.inlineKeyboard(
