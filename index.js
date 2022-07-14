@@ -1,24 +1,19 @@
-const { Telegraf, Markup } = require('telegraf')
+const { Telegraf, Markup,session } = require('telegraf')
 const fs = require('fs')
 const path = require('path')
 const text = require("./const")
 const positions = require('./options')
-const { stringify } = require('querystring')
 require("dotenv").config()
 
 let bt_id;
 let photo_id;
 let msg;
 
-const qwe = {
-    "nut": {
-        "name": "Горішок з згущеним молоком",
-        "weight": "20 грммів",
-        "best_before_date": "7 днів",
-        "Compound": "Згущене молоко, фундук дроблений, пісочне печиво",
-        "description": "тут должно быть описание"
-    }
-}
+// interface SessionData {
+//     messageCount: number
+//     // ... more session data go here
+//   }
+
 
 //fs.writeFile('qwerty.json', JSON.stringify(qwe), (err) => { if (err) console.log('error') });
 
@@ -85,7 +80,6 @@ function createMSG(id) {
             + "\n" + "Вага: " + positions[id].weight + " гр." + '\n'
             + "Термін придатності: " + positions[id].best_before_date + '\n'
             + "Склад: " + positions[id].Compound + '\n'
-            + "Опис: " + positions[id].description + '\n'
             + "Ціна: " + positions[id].price + " грн";
         console.log(q)
     } catch (e) { q = "щось трапилось Т_Т"; console.log("щось трапилось Т_Т") }
