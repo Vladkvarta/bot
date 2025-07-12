@@ -1,3 +1,5 @@
+const crypto = require('crypto');
+const { exec } = require('child_process');
 const { Telegraf, Markup } = require('telegraf');
 const express = require('express');
 const path = require('path');
@@ -23,6 +25,8 @@ bot.start((ctx) => {
 
 // --- ИНИЦИАЛИЗАЦИЯ ВЕБ-СЕРВЕРА EXPRESS ---
 const app = express();
+// Middleware для обработки "сырого" тела запроса, это нужно для проверки подписи
+app.use(express.raw({ type: 'application/json' }));
 
 // Middleware для обслуживания статических файлов (HTML, CSS, JS, изображения)
 app.use(express.static(path.join(__dirname, 'public')));
@@ -37,6 +41,38 @@ app.get('/api/products', (req, res) => {
         }
         res.json(JSON.parse(data));
     });
+});
+// Эндпоинт для вебхука от GitHub
+app.post('/webhook/github', (req, res) => {
+    // Секрет должен быть в файле .env
+    const GITHUB_SECRET = process.env.GITHUB_WEBHOOK_SECRET;
+
+    const signature = req.headers['x-hub-signature-256'];
+    if (!signature) {
+        return res.status(401).send('No signature provided.');
+    }
+
+    const hmac = crypto.createHmac('sha256', GITHUB_SECRET);
+    const digest = 'sha256=' + hmac.update(req.body).digest('hex');
+
+    // Сравниваем подписи для безопасности
+    if (!crypto.timingSafeEqual(Buffer.from(signature), Buffer.from(digest))) {
+        return res.status(401).send('Invalid signature.');
+    }
+
+    // Если подпись верна, запускаем скрипт развертывания
+    console.log('Valid webhook received. Starting deployment...');
+    exec('sh ./deploy.sh', (error, stdout, stderr) => {
+        if (error) {
+            console.error(`Deployment script error: ${error}`);
+        }
+        console.log(`Deployment script output: ${stdout}`);
+        if (stderr) {
+            console.error(`Deployment script stderr: ${stderr}`);
+        }
+    });
+
+    res.status(200).send('Deployment initiated.');
 });
 
 // --- ЗАПУСК ---
