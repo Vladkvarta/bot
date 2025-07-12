@@ -1,17 +1,18 @@
 {
-  "name": "bot",
+  "name": "bot-webapp",
   "version": "1.0.0",
-  "description": "",
+  "description": "Telegram Web App for a pastry shop",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js"
   },
-  "keywords": [],
+  "keywords": ["telegram", "web-app", "bot"],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "dotenv": "^16.0.1",
+    "express": "^4.18.2",  // Добавили express
     "telegraf": "^4.8.5"
   },
   "devDependencies": {

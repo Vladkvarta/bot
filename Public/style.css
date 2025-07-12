@@ -1,0 +1,49 @@
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    margin: 0;
+    padding: 15px;
+    background-color: var(--tg-theme-bg-color, #ffffff);
+    color: var(--tg-theme-text-color, #000000);
+}
+
+.container {
+    max-width: 100%;
+}
+
+h1 {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.product {
+    background-color: var(--tg-theme-secondary-bg-color, #f2f2f2);
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.product-img {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.product-info h3 {
+    margin: 0 0 5px 0;
+}
+
+.product-info p {
+    margin: 0;
+    font-size: 14px;
+    color: var(--tg-theme-hint-color, #888888);
+}
+
+.product-price {
+    margin-left: auto;
+    font-size: 18px;
+    font-weight: bold;
+}

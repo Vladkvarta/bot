@@ -1,95 +1,61 @@
-const { Telegraf, Markup,session } = require('telegraf')
-const fs = require('fs')
-const path = require('path')
-const text = require("./const")
-const positions = require('./options')
-require("dotenv").config()
+const { Telegraf, Markup } = require('telegraf');
+const express = require('express');
+const path = require('path');
+const fs = require('fs');
+require('dotenv').config();
 
-let bt_id;
-let photo_id;
-let msg;
+// --- НАСТРОЙКИ ---
+const BOT_TOKEN = process.env.bot_token;
+const WEB_APP_URL = process.env.WEB_APP_URL; // Важно: URL должен быть HTTPS!
+const PORT = process.env.PORT || 3000;
 
-// interface SessionData {
-//     messageCount: number
-//     // ... more session data go here
-//   }
+// --- ИНИЦИАЛИЗАЦИЯ БОТА ---
+const bot = new Telegraf(BOT_TOKEN);
 
+bot.start((ctx) => {
+    ctx.reply(
+        'Вітаю! Натисніть кнопку нижче, щоб відкрити наш магазин та зробити замовлення.',
+        Markup.keyboard([
+            [Markup.button.webApp('Відкрити магазин 🍰', WEB_APP_URL)]
+        ]).resize()
+    );
+});
 
-//fs.writeFile('qwerty.json', JSON.stringify(qwe), (err) => { if (err) console.log('error') });
+// --- ИНИЦИАЛИЗАЦИЯ ВЕБ-СЕРВЕРА EXPRESS ---
+const app = express();
 
-const bot = new Telegraf(process.env.bot_token)
-bot.start((ctx) => ctx.reply(text.commands))
-bot.command("positions", (ctx) =>
-    ctx.replyWithHTML('<b>Виберіть позицію про яку хочете дізнатися інформацію</b>',
-        Markup.inlineKeyboard(
-            [
-                [
-                    Markup.button.callback("Горішок", "btn_nut"),
-                    Markup.button.callback("Трубочка", "btn_tubule"),
-                    Markup.button.callback("Торт вафельний", "btn_wafer")
-                ]
-            ]
-        ))
-)
+// Middleware для обслуживания статических файлов (HTML, CSS, JS, изображения)
+app.use(express.static(path.join(__dirname, 'public')));
+app.use('/img', express.static(path.join(__dirname, 'img'))); // Отдельно для картинок
 
-
-
-function replyButton() {
-    bot.use(async (ctx, next) => {
-        try {
-            if (ctx.callbackQuery.data) {
-                bt_id = ctx.callbackQuery.data;
-                photo_id = "./img/" + bt_id + ".jpg";
-                msg = createMSG(bt_id)//text[bt_id];
-            }
-
-            await ctx.replyWithPhoto(
-                {
-                    source: photo_id
-                },
-                {
-                    caption: msg,
-                    parse_mode: 'Markdown'
-                })
-
-        } catch (e) {
-            console.log(e)
+// API эндпоинт для получения списка продуктов
+app.get('/api/products', (req, res) => {
+    fs.readFile(path.join(__dirname, 'options.json'), 'utf8', (err, data) => {
+        if (err) {
+            console.error("Error reading options.json:", err);
+            return res.status(500).json({ error: 'Internal Server Error' });
         }
-        await ctx.telegram.deleteMessage(ctx.callbackQuery.message.chat.id, ctx.callbackQuery.message.message_id);
-        await ctx.replyWithHTML('<b>Виберіть позицію про яку хочете дізнатися інформацію</b>',
-            Markup.inlineKeyboard(
-                [
-                    [
-                        Markup.button.callback("Горішок", "btn_nut"),
-                        Markup.button.callback("Трубочка", "btn_tubule"),
-                        Markup.button.callback("Торт вафельний", "btn_wafer")
-                    ]
-                ]
-            ))
+        res.json(JSON.parse(data));
+    });
+});
 
-        return next()
-    })
-}
-
-function createMSG(id) {
-    let q;
-    console.log(id);
-    console.log(positions);
+// --- ЗАПУСК ---
+async function startApp() {
     try {
-        q = positions[id].name
-            + "\n" + "Вага: " + positions[id].weight + " гр." + '\n'
-            + "Термін придатності: " + positions[id].best_before_date + '\n'
-            + "Склад: " + positions[id].Compound + '\n'
-            + "Ціна: " + positions[id].price + " грн";
-        console.log(q)
-    } catch (e) { q = "щось трапилось Т_Т"; console.log("щось трапилось Т_Т") }
-    return (q)
+        // Запускаем веб-сервер
+        app.listen(PORT, () => {
+            console.log(`Server is running on port ${PORT}`);
+        });
+        // Запускаем бота
+        await bot.launch();
+        console.log('Bot started successfully');
+    } catch (error) {
+        console.error('Failed to start the application:', error);
+    }
 }
 
-replyButton()
-//bot.action('delete', (ctx) => ctx.deleteMessage())
-bot.launch()
+startApp();
 
-// Enable graceful stop
-process.once('SIGINT', () => bot.stop('SIGINT'))
-process.once('SIGTERM', () => bot.stop('SIGTERM'))
+// Обработка сигналов для корректного завершения работы
+process.once('SIGINT', () => bot.stop('SIGINT'));
+process.once('SIGTERM', () => bot.stop('SIGTERM'));
