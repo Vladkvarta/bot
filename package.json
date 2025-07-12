@@ -12,7 +12,7 @@
   "license": "ISC",
   "dependencies": {
     "dotenv": "^16.0.1",
-    "express": "^4.18.2",  // Добавили express
+    "express": "^4.18.2",
     "telegraf": "^4.8.5"
   },
   "devDependencies": {
