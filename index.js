@@ -1,52 +1,57 @@
+// --- ЗАВИСИМОСТИ ---
+// Встроенные модули Node.js
+const fs = require('fs');
+const path = require('path');
 const crypto = require('crypto');
 const { exec } = require('child_process');
+
+// Установленные пакеты
 const { Telegraf, Markup } = require('telegraf');
 const express = require('express');
-const path = require('path');
-const fs = require('fs');
 require('dotenv').config();
 
-// --- НАСТРОЙКИ ---
-const BOT_TOKEN = process.env.bot_token;
-const WEB_APP_URL = process.env.WEB_APP_URL; // Важно: URL должен быть HTTPS!
+// --- КОНФИГУРАЦИЯ ---
+// Загружаем переменные из .env файла
+const BOT_TOKEN = process.env.BOT_TOKEN;
+const WEB_APP_URL = process.env.WEB_APP_URL;
 const PORT = process.env.PORT || 3000;
+const GITHUB_SECRET = process.env.GITHUB_WEBHOOK_SECRET;
 
-// --- ИНИЦИАЛИЗАЦИЯ БОТА ---
-const bot = new Telegraf(BOT_TOKEN);
+// Проверяем, что все необходимые переменные окружения заданы
+if (!BOT_TOKEN || !WEB_APP_URL || !GITHUB_SECRET) {
+    console.error('Ошибка: Не все переменные окружения заданы в файле .env (BOT_TOKEN, WEB_APP_URL, GITHUB_WEBHOOK_SECRET)');
+    process.exit(1);
+}
 
-bot.start((ctx) => {
-    ctx.reply(
-        'Вітаю! Натисніть кнопку нижче, щоб відкрити наш магазин та зробити замовлення.',
-        Markup.keyboard([
-            [Markup.button.webApp('Відкрити магазин 🍰', WEB_APP_URL)]
-        ]).resize()
-    );
-});
 
-// --- ИНИЦИАЛИЗАЦИЯ ВЕБ-СЕРВЕРА EXPRESS ---
+// --- ИНИЦИАЛИЗАЦИЯ EXPRESS ---
 const app = express();
-// Middleware для обработки "сырого" тела запроса, это нужно для проверки подписи
+
+// Middleware для обработки "сырого" тела запроса, это нужно для проверки подписи вебхука
 app.use(express.raw({ type: 'application/json' }));
 
-// Middleware для обслуживания статических файлов (HTML, CSS, JS, изображения)
+// Middleware для обслуживания статических файлов (HTML, CSS, JS) из папки 'public'
 app.use(express.static(path.join(__dirname, 'public')));
-app.use('/img', express.static(path.join(__dirname, 'img'))); // Отдельно для картинок
+// Middleware для обслуживания изображений из папки 'img'
+app.use('/img', express.static(path.join(__dirname, 'img')));
+
+
+// --- API ЭНДПОИНТЫ ---
 
 // API эндпоинт для получения списка продуктов
 app.get('/api/products', (req, res) => {
     fs.readFile(path.join(__dirname, 'options.json'), 'utf8', (err, data) => {
         if (err) {
-            console.error("Error reading options.json:", err);
-            return res.status(500).json({ error: 'Internal Server Error' });
+            console.error("Ошибка чтения файла options.json:", err);
+            return res.status(500).json({ error: 'Внутренняя ошибка сервера' });
         }
-        res.json(JSON.parse(data));
+        res.setHeader('Content-Type', 'application/json');
+        res.send(data);
     });
 });
+
 // Эндпоинт для вебхука от GitHub
 app.post('/webhook/github', (req, res) => {
-    // Секрет должен быть в файле .env
-    const GITHUB_SECRET = process.env.GITHUB_WEBHOOK_SECRET;
-
     const signature = req.headers['x-hub-signature-256'];
     if (!signature) {
         return res.status(401).send('No signature provided.');
@@ -61,32 +66,48 @@ app.post('/webhook/github', (req, res) => {
     }
 
     // Если подпись верна, запускаем скрипт развертывания
-    console.log('Valid webhook received. Starting deployment...');
+    console.log('Получен валидный вебхук. Запуск развертывания...');
     exec('sh ./deploy.sh', (error, stdout, stderr) => {
         if (error) {
-            console.error(`Deployment script error: ${error}`);
+            console.error(`Ошибка скрипта развертывания: ${error}`);
+            return;
         }
-        console.log(`Deployment script output: ${stdout}`);
+        console.log(`Вывод скрипта развертывания: ${stdout}`);
         if (stderr) {
-            console.error(`Deployment script stderr: ${stderr}`);
+            console.error(`Ошибки скрипта развертывания: ${stderr}`);
         }
     });
 
-    res.status(200).send('Deployment initiated.');
+    res.status(200).send('Развертывание начато.');
 });
 
-// --- ЗАПУСК ---
+
+// --- ИНИЦИАЛИЗАЦИЯ ТЕЛЕГРАМ-БОТА ---
+const bot = new Telegraf(BOT_TOKEN);
+
+// Обработчик команды /start
+bot.start((ctx) => {
+    ctx.reply(
+        'Вітаю! Натисніть кнопку нижче, щоб відкрити наш магазин та зробити замовлення.',
+        Markup.keyboard([
+            [Markup.button.webApp('Відкрити магазин 🍰', WEB_APP_URL)]
+        ]).resize()
+    );
+});
+
+
+// --- ЗАПУСК ПРИЛОЖЕНИЯ ---
 async function startApp() {
     try {
         // Запускаем веб-сервер
         app.listen(PORT, () => {
-            console.log(`Server is running on port ${PORT}`);
+            console.log(`Сервер запущен на порту ${PORT}`);
         });
         // Запускаем бота
         await bot.launch();
-        console.log('Bot started successfully');
+        console.log('Бот успешно запущен');
     } catch (error) {
-        console.error('Failed to start the application:', error);
+        console.error('Не удалось запустить приложение:', error);
     }
 }
 
