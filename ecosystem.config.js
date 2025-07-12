@@ -10,7 +10,7 @@ module.exports = {
     production: {
       user: 'admin',
       host: 'ssh.smakuie.com', // Адрес для SSH, который мы настроили
-      ref: 'origin/main', // Ветка в Git
+      ref: 'origin/master', // Ветка в Git
       repo: 'git@github.com:Vladkvarta/bot.git', // ВАЖНО: SSH-URL вашего репозитория
       path: '~/telegram-app', // Папка на Orange Pi
 
