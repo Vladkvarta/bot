@@ -67,7 +67,7 @@ app.post('/webhook/github', (req, res) => {
 
     // Если подпись верна, запускаем скрипт развертывания
     console.log('Получен валидный вебхук. Запуск развертывания...');
-    exec('sh ./deploy.sh', (error, stdout, stderr) => {
+    exec('bash ./deploy.sh', (error, stdout, stderr) => {
         if (error) {
             console.error(`Ошибка скрипта развертывания: ${error}`);
             return;
