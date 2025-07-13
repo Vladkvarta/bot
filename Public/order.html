@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>История заказов</title>
+    <script src="https://cdn.tailwindcss.com/3.4.1"></script>
+    <script>tailwind.config={theme:{extend:{colors:{primary:'#FFD700',secondary:'#000000'},borderRadius:{'none':'0px','sm':'4px',DEFAULT:'8px','md':'12px','lg':'16px','xl':'20px','2xl':'24px','3xl':'32px','full':'9999px','button':'8px'}}}}</script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.2.0/remixicon.min.css">
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #FFFBF5;
+        }
+        .order-card {
+            transition: all 0.3s ease;
+        }
+        .order-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+        }
+        .order-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-in-out;
+        }
+        .order-content.active {
+            max-height: 1000px; /* Adjust as needed */
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+    <header class="bg-white shadow-sm py-4 px-6 sticky top-0 left-0 right-0 z-10">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <a href="/" class="flex items-center">
+                <h1 class="text-2xl font-['Pacifico'] text-secondary">СМАКУЄ</h1>
+                <div class="h-6 w-px bg-gray-200 mx-4"></div>
+                <h2 class="text-lg font-medium text-gray-800">Личный кабинет</h2>
+            </a>
+            <div class="flex items-center gap-4">
+                <div class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center">
+                    <i class="ri-user-line text-gray-600"></i>
+                </div>
+                <span class="text-gray-800 font-medium">Анна Петрова</span>
+            </div>
+        </div>
+    </header>
+
+    <div class="pt-24 pb-16 px-6">
+        <div class="max-w-7xl mx-auto">
+            <div class="flex justify-between items-center mb-8">
+                <h1 class="text-2xl font-bold text-gray-900">История заказов</h1>
+                <a href="/" class="bg-primary text-secondary px-6 py-3 font-semibold !rounded-button flex items-center gap-2 hover:bg-opacity-90 transition-all whitespace-nowrap">
+                    <i class="ri-add-line"></i>
+                    Новый заказ
+                </a>
+            </div>
+
+            <div class="space-y-4" id="orders-container">
+                <!-- Orders will be loaded here by JavaScript -->
+                <div class="skeleton-loading space-y-4">
+                    <div class="rounded-md p-4 animate-pulse bg-white h-16"></div>
+                    <div class="rounded-md p-4 animate-pulse bg-white h-16"></div>
+                    <div class="rounded-md p-4 animate-pulse bg-white h-16"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Simulate loading data after a short delay
+            setTimeout(loadOrders, 1000);
+
+            function loadOrders() {
+                const ordersData = [
+                    { id: "ORD-2025-0001", deliveryDate: "2025-05-25", totalAmount: 5850, status: "Доставлен", items: [{ name: "Торт 'Наполеон'", quantity: 1, price: 2400 }, { name: "Эклеры", quantity: 6, price: 250 }] },
+                    { id: "ORD-2025-0002", deliveryDate: "2025-06-01", totalAmount: 7200, status: "Ожидается", items: [{ name: "Торт 'Черный лес'", quantity: 1, price: 2800 }, { name: "Капкейки", quantity: 8, price: 220 }] },
+                    { id: "ORD-2025-0003", deliveryDate: "2025-05-10", totalAmount: 6400, status: "Доставлен", items: [{ name: "Торт 'Эстерхази'", quantity: 1, price: 3200 }, { name: "Круассаны", quantity: 8, price: 180 }] }
+                ];
+                
+                const ordersContainer = document.getElementById('orders-container');
+                ordersContainer.innerHTML = ''; // Clear skeleton loader
+
+                ordersData.forEach(order => {
+                    const orderCard = document.createElement('div');
+                    orderCard.className = 'order-card rounded-md shadow-sm border border-gray-100 bg-white';
+                    
+                    const dateObj = new Date(order.deliveryDate);
+                    const formattedDate = dateObj.toLocaleDateString('ru-RU', { day: '2-digit', month: 'long', year: 'numeric' });
+                    
+                    const statusConfig = {
+                        "Доставлен": { class: 'bg-green-50 text-green-700', icon: 'ri-check-line' },
+                        "Ожидается": { class: 'bg-blue-50 text-blue-700', icon: 'ri-time-line' }
+                    };
+                    const statusInfo = statusConfig[order.status] || { class: '', icon: '' };
+
+                    orderCard.innerHTML = `
+                        <div class="p-4 cursor-pointer order-header flex justify-between items-center">
+                            <div class="flex items-center gap-4 flex-wrap">
+                                <div class="text-gray-900 font-medium">${order.id}</div>
+                                <div class="text-gray-600">${formattedDate}</div>
+                                <div class="px-3 py-1 rounded-full text-xs font-medium ${statusInfo.class} flex items-center gap-1">
+                                    <i class="${statusInfo.icon}"></i> ${order.status}
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <div class="text-gray-900 font-semibold">${order.totalAmount.toLocaleString('ru-RU')} ₽</div>
+                                <div class="w-6 h-6 flex items-center justify-center text-gray-500 toggle-icon">
+                                    <i class="ri-arrow-down-s-line"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="order-content px-4 pb-4">
+                            <div class="pt-4 border-t border-gray-100">
+                                <table class="min-w-full">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-left text-xs font-semibold text-gray-500 uppercase py-2">Наименование</th>
+                                            <th class="text-center text-xs font-semibold text-gray-500 uppercase py-2">Кол-во</th>
+                                            <th class="text-right text-xs font-semibold text-gray-500 uppercase py-2">Сумма</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        ${order.items.map(item => `
+                                            <tr>
+                                                <td class="py-2 text-sm text-gray-900">${item.name}</td>
+                                                <td class="py-2 text-sm text-gray-600 text-center">${item.quantity}</td>
+                                                <td class="py-2 text-sm font-medium text-gray-900 text-right">${(item.quantity * item.price).toLocaleString('ru-RU')} ₽</td>
+                                            </tr>
+                                        `).join('')}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    `;
+                    ordersContainer.appendChild(orderCard);
+                });
+
+                // Add event listeners for accordion
+                document.querySelectorAll('.order-header').forEach(header => {
+                    header.addEventListener('click', function() {
+                        const content = this.nextElementSibling;
+                        const icon = this.querySelector('.toggle-icon i');
+                        content.classList.toggle('active');
+                        icon.classList.toggle('ri-arrow-down-s-line');
+                        icon.classList.toggle('ri-arrow-up-s-line');
+                    });
+                });
+            }
+        });
+    </script>
+</body>
+</html>

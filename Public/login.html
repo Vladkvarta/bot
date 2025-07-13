@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Вход в личный кабинет</title>
+    <script src="https://cdn.tailwindcss.com/3.4.1"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              primary: '#FFD700',
+              secondary: '#000000'
+            },
+            borderRadius: {
+              'none': '0px',
+              'sm': '4px',
+              DEFAULT: '8px',
+              'md': '12px',
+              'lg': '16px',
+              'xl': '20px',
+              '2xl': '24px',
+              '3xl': '32px',
+              'full': '9999px',
+              'button': '8px'
+            }
+          }
+        }
+      }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.2.0/remixicon.min.css">
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+            min-height: 100vh;
+            background-image: url('https://placehold.co/1920x1080/FFF4E6/333333?text=Pastry+Background');
+            background-size: cover;
+            background-position: center;
+        }
+        .form-container {
+            backdrop-filter: blur(8px);
+            animation: fadeIn 0.8s ease-out;
+        }
+        .input-field:focus {
+            border-color: #FFD700;
+            box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.2);
+        }
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center p-4 bg-white">
+    <div class="form-container bg-white/90 rounded-xl shadow-xl p-8 w-full max-w-md">
+        <div class="text-center mb-8">
+            <a href="/" class="font-['Pacifico'] text-4xl text-secondary mb-2 inline-block">СМАКУЄ</a>
+            <h2 class="text-xl font-semibold text-secondary">Вход в личный кабинет</h2>
+        </div>
+
+        <form id="loginForm" class="space-y-6">
+            <div>
+                <label for="phone" class="block text-sm font-medium text-gray-700 mb-1">Телефон</label>
+                <input type="tel" id="phone" class="input-field w-full px-4 py-3 rounded-button bg-white border-2 border-gray-200 text-secondary focus:outline-none" placeholder="+380 (XX) XXX-XX-XX" autocomplete="tel">
+                <div id="phoneError" class="text-red-500 text-sm mt-1 hidden">Неверный формат телефона</div>
+            </div>
+
+            <div class="relative">
+                <label for="password" class="block text-sm font-medium text-gray-700 mb-1">Пароль</label>
+                <input type="password" id="password" class="input-field w-full px-4 py-3 rounded-button bg-white border-2 border-gray-200 text-secondary focus:outline-none" placeholder="******">
+                 <button type="button" id="toggle-password" class="absolute right-3 top-10 text-gray-500">
+                    <i class="ri-eye-line"></i>
+                </button>
+                <div id="passwordError" class="text-red-500 text-sm mt-1 hidden">Пароль должен содержать минимум 6 символов</div>
+            </div>
+
+            <button type="submit" class="w-full py-3 bg-primary text-secondary font-semibold rounded-button shadow-md hover:shadow-lg transition !rounded-button whitespace-nowrap">
+                Войти
+            </button>
+
+            <div class="text-center">
+                <a href="#" class="inline-block text-secondary text-sm hover:text-primary transition">Забыли пароль?</a>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        // Basic form validation for demonstration
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            let isValid = true;
+            
+            // Hide errors
+            document.getElementById('phoneError').classList.add('hidden');
+            document.getElementById('passwordError').classList.add('hidden');
+
+            // Phone validation (very basic)
+            const phone = document.getElementById('phone').value;
+            if (phone.length < 10) {
+                document.getElementById('phoneError').classList.remove('hidden');
+                isValid = false;
+            }
+
+            // Password validation
+            const password = document.getElementById('password').value;
+            if (password.length < 6) {
+                document.getElementById('passwordError').classList.remove('hidden');
+                isValid = false;
+            }
+
+            if (isValid) {
+                // In a real application, you would send this to your server
+                alert('Форма отправлена! (демонстрация)');
+                // Example: window.location.href = '/orders.html';
+            }
+        });
+
+        // Toggle password visibility
+        document.getElementById('toggle-password').addEventListener('click', function() {
+            const passwordInput = document.getElementById('password');
+            const icon = this.querySelector('i');
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                icon.classList.remove('ri-eye-line');
+                icon.classList.add('ri-eye-off-line');
+            } else {
+                passwordInput.type = 'password';
+                icon.classList.remove('ri-eye-off-line');
+                icon.classList.add('ri-eye-line');
+            }
+        });
+    </script>
+</body>
+</html>

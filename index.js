@@ -1,44 +1,35 @@
 // --- ЗАВИСИМОСТИ ---
-// Встроенные модули Node.js
 const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
 const { exec } = require('child_process');
-
-// Установленные пакеты
 const { Telegraf, Markup } = require('telegraf');
 const express = require('express');
 require('dotenv').config();
 
 // --- КОНФИГУРАЦИЯ ---
-// Загружаем переменные из .env файла
 const BOT_TOKEN = process.env.BOT_TOKEN;
-const WEB_APP_URL = process.env.WEB_APP_URL;
+const WEB_APP_URL = process.env.WEB_APP_URL; // This is now the base URL
 const PORT = process.env.PORT || 3000;
 const GITHUB_SECRET = process.env.GITHUB_WEBHOOK_SECRET;
 
-// Проверяем, что все необходимые переменные окружения заданы
 if (!BOT_TOKEN || !WEB_APP_URL || !GITHUB_SECRET) {
     console.error('Ошибка: Не все переменные окружения заданы в файле .env (BOT_TOKEN, WEB_APP_URL, GITHUB_WEBHOOK_SECRET)');
     process.exit(1);
 }
 
-
 // --- ИНИЦИАЛИЗАЦИЯ EXPRESS ---
 const app = express();
-
-// Middleware для обработки "сырого" тела запроса, это нужно для проверки подписи вебхука
 app.use(express.raw({ type: 'application/json' }));
-
-// Middleware для обслуживания статических файлов (HTML, CSS, JS) из папки 'public'
+// Serve static files from the 'public' directory
 app.use(express.static(path.join(__dirname, 'public')));
-// Middleware для обслуживания изображений из папки 'img'
+// Serve images from the 'img' directory
 app.use('/img', express.static(path.join(__dirname, 'img')));
 
 
 // --- API ЭНДПОИНТЫ ---
 
-// API эндпоинт для получения списка продуктов
+// API endpoint to get the list of products
 app.get('/api/products', (req, res) => {
     fs.readFile(path.join(__dirname, 'options.json'), 'utf8', (err, data) => {
         if (err) {
@@ -50,7 +41,7 @@ app.get('/api/products', (req, res) => {
     });
 });
 
-// Эндпоинт для вебхука от GitHub
+// Endpoint for GitHub webhook
 app.post('/webhook/github', (req, res) => {
     const signature = req.headers['x-hub-signature-256'];
     if (!signature) {
@@ -60,12 +51,10 @@ app.post('/webhook/github', (req, res) => {
     const hmac = crypto.createHmac('sha256', GITHUB_SECRET);
     const digest = 'sha256=' + hmac.update(req.body).digest('hex');
 
-    // Сравниваем подписи для безопасности
     if (!crypto.timingSafeEqual(Buffer.from(signature), Buffer.from(digest))) {
         return res.status(401).send('Invalid signature.');
     }
 
-    // Если подпись верна, запускаем скрипт развертывания
     console.log('Получен валидный вебхук. Запуск развертывания...');
     exec('bash ./deploy.sh', (error, stdout, stderr) => {
         if (error) {
@@ -85,25 +74,34 @@ app.post('/webhook/github', (req, res) => {
 // --- ИНИЦИАЛИЗАЦИЯ ТЕЛЕГРАМ-БОТА ---
 const bot = new Telegraf(BOT_TOKEN);
 
-// Обработчик команды /start
-bot.start((ctx) => {
-    ctx.reply(
-        'Вітаю! Натисніть кнопку нижче, щоб відкрити наш магазин та зробити замовлення.',
-        Markup.keyboard([
-            [Markup.button.webApp('Відкрити магазин 🍰', WEB_APP_URL)]
-        ]).resize()
-    );
-});
+// Function to create the main menu keyboard
+const createMainMenu = () => {
+    return Markup.keyboard([
+        [Markup.button.webApp('🍰 Каталог', `${WEB_APP_URL}`)],
+        [
+            Markup.button.webApp('👤 Профіль', `${WEB_APP_URL}/login.html`),
+            Markup.button.webApp('📋 Мої замовлення', `${WEB_APP_URL}/orders.html`)
+        ]
+    ]).resize();
+};
 
+// Handler for the /start and /menu commands
+const sendMenu = (ctx) => {
+    ctx.reply(
+        'Вітаю! 👋\n\nОберіть опцію в меню нижче, щоб переглянути каталог або увійти до особистого кабінету.',
+        createMainMenu()
+    );
+};
+
+bot.start(sendMenu);
+bot.command('menu', sendMenu);
 
 // --- ЗАПУСК ПРИЛОЖЕНИЯ ---
 async function startApp() {
     try {
-        // Запускаем веб-сервер
         app.listen(PORT, () => {
             console.log(`Сервер запущен на порту ${PORT}`);
         });
-        // Запускаем бота
         await bot.launch();
         console.log('Бот успешно запущен');
     } catch (error) {
@@ -113,6 +111,6 @@ async function startApp() {
 
 startApp();
 
-// Обработка сигналов для корректного завершения работы
+// Graceful stop
 process.once('SIGINT', () => bot.stop('SIGINT'));
 process.once('SIGTERM', () => bot.stop('SIGTERM'));

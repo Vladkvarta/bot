@@ -20,7 +20,7 @@ async function loadProducts() {
             productElement.className = 'product';
             
             // Используем относительный путь к изображениям
-            const imageUrl = `../img/${key}.jpg`;
+            const imageUrl = `/img/${key}.jpg`;
 
             productElement.innerHTML = `
                 <img src="${imageUrl}" alt="${product.name}" class="product-img">
