@@ -2,14 +2,15 @@
 const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
-const { exec } = require('child_process');
+// Используем spawn вместо exec для большего контроля над дочерним процессом
+const { spawn } = require('child_process'); 
 const { Telegraf, Markup } = require('telegraf');
 const express = require('express');
 require('dotenv').config();
 
 // --- КОНФИГУРАЦИЯ ---
 const BOT_TOKEN = process.env.BOT_TOKEN;
-const WEB_APP_URL = process.env.WEB_APP_URL; // This is now the base URL
+const WEB_APP_URL = process.env.WEB_APP_URL;
 const PORT = process.env.PORT || 3000;
 const GITHUB_SECRET = process.env.GITHUB_WEBHOOK_SECRET;
 
@@ -21,15 +22,12 @@ if (!BOT_TOKEN || !WEB_APP_URL || !GITHUB_SECRET) {
 // --- ИНИЦИАЛИЗАЦИЯ EXPRESS ---
 const app = express();
 app.use(express.raw({ type: 'application/json' }));
-// Serve static files from the 'public' directory
 app.use(express.static(path.join(__dirname, 'public')));
-// Serve images from the 'img' directory
 app.use('/img', express.static(path.join(__dirname, 'img')));
 
 
 // --- API ЭНДПОИНТЫ ---
 
-// API endpoint to get the list of products
 app.get('/api/products', (req, res) => {
     fs.readFile(path.join(__dirname, 'options.json'), 'utf8', (err, data) => {
         if (err) {
@@ -41,7 +39,7 @@ app.get('/api/products', (req, res) => {
     });
 });
 
-// Endpoint for GitHub webhook
+// Эндпоинт для вебхука от GitHub
 app.post('/webhook/github', (req, res) => {
     const signature = req.headers['x-hub-signature-256'];
     if (!signature) {
@@ -55,26 +53,28 @@ app.post('/webhook/github', (req, res) => {
         return res.status(401).send('Invalid signature.');
     }
 
-    console.log('Получен валидный вебхук. Запуск развертывания...');
-    exec('bash ./deploy.sh', (error, stdout, stderr) => {
-        if (error) {
-            console.error(`Ошибка скрипта развертывания: ${error}`);
-            return;
-        }
-        console.log(`Вывод скрипта развертывания: ${stdout}`);
-        if (stderr) {
-            console.error(`Ошибки скрипта развертывания: ${stderr}`);
-        }
+    console.log('Получен валидный вебхук. Запуск развертывания в фоновом режиме...');
+    
+    // --- ИЗМЕНЕНИЕ ЗДЕСЬ ---
+    // Запускаем скрипт как отдельный, отсоединенный процесс.
+    // Это аналог команды 'nohup bash ./deploy.sh &'
+    const subprocess = spawn('bash', ['./deploy.sh'], {
+        detached: true,  // Отсоединяем дочерний процесс от родительского
+        stdio: 'ignore'  // Игнорируем ввод/вывод, чтобы он не блокировал родителя
     });
 
-    res.status(200).send('Развертывание начато.');
+    // Позволяем родительскому процессу (боту) завершиться независимо от дочернего.
+    subprocess.unref(); 
+
+    // Немедленно отвечаем GitHub, что мы приняли вебхук.
+    // Мы не ждем завершения скрипта, так как он перезапустит нас.
+    res.status(202).send('Развертывание начато в фоновом режиме.');
 });
 
 
 // --- ИНИЦИАЛИЗАЦИЯ ТЕЛЕГРАМ-БОТА ---
 const bot = new Telegraf(BOT_TOKEN);
 
-// Function to create the main menu keyboard
 const createMainMenu = () => {
     return Markup.keyboard([
         [Markup.button.webApp('🍰 Каталог', `${WEB_APP_URL}`)],
@@ -85,7 +85,6 @@ const createMainMenu = () => {
     ]).resize();
 };
 
-// Handler for the /start and /menu commands
 const sendMenu = (ctx) => {
     ctx.reply(
         'Вітаю! 👋\n\nОберіть опцію в меню нижче, щоб переглянути каталог або увійти до особистого кабінету.',
@@ -111,6 +110,5 @@ async function startApp() {
 
 startApp();
 
-// Graceful stop
 process.once('SIGINT', () => bot.stop('SIGINT'));
 process.once('SIGTERM', () => bot.stop('SIGTERM'));
