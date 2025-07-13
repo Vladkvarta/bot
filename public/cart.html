@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Корзина</title>
+    <script src="https://cdn.tailwindcss.com/3.4.1"></script>
+</head>
+<body class="bg-gray-50">
+    <header class="bg-white shadow-sm">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="/index.html" class="text-2xl font-bold text-gray-800">СМАКУЄ</a>
+            <a href="/index.html" class="text-gray-600 hover:text-yellow-500">Продолжить покупки</a>
+        </nav>
+    </header>
+    <main class="container mx-auto px-6 py-8">
+        <h1 class="text-3xl font-bold text-gray-800 mb-6">Ваша корзина</h1>
+        <div class="bg-white p-6 rounded-lg shadow-md">
+            <div id="cart-items-container" class="space-y-4"></div>
+            <div id="cart-summary" class="border-t mt-6 pt-6"></div>
+            <button id="checkout-button" class="w-full mt-4 bg-yellow-500 text-white py-3 rounded-lg hover:bg-yellow-600 transition-colors hidden">Оформить заказ</button>
+        </div>
+    </main>
+    <script src="/js/app.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const itemsContainer = document.getElementById('cart-items-container');
+            const summaryContainer = document.getElementById('cart-summary');
+            const checkoutButton = document.getElementById('checkout-button');
+            const cart = App.Cart.get();
+            const user = App.Auth.getUser();
+
+            if (cart.length === 0) {
+                itemsContainer.innerHTML = '<p>Ваша корзина пуста.</p>';
+                return;
+            }
+
+            checkoutButton.classList.remove('hidden');
+            itemsContainer.innerHTML = cart.map(item => `
+                <div class="flex justify-between items-center">
+                    <div>
+                        <p class="font-semibold">${item.name}</p>
+                        <p class="text-sm text-gray-600">${item.quantity} x ${user && user.status === 'опт' ? item.wholesalePrice : item.price} ₽</p>
+                    </div>
+                    <p class="font-semibold">${item.quantity * (user && user.status === 'опт' ? item.wholesalePrice : item.price)} ₽</p>
+                </div>
+            `).join('');
+
+            const subtotal = cart.reduce((sum, item) => {
+                const price = user && user.status === 'опт' ? item.wholesalePrice : item.price;
+                return sum + (price * item.quantity);
+            }, 0);
+
+            let total = subtotal;
+            let discountInfo = '';
+
+            if (user && user.status === 'розница' && user.discount > 0) {
+                const discountAmount = (subtotal * user.discount) / 100;
+                total -= discountAmount;
+                discountInfo = `
+                    <div class="flex justify-between text-green-600">
+                        <span>Скидка (${user.discount}%):</span>
+                        <span>-${discountAmount.toFixed(2)} ₽</span>
+                    </div>`;
+            }
+
+            summaryContainer.innerHTML = `
+                <div class="flex justify-between">
+                    <span>Подытог:</span>
+                    <span>${subtotal.toFixed(2)} ₽</span>
+                </div>
+                ${discountInfo}
+                <div class="flex justify-between font-bold text-xl mt-4">
+                    <span>Итого:</span>
+                    <span>${total.toFixed(2)} ₽</span>
+                </div>
+            `;
+        });
+    </script>
+</body>
+</html>

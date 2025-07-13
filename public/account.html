@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Личный кабинет</title>
+    <script src="https://cdn.tailwindcss.com/3.4.1"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.2.0/remixicon.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-50">
+    <header class="bg-white shadow-sm">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="/index.html" class="text-2xl font-bold text-gray-800">СМАКУЄ</a>
+            <a href="#" id="logout-button" class="text-red-500 hover:underline">Выйти</a>
+        </nav>
+    </header>
+    <main class="container mx-auto px-6 py-8">
+        <h1 class="text-3xl font-bold text-gray-800 mb-6">Личный кабинет</h1>
+        <div class="bg-white p-6 rounded-lg shadow-md">
+            <div id="user-info" class="mb-6 border-b pb-6"></div>
+            <div id="wholesale-section" class="hidden mt-6">
+                <h2 class="text-xl font-semibold mb-4">Панель оптовика</h2>
+                <a href="/wholesale-order.html" class="bg-green-500 text-white px-5 py-2 rounded-lg hover:bg-green-600">Перейти к форме заказа для оптовиков</a>
+            </div>
+        </div>
+    </main>
+    <script src="/js/app.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const user = App.Auth.getUser();
+            if (!user) {
+                window.location.href = '/login.html';
+                return;
+            }
+
+            document.getElementById('user-info').innerHTML = `
+                <p class="mb-2"><strong>Email:</strong> ${user.email}</p>
+                <p class="mb-2"><strong>Статус:</strong> <span class="font-semibold ${user.status === 'опт' ? 'text-green-600' : 'text-blue-600'}">${user.status}</span></p>
+                ${user.status === 'розница' ? `<p><strong>Персональная скидка:</strong> ${user.discount}%</p>` : ''}
+            `;
+
+            if (user.status === 'опт') {
+                document.getElementById('wholesale-section').classList.remove('hidden');
+            }
+
+            document.getElementById('logout-button').addEventListener('click', App.Auth.logout);
+        });
+    </script>
+</body>
+</html>
