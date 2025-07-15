@@ -2,13 +2,13 @@
 <html lang="uk">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Смакує - Крафтове виробництво солодощів</title>
-<script src="https://cdn.tailwindcss.com/3.4.1"></script>
+<script src="https://cdn.tailwindcss.com/3.4.16"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
-<link href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.2.0/remixicon.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css" rel="stylesheet">
 <script>
 tailwind.config = {
 theme: {
@@ -34,9 +34,12 @@ DEFAULT: '8px',
 }
 </script>
 <style>
-/* ВАШИ ОРИГИНАЛЬНЫЕ СТИЛИ ОСТАЛИСЬ БЕЗ ИЗМЕНЕНИЙ */
 :where([class^="ri-"])::before {
 content: "\f3c2";
+}
+.category-btn.active {
+background-color: #FFD700;
+color: black;
 }
 .hero-bg {
 background-image: url('https://readdy.ai/api/search-image?query=elegant%20confectionery%20workspace%20with%20soft%20pastel%20colors%20pink%20beige%20yellow%20accents%20modern%20minimalist%20bakery%20interior%20with%20delicate%20desserts%20macarons%20cakes%20on%20marble%20surfaces%20clean%20airy%20atmosphere%20professional%20food%20photography%20style%20soft%20natural%20lighting&width=1920&height=800&seq=hero-bg-001&orientation=landscape');
@@ -59,55 +62,70 @@ box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
 </head>
 <body class="bg-white">
 <header class="bg-white shadow-sm sticky top-0 z-50">
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-<div class="flex items-center justify-between h-20">
-<div class="flex items-center space-x-3">
-<div class="w-12 h-12 flex items-center justify-center">
-<i class="ri-cake-3-line text-2xl text-black"></i>
+<div class="w-full px-4">
+<div class="flex items-center justify-between h-16">
+<div class="flex items-center space-x-2">
+<div class="w-12 h-12 flex items-center justify-center bg-primary rounded-full shadow-[0_0_15px_rgba(255,215,0,0.5)] backdrop-blur-sm">
+<img src="https://static.readdy.ai/image/43b57c5738bad1db7fac177fe6f2f220/46ca856dcdb27461a44d2cf39bdb0b5a.jfif" alt="Logo" class="w-8 h-8">
 </div>
 <div>
-<h1 class="text-2xl font-bold text-black">СМАКУЄ</h1>
-<p class="text-sm text-gray-600">Крафтове виробництво</p>
+<h1 class="text-lg font-bold text-black">СМАКУЄ</h1>
+<p class="text-xs text-gray-600">Крафтове виробництво</p>
 </div>
 </div>
-<nav class="hidden md:flex items-center space-x-8">
-<a href="/index.html" class="text-gray-800 hover:text-primary font-medium transition-colors">Головна</a>
-<!-- ИЗМЕНЕНИЕ 1: Добавлен id="account-link" для обработки клика в JS -->
-<a href="#" id="account-link" class="text-gray-600 hover:text-primary font-medium transition-colors flex items-center space-x-1">
+<div class="flex items-center">
+<nav class="hidden md:flex items-center space-x-6">
+<a href="#" class="text-gray-800 hover:text-primary font-medium transition-colors">Головна</a>
+<a href="https://readdy.ai/home/cb9458f8-9101-4315-a4f7-32608dd27b3b/434a1df6-3281-44e4-95e6-f09bfbd6453e" data-readdy="true" class="text-gray-600 hover:text-primary font-medium transition-colors">Контакти</a>
+<a href="#" class="text-gray-600 hover:text-primary font-medium transition-colors">Відгуки</a>
+<a href="#" class="text-gray-600 hover:text-primary font-medium transition-colors flex items-center space-x-1">
 <div class="w-4 h-4 flex items-center justify-center">
 <i class="ri-user-line text-sm"></i>
 </div>
 <span>Особистий кабінет</span>
 </a>
-<!-- ИЗМЕНЕНИЕ 2: Ссылка на корзину ведет на cart.html и добавлен id для счетчика -->
-<a href="/cart.html" class="text-gray-600 hover:text-primary font-medium transition-colors flex items-center space-x-1 relative">
+<a href="https://readdy.ai/home/cb9458f8-9101-4315-a4f7-32608dd27b3b/f6396750-d44d-48b0-bd02-8a223d57da3e" data-readdy="true" class="text-gray-600 hover:text-primary font-medium transition-colors flex items-center space-x-1">
 <div class="w-4 h-4 flex items-center justify-center">
 <i class="ri-shopping-cart-line text-sm"></i>
 </div>
-<span>Кошик</span>
-<span id="cart-count" class="absolute -top-2 -right-3 bg-primary text-black text-xs rounded-full h-4 w-4 flex items-center justify-center font-bold">0</span>
+<span class="hidden md:inline">Корзина</span>
 </a>
-<a href="/about.html" class="text-gray-600 hover:text-primary font-medium transition-colors">Контакти</a>
-<a href="/reviews.html" class="text-gray-600 hover:text-primary font-medium transition-colors">Відгуки</a>
 </nav>
-<button class="md:hidden w-8 h-8 flex items-center justify-center">
+<button class="md:hidden w-8 h-8 flex items-center justify-center ml-4" id="menuButton">
 <i class="ri-menu-line text-xl"></i>
 </button>
+</div>
+<nav class="hidden fixed inset-0 bg-white z-50" id="mobileNav">
+<a href="#" class="text-gray-800 hover:text-primary font-medium transition-colors">Головна</a>
+<a href="#" class="text-gray-600 hover:text-primary font-medium transition-colors">Контакти</a>
+<a href="#" class="text-gray-600 hover:text-primary font-medium transition-colors">Відгуки</a>
+<a href="#" class="text-gray-600 hover:text-primary font-medium transition-colors flex items-center space-x-1">
+<div class="w-4 h-4 flex items-center justify-center">
+<i class="ri-user-line text-sm"></i>
+</div>
+<span>Особистий кабінет</span>
+</a>
+<a href="#" class="text-gray-600 hover:text-primary font-medium transition-colors flex items-center space-x-1">
+<div class="w-4 h-4 flex items-center justify-center">
+<i class="ri-shopping-cart-line text-sm"></i>
+</div>
+</a>
+</nav>
 </div>
 </div>
 </header>
 <main>
-<section class="hero-bg min-h-[50vh] flex items-center">
+<section class="hero-bg min-h-[40vh] flex items-center">
 <div class="hero-overlay absolute inset-0 backdrop-blur-md bg-gradient-to-br from-[rgba(255,244,230,0.9)] to-[rgba(255,215,0,0.3)]"></div>
 <div class="relative z-10 w-full">
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="w-full px-4">
 <div class="text-center">
-<div class="mb-12">
-<div class="w-32 h-32 mx-auto mb-8 flex items-center justify-center bg-gradient-to-br from-[rgba(255,215,0,0.2)] to-[rgba(255,244,230,0.6)] backdrop-blur-lg rounded-full shadow-[0_8px_32px_rgba(255,215,0,0.3)]">
-<i class="ri-cake-3-line text-5xl text-black opacity-80"></i>
+<div class="mb-8">
+<div class="w-32 h-32 mx-auto mb-6 flex items-center justify-center bg-primary/90 backdrop-blur-xl rounded-full shadow-[0_0_64px_rgba(255,215,0,0.25)] relative overflow-hidden">
+<img src="https://static.readdy.ai/image/43b57c5738bad1db7fac177fe6f2f220/46ca856dcdb27461a44d2cf39bdb0b5a.jfif" alt="Logo" class="w-24 h-24 relative z-10 rounded-full">
 </div>
-<h1 class="text-6xl md:text-7xl font-['Pacifico'] text-black mb-6 drop-shadow-[0_4px_8px_rgba(0,0,0,0.1)]">СМАКУЄ</h1>
-<p class="text-xl md:text-2xl text-gray-800 font-light tracking-wide">Крафтове виробництво солодощів</p>
+<h1 class="text-4xl font-['Montserrat'] font-bold text-black mb-4 drop-shadow-[0_4px_8px_rgba(0,0,0,0.1)]">СМАКУЄ</h1>
+<p class="text-lg text-gray-800 font-light tracking-wide">Крафтове виробництво солодощів</p>
 </div>
 </div>
 </div>
@@ -116,102 +134,110 @@ box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
 <section class="py-20 bg-secondary">
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 <div class="text-center mb-16">
-<h2 class="text-4xl md:text-5xl font-bold text-black mb-6">Популярні десерти</h2>
+<h2 class="text-3xl md:text-4xl lg:text-5xl font-bold text-black mb-6">Популярні десерти</h2>
 <p class="text-xl text-gray-700 max-w-2xl mx-auto">
 Найулюбленіші смаколики наших клієнтів, створені за унікальними рецептами
 </p>
 </div>
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
-<!-- ИЗМЕНЕНИЕ 3: Добавлены onclick для кнопок "Замовити" -->
-<div class="dessert-card bg-white rounded-3xl overflow-hidden shadow-lg">
-<div class="h-64 bg-cover bg-center" style="background-image: url('https://readdy.ai/api/search-image?query=elegant%20chocolate%20cake%20with%20gold%20decorations%20on%20white%20marble%20surface%20professional%20food%20photography%20soft%20lighting%20pastel%20background%20luxury%20dessert%20presentation%20minimalist%20style&width=400&height=300&seq=cake-001&orientation=landscape')"></div>
-<div class="p-6">
-<h3 class="text-2xl font-bold text-black mb-2">Шоколадний торт "Велюр"</h3>
-<p class="text-gray-600 mb-4">Ніжний шоколадний бісквіт з муссом та золотими акцентами</p>
-<div class="flex items-center justify-between">
-<span class="text-2xl font-bold text-primary">890 ₴</span>
-<button onclick="App.Cart.add(1)" class="bg-primary text-black px-6 py-2 !rounded-button font-semibold hover:bg-yellow-400 transition-colors whitespace-nowrap">
+<div class="flex justify-center mb-8">
+<div class="inline-flex bg-white rounded-full p-1 shadow-md">
+<button class="category-btn active px-6 py-2 rounded-full text-black font-medium whitespace-nowrap" data-category="all">Всі</button>
+<button class="category-btn px-6 py-2 rounded-full text-gray-600 font-medium whitespace-nowrap" data-category="cakes">Торти</button>
+<button class="category-btn px-6 py-2 rounded-full text-gray-600 font-medium whitespace-nowrap" data-category="pastries">Тістечка</button>
+<button class="category-btn px-6 py-2 rounded-full text-gray-600 font-medium whitespace-nowrap" data-category="sweets">Цукерки</button>
+</div>
+</div>
+<div class="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6 mb-12">
+<div class="dessert-card bg-white rounded-xl sm:rounded-3xl overflow-hidden shadow-lg" data-category="pastries">
+<div class="h-32 sm:h-64 bg-cover bg-center" style="background-image: url('https://readdy.ai/api/search-image?query=elegant%20chocolate%20cake%20with%20gold%20decorations%20on%20white%20marble%20surface%20professional%20food%20photography%20soft%20lighting%20pastel%20background%20luxury%20dessert%20presentation%20minimalist%20style&width=400&height=300&seq=cake-001&orientation=landscape')"></div>
+<div class="p-3 sm:p-6">
+<h3 class="text-sm sm:text-2xl font-bold text-black mb-2 truncate">Шоколадний торт "Велюр"</h3>
+<p class="hidden sm:block text-gray-600 mb-4">Ніжний шоколадний бісквіт з муссом та золотими акцентами</p>
+<div class="flex flex-col gap-2">
+<span class="text-base sm:text-2xl font-bold text-primary">890 ₴</span>
+<button class="w-full bg-primary text-black px-3 py-1.5 sm:px-6 sm:py-2 !rounded-button text-sm sm:text-base font-semibold hover:bg-yellow-400 transition-colors whitespace-nowrap">
 Замовити
 </button>
 </div>
 </div>
 </div>
-<div class="dessert-card bg-white rounded-3xl overflow-hidden shadow-lg">
-<div class="h-64 bg-cover bg-center" style="background-image: url('https://readdy.ai/api/search-image?query=colorful%20french%20macarons%20in%20pastel%20colors%20pink%20yellow%20beige%20arranged%20on%20white%20marble%20surface%20professional%20food%20photography%20soft%20natural%20lighting%20elegant%20presentation&width=400&height=300&seq=macarons-001&orientation=landscape')"></div>
-<div class="p-6">
-<h3 class="text-2xl font-bold text-black mb-2">Французькі макаруни</h3>
-<p class="text-gray-600 mb-4">Набір з 12 макарунів різних смаків у подарунковій коробці</p>
-<div class="flex items-center justify-between">
-<span class="text-2xl font-bold text-primary">450 ₴</span>
-<button onclick="App.Cart.add(2)" class="bg-primary text-black px-6 py-2 !rounded-button font-semibold hover:bg-yellow-400 transition-colors whitespace-nowrap">
+<div class="dessert-card bg-white rounded-xl sm:rounded-3xl overflow-hidden shadow-lg" data-category="pastries">
+<div class="h-32 sm:h-64 bg-cover bg-center" style="background-image: url('https://readdy.ai/api/search-image?query=colorful%20french%20macarons%20in%20pastel%20colors%20pink%20yellow%20beige%20arranged%20on%20white%20marble%20surface%20professional%20food%20photography%20soft%20natural%20lighting%20elegant%20presentation&width=400&height=300&seq=macarons-001&orientation=landscape')"></div>
+<div class="p-3 sm:p-6">
+<h3 class="text-sm sm:text-2xl font-bold text-black mb-2 truncate">Французькі макаруни</h3>
+<p class="hidden sm:block text-gray-600 mb-4">Набір з 12 макарунів різних смаків у подарунковій коробці</p>
+<div class="flex flex-col gap-2">
+<span class="text-base sm:text-2xl font-bold text-primary">450 ₴</span>
+<button class="w-full bg-primary text-black px-3 py-1.5 sm:px-6 sm:py-2 !rounded-button text-sm sm:text-base font-semibold hover:bg-yellow-400 transition-colors whitespace-nowrap">
 Замовити
 </button>
 </div>
 </div>
 </div>
-<div class="dessert-card bg-white rounded-3xl overflow-hidden shadow-lg">
+<div class="dessert-card bg-white rounded-3xl overflow-hidden shadow-lg" data-category="pastries">
 <div class="h-64 bg-cover bg-center" style="background-image: url('https://readdy.ai/api/search-image?query=elegant%20strawberry%20cheesecake%20with%20fresh%20berries%20on%20white%20plate%20marble%20surface%20professional%20food%20photography%20soft%20pastel%20colors%20minimalist%20style&width=400&height=300&seq=cheesecake-001&orientation=landscape')"></div>
 <div class="p-6">
 <h3 class="text-2xl font-bold text-black mb-2">Чізкейк "Полуниця"</h3>
 <p class="text-gray-600 mb-4">Класичний чізкейк зі свіжими полуницями та ніжним кремом</p>
 <div class="flex items-center justify-between">
 <span class="text-2xl font-bold text-primary">320 ₴</span>
-<button onclick="App.Cart.add(3)" class="bg-primary text-black px-6 py-2 !rounded-button font-semibold hover:bg-yellow-400 transition-colors whitespace-nowrap">
+<button class="bg-primary text-black px-6 py-2 !rounded-button font-semibold hover:bg-yellow-400 transition-colors whitespace-nowrap">
 Замовити
 </button>
 </div>
 </div>
 </div>
-<div class="dessert-card bg-white rounded-3xl overflow-hidden shadow-lg">
+<div class="dessert-card bg-white rounded-3xl overflow-hidden shadow-lg" data-category="pastries">
 <div class="h-64 bg-cover bg-center" style="background-image: url('https://readdy.ai/api/search-image?query=elegant%20vanilla%20cupcakes%20with%20pastel%20frosting%20on%20white%20marble%20surface%20professional%20food%20photography%20soft%20lighting%20minimalist%20presentation&width=400&height=300&seq=cupcakes-001&orientation=landscape')"></div>
 <div class="p-6">
 <h3 class="text-2xl font-bold text-black mb-2">Капкейки "Ваніль"</h3>
 <p class="text-gray-600 mb-4">Набір з 6 ванільних капкейків з кремовою глазур'ю</p>
 <div class="flex items-center justify-between">
 <span class="text-2xl font-bold text-primary">280 ₴</span>
-<button onclick="App.Cart.add(4)" class="bg-primary text-black px-6 py-2 !rounded-button font-semibold hover:bg-yellow-400 transition-colors whitespace-nowrap">
+<button class="bg-primary text-black px-6 py-2 !rounded-button font-semibold hover:bg-yellow-400 transition-colors whitespace-nowrap">
 Замовити
 </button>
 </div>
 </div>
 </div>
-<div class="dessert-card bg-white rounded-3xl overflow-hidden shadow-lg">
+<div class="dessert-card bg-white rounded-3xl overflow-hidden shadow-lg" data-category="pastries">
 <div class="h-64 bg-cover bg-center" style="background-image: url('https://readdy.ai/api/search-image?query=elegant%20tiramisu%20dessert%20in%20glass%20cup%20with%20cocoa%20powder%20on%20white%20marble%20surface%20professional%20food%20photography%20soft%20lighting%20minimalist%20style&width=400&height=300&seq=tiramisu-001&orientation=landscape')"></div>
 <div class="p-6">
 <h3 class="text-2xl font-bold text-black mb-2">Тірамісу класичне</h3>
 <p class="text-gray-600 mb-4">Традиційний італійський десерт з маскарпоне та кавою</p>
 <div class="flex items-center justify-between">
 <span class="text-2xl font-bold text-primary">180 ₴</span>
-<button onclick="App.Cart.add(5)" class="bg-primary text-black px-6 py-2 !rounded-button font-semibold hover:bg-yellow-400 transition-colors whitespace-nowrap">
+<button class="bg-primary text-black px-6 py-2 !rounded-button font-semibold hover:bg-yellow-400 transition-colors whitespace-nowrap">
 Замовити
 </button>
 </div>
 </div>
 </div>
-<div class="dessert-card bg-white rounded-3xl overflow-hidden shadow-lg">
+<div class="dessert-card bg-white rounded-3xl overflow-hidden shadow-lg" data-category="pastries">
 <div class="h-64 bg-cover bg-center" style="background-image: url('https://readdy.ai/api/search-image?query=elegant%20fruit%20tart%20with%20fresh%20berries%20and%20cream%20on%20white%20plate%20marble%20surface%20professional%20food%20photography%20pastel%20colors%20minimalist%20presentation&width=400&height=300&seq=tart-001&orientation=landscape')"></div>
 <div class="p-6">
 <h3 class="text-2xl font-bold text-black mb-2">Фруктовий тарт</h3>
 <p class="text-gray-600 mb-4">Хрустка основа з заварним кремом та сезонними фруктами</p>
 <div class="flex items-center justify-between">
 <span class="text-2xl font-bold text-primary">420 ₴</span>
-<button onclick="App.Cart.add(6)" class="bg-primary text-black px-6 py-2 !rounded-button font-semibold hover:bg-yellow-400 transition-colors whitespace-nowrap">
+<button class="bg-primary text-black px-6 py-2 !rounded-button font-semibold hover:bg-yellow-400 transition-colors whitespace-nowrap">
 Замовити
 </button>
 </div>
 </div>
 </div>
 </div>
-<div class="text-center">
-<button class="border-2 border-black text-black px-8 py-4 !rounded-button font-semibold text-lg hover:bg-black hover:text-white transition-colors whitespace-nowrap">
-Переглянути всі десерти
+<div class="text-center flex items-center justify-center gap-4">
+<button id="loadMoreBtn" class="border-2 border-black text-black px-8 py-4 !rounded-button font-semibold text-lg hover:bg-black hover:text-white transition-colors whitespace-nowrap transform-none">
+<span>Переглянути всі десерти</span>
 </button>
+<div id="loadingSpinner" class="hidden w-6 h-6 border-2 border-black border-t-transparent rounded-full animate-spin"></div>
 </div>
 </div>
 </section>
 <section class="py-20 bg-white">
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-<div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
 <div>
 <h2 class="text-4xl md:text-5xl font-bold text-black mb-6">Чому обирають нас?</h2>
 <div class="space-y-6">
@@ -255,8 +281,8 @@ box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
 Зв'яжіться з нами прямо зараз, щоб замовити ваші улюблені десерти.
 Ми працюємо щодня з 8:00 до 22:00
 </p>
-<div class="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-6">
-<button class="bg-black text-white px-8 py-4 !rounded-button font-semibold text-lg hover:bg-gray-800 transition-colors whitespace-nowrap flex items-center space-x-2">
+<div class="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-4">
+<button class="w-full sm:w-auto bg-black text-white px-8 py-4 !rounded-button font-semibold text-lg hover:bg-gray-800 transition-colors whitespace-nowrap flex items-center space-x-2">
 <div class="w-5 h-5 flex items-center justify-center">
 <i class="ri-phone-line"></i>
 </div>
@@ -274,11 +300,11 @@ box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
 </main>
 <footer class="bg-black text-white py-16">
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-<div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
 <div class="col-span-1 md:col-span-2">
 <div class="flex items-center space-x-3 mb-6">
-<div class="w-12 h-12 flex items-center justify-center">
-<i class="ri-cake-3-line text-2xl text-primary"></i>
+<div class="w-12 h-12 flex items-center justify-center bg-primary rounded-full shadow-[0_0_15px_rgba(255,215,0,0.5)] backdrop-blur-sm">
+<img src="https://static.readdy.ai/image/43b57c5738bad1db7fac177fe6f2f220/46ca856dcdb27461a44d2cf39bdb0b5a.jfif" alt="Logo" class="w-8 h-8">
 </div>
 <div>
 <h3 class="text-2xl font-bold">СМАКУЄ</h3>
@@ -304,11 +330,11 @@ box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
 <div>
 <h4 class="text-lg font-semibold mb-4">Навігація</h4>
 <ul class="space-y-2">
-<li><a href="/index.html" class="text-gray-300 hover:text-primary transition-colors">Головна</a></li>
-<li><a href="/index.html" class="text-gray-300 hover:text-primary transition-colors">Меню</a></li>
-<li><a href="/about.html" class="text-gray-300 hover:text-primary transition-colors">Про нас</a></li>
-<li><a href="/about.html" class="text-gray-300 hover:text-primary transition-colors">Контакти</a></li>
-<li><a href="/reviews.html" class="text-gray-300 hover:text-primary transition-colors">Відгуки</a></li>
+<li><a href="#" class="text-gray-300 hover:text-primary transition-colors">Головна</a></li>
+<li><a href="#" class="text-gray-300 hover:text-primary transition-colors">Меню</a></li>
+<li><a href="#" class="text-gray-300 hover:text-primary transition-colors">Про нас</a></li>
+<li><a href="https://readdy.ai/home/cb9458f8-9101-4315-a4f7-32608dd27b3b/434a1df6-3281-44e4-95e6-f09bfbd6453e" data-readdy="true" class="text-gray-300 hover:text-primary transition-colors">Контакти</a></li>
+<li><a href="#" class="text-gray-300 hover:text-primary transition-colors">Відгуки</a></li>
 </ul>
 </div>
 <div>
@@ -326,22 +352,158 @@ box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
 </div>
 </div>
 </footer>
-<!-- ИЗМЕНЕНИЕ 4: Подключение основного файла логики -->
-<script src="/js/app.js"></script>
 <script id="mobile-menu">
-// Ваш оригинальный скрипт для меню остался без изменений
 document.addEventListener('DOMContentLoaded', function() {
-const mobileMenuButton = document.querySelector('button.md\\:hidden');
-const nav = document.querySelector('nav.hidden');
-if (mobileMenuButton && nav) {
-mobileMenuButton.addEventListener('click', function() {
-nav.classList.toggle('hidden');
+const menuButton = document.getElementById('menuButton');
+const mobileNav = document.getElementById('mobileNav');
+let isMenuOpen = false;
+if (menuButton && mobileNav) {
+menuButton.addEventListener('click', function() {
+isMenuOpen = !isMenuOpen;
+if (isMenuOpen) {
+mobileNav.classList.remove('hidden');
+mobileNav.innerHTML = `
+<div class="flex flex-col h-full">
+<div class="flex items-center justify-between p-4 border-b">
+<div class="flex items-center space-x-2">
+<div class="w-12 h-12 flex items-center justify-center bg-primary rounded-full shadow-[0_0_15px_rgba(255,215,0,0.5)] backdrop-blur-sm">
+<img src="https://static.readdy.ai/image/43b57c5738bad1db7fac177fe6f2f220/46ca856dcdb27461a44d2cf39bdb0b5a.jfif" alt="Logo" class="w-8 h-8">
+</div>
+<div>
+<h1 class="text-lg font-bold text-black">СМАКУЄ</h1>
+<p class="text-xs text-gray-600">Крафтове виробництво</p>
+</div>
+</div>
+<button class="w-8 h-8 flex items-center justify-center" id="closeMenu">
+<i class="ri-close-line text-xl"></i>
+</button>
+</div>
+<div class="flex flex-col p-4 space-y-4">
+<a href="#" class="text-lg text-gray-800 hover:text-primary">Головна</a>
+<a href="#" class="text-lg text-gray-800 hover:text-primary">Особистий кабінет</a>
+<a href="#" class="text-lg text-gray-800 hover:text-primary">Кошик</a>
+<a href="https://readdy.ai/home/cb9458f8-9101-4315-a4f7-32608dd27b3b/434a1df6-3281-44e4-95e6-f09bfbd6453e" data-readdy="true" class="text-lg text-gray-800 hover:text-primary">Контакти</a>
+<a href="#" class="text-lg text-gray-800 hover:text-primary">Відгуки</a>
+</div>
+</div>
+`;
+document.body.style.overflow = 'hidden';
+const closeMenu = document.getElementById('closeMenu');
+if (closeMenu) {
+closeMenu.addEventListener('click', function() {
+mobileNav.classList.add('hidden');
+document.body.style.overflow = '';
+isMenuOpen = false;
+});
+}
+} else {
+mobileNav.classList.add('hidden');
+document.body.style.overflow = '';
+}
 });
 }
 });
 </script>
+<script id="categories-and-load-more">
+document.addEventListener('DOMContentLoaded', function() {
+const loadMoreBtn = document.getElementById('loadMoreBtn');
+const dessertGrid = document.querySelector('.grid-cols-2');
+const loadingSpinner = document.getElementById('loadingSpinner');
+const categoryBtns = document.querySelectorAll('.category-btn');
+function showLoadMoreButton() {
+const visibleCards = document.querySelectorAll('.dessert-card[style=""]').length;
+if (visibleCards > 0) {
+loadMoreBtn.classList.remove('hidden');
+} else {
+loadMoreBtn.classList.add('hidden');
+}
+}
+function removeNoItemsMessage() {
+const existingMessages = dessertGrid.querySelectorAll('.col-span-full');
+existingMessages.forEach(message => message.remove());
+}
+categoryBtns.forEach(btn => {
+btn.addEventListener('click', () => {
+categoryBtns.forEach(b => {
+b.classList.remove('active', 'bg-primary');
+b.classList.add('text-gray-600');
+});
+btn.classList.add('active', 'bg-primary');
+btn.classList.remove('text-gray-600');
+const category = btn.dataset.category;
+const cards = document.querySelectorAll('.dessert-card');
+let hasVisibleCards = false;
+removeNoItemsMessage();
+cards.forEach(card => {
+if (category === 'all' || card.dataset.category === category) {
+card.style.display = '';
+hasVisibleCards = true;
+} else {
+card.style.display = 'none';
+}
+});
+if (!hasVisibleCards) {
+const noItemsMessage = document.createElement('div');
+noItemsMessage.className = 'col-span-full text-center py-8 text-gray-500';
+noItemsMessage.textContent = 'В цій категорії поки немає десертів';
+dessertGrid.appendChild(noItemsMessage);
+loadMoreBtn.classList.add('hidden');
+} else {
+showLoadMoreButton();
+}
+});
+});
+const newDesserts = [
+{
+name: 'Еклери "Карамель"',
+description: 'Хрусткі еклери з карамельною начинкою та глазур\'ю',
+price: '220 ₴',
+image: 'https://readdy.ai/api/search-image?query=elegant%20eclair%20pastries%20with%20caramel%20glaze%20on%20white%20marble%20surface%20professional%20food%20photography%20soft%20lighting%20minimalist%20style&width=400&height=300&seq=eclair-001&orientation=landscape'
+},
+{
+name: 'Шоколадні трюфелі',
+description: 'Колекція вишуканих трюфелів з темного шоколаду',
+price: '350 ₴',
+image: 'https://readdy.ai/api/search-image?query=luxury%20chocolate%20truffles%20with%20cocoa%20powder%20on%20white%20marble%20surface%20professional%20food%20photography%20soft%20lighting%20minimalist%20style&width=400&height=300&seq=truffle-001&orientation=landscape'
+},
+{
+name: 'Павлова з ягодами',
+description: 'Повітряна меренга з кремом та свіжими ягодами',
+price: '280 ₴',
+image: 'https://readdy.ai/api/search-image?query=elegant%20pavlova%20dessert%20with%20fresh%20berries%20and%20cream%20on%20white%20plate%20marble%20surface%20professional%20food%20photography%20soft%20lighting&width=400&height=300&seq=pavlova-001&orientation=landscape'
+}
+];
+let isLoading = false;
+loadMoreBtn.addEventListener('click', async function() {
+if (isLoading) return;
+isLoading = true;
+loadingSpinner.classList.remove('hidden');
+await new Promise(resolve => setTimeout(resolve, 1500));
+newDesserts.forEach(dessert => {
+const dessertCard = document.createElement('div');
+dessertCard.className = 'dessert-card bg-white rounded-3xl overflow-hidden shadow-lg';
+dessertCard.innerHTML = `
+<div class="h-64 bg-cover bg-center" style="background-image: url('${dessert.image}')"></div>
+<div class="p-6">
+<h3 class="text-2xl font-bold text-black mb-2">${dessert.name}</h3>
+<p class="text-gray-600 mb-4">${dessert.description}</p>
+<div class="flex items-center justify-between">
+<span class="text-2xl font-bold text-primary">${dessert.price}</span>
+<button class="bg-primary text-black px-6 py-2 !rounded-button font-semibold hover:bg-yellow-400 transition-colors whitespace-nowrap">
+Замовити
+</button>
+</div>
+</div>
+`;
+dessertGrid.appendChild(dessertCard);
+});
+loadingSpinner.classList.add('hidden');
+loadMoreBtn.classList.add('hidden');
+isLoading = false;
+});
+});
+</script>
 <script id="smooth-scroll">
-// Ваш оригинальный скрипт для плавной прокрутки остался без изменений
 document.addEventListener('DOMContentLoaded', function() {
 const links = document.querySelectorAll('a[href^="#"]');
 links.forEach(link => {
