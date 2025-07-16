@@ -1,967 +1,510 @@
 <!DOCTYPE html>
 <html lang="uk">
-  <head>
+
+<head>
     <meta charset="UTF-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
-    />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title>Відгуки - Смакує - Крафтове виробництво солодощів</title>
     <script src="https://cdn.tailwindcss.com/3.4.16"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap"
-      rel="stylesheet"
-    />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap"
-      rel="stylesheet"
-    />
-    <link
-      href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css"
-      rel="stylesheet"
-    />
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css" rel="stylesheet" />
     <link rel="icon" type="image/png" href="/img/favicon.png">
     <script>
-      tailwind.config = {
-        theme: {
-          extend: {
-            colors: {
-              primary: "#FFD700",
-              secondary: "#FFF4E6",
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#FFD700",
+                        secondary: "#FFF4E6",
+                    },
+                    borderRadius: {
+                        none: "0px",
+                        sm: "4px",
+                        DEFAULT: "8px",
+                        md: "12px",
+                        lg: "16px",
+                        xl: "20px",
+                        "2xl": "24px",
+                        "3xl": "32px",
+                        full: "9999px",
+                        button: "8px",
+                    },
+                },
             },
-            borderRadius: {
-              none: "0px",
-              sm: "4px",
-              DEFAULT: "8px",
-              md: "12px",
-              lg: "16px",
-              xl: "20px",
-              "2xl": "24px",
-              "3xl": "32px",
-              full: "9999px",
-              button: "8px",
-            },
-          },
-        },
-      };
+        };
     </script>
     <style>
-      :where([class^="ri-"])::before {
-      content: "\f3c2";
-      }
-      .reviews-hero-bg {
-      background-image: url('https://readdy.ai/api/search-image?query=elegant%20confectionery%20reviews%20background%20with%20happy%20customers%20enjoying%20desserts%20warm%20golden%20lighting%20modern%20bakery%20interior%20satisfied%20people%20eating%20cakes%20macarons%20pastries%20cozy%20atmosphere%20beige%20yellow%20accents%20professional%20photography&width=1920&height=600&seq=reviews-hero-001&orientation=landscape');
-      background-size: cover;
-      background-position: center;
-      position: relative;
-      }
-      .reviews-hero-overlay {
-      background: linear-gradient(135deg, rgba(255, 244, 230, 0.9) 0%, rgba(255, 215, 0, 0.8) 100%);
-      backdrop-filter: blur(8px);
-      }
-      .review-card {
-      transition: all 0.3s ease;
-      }
-      .review-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
-      }
-      .star-rating {
-      display: flex;
-      gap: 2px;
-      }
-      .star {
-      cursor: pointer;
-      transition: all 0.2s ease;
-      }
-      .star:hover {
-      transform: scale(1.1);
-      }
-      .filter-btn {
-      transition: all 0.3s ease;
-      }
-      .filter-btn.active {
-      background-color: #FFD700;
-      color: black;
-      }
-      .modal {
-      backdrop-filter: blur(8px);
-      }
-      .form-input {
-      transition: all 0.3s ease;
-      }
-      .form-input:focus {
-      outline: none;
-      border-color: #FFD700;
-      box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.1);
-      }
-      .floating-btn {
-      position: fixed;
-      bottom: 2rem;
-      right: 2rem;
-      z-index: 40;
-      transition: all 0.3s ease;
-      }
-      .floating-btn:hover {
-      transform: scale(1.05);
-      }
+        :where([class^="ri-"])::before {
+            content: "\f3c2";
+        }
+
+        .reviews-hero-bg {
+            background-image: url('https://readdy.ai/api/search-image?query=elegant%20confectionery%20reviews%20background%20with%20happy%20customers%20enjoying%20desserts%20warm%20golden%20lighting%20modern%20bakery%20interior%20satisfied%20people%20eating%20cakes%20macarons%20pastries%20cozy%20atmosphere%20beige%20yellow%20accents%20professional%20photography&width=1920&height=600&seq=reviews-hero-001&orientation=landscape');
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+
+        .reviews-hero-overlay {
+            background: linear-gradient(135deg, rgba(255, 244, 230, 0.9) 0%, rgba(255, 215, 0, 0.8) 100%);
+            backdrop-filter: blur(8px);
+        }
+
+        .review-card {
+            transition: all 0.3s ease;
+        }
+
+        .review-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+        }
+
+        .star-rating {
+            display: flex;
+            gap: 2px;
+        }
+
+        .star {
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .star:hover {
+            transform: scale(1.1);
+        }
+
+        .filter-btn {
+            transition: all 0.3s ease;
+        }
+
+        .filter-btn.active {
+            background-color: #FFD700;
+            color: black;
+        }
+
+        .modal {
+            backdrop-filter: blur(8px);
+        }
+
+        .form-input {
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #FFD700;
+            box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.1);
+        }
+
+        .floating-btn {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            z-index: 40;
+            transition: all 0.3s ease;
+        }
+
+        .floating-btn:hover {
+            transform: scale(1.05);
+        }
     </style>
-  </head>
-  <body class="bg-white">
+</head>
+
+<body class="bg-white">
     <header class="bg-white shadow-sm sticky top-0 z-50">
-      <div class="w-full px-4">
-        <div class="flex items-center justify-between h-16">
-          <div class="flex items-center space-x-2">
-            <div
-              class="w-12 h-12 flex items-center justify-center bg-primary rounded-full shadow-[0_0_15px_rgba(255,215,0,0.5)] backdrop-blur-sm"
-            >
-              <img
-                src="https://static.readdy.ai/image/43b57c5738bad1db7fac177fe6f2f220/46ca856dcdb27461a44d2cf39bdb0b5a.jfif"
-                alt="Logo"
-                class="w-8 h-8"
-              />
-            </div>
-            <div>
-              <h1 class="text-lg font-bold text-black">СМАКУЄ</h1>
-              <p class="text-xs text-gray-600">Крафтове виробництво</p>
-            </div>
-          </div>
-          <div class="flex items-center">
-            <nav class="hidden md:flex items-center space-x-6">
-              <a
-                href="/index.html"
-                data-readdy="true"
-                class="text-gray-600 hover:text-primary font-medium transition-colors"
-                >Головна</a
-              >
-              <a
-                href="/contacts.html"
-                data-readdy="true"
-                class="text-gray-600 hover:text-primary font-medium transition-colors"
-                >Контакти</a
-              >
-              <a href="/reviews.html" data-readdy="true" class="text-primary font-medium transition-colors"
-                >Відгуки</a
-              >
-              <a
-                href="/account.html"
-                data-readdy="true"
-                class="text-gray-600 hover:text-primary font-medium transition-colors flex items-center space-x-1"
-              >
-                <div class="w-4 h-4 flex items-center justify-center">
-                  <i class="ri-user-line text-sm"></i>
+        <div class="w-full px-4">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center space-x-2">
+                    <div
+                        class="w-12 h-12 flex items-center justify-center bg-primary rounded-full shadow-[0_0_15px_rgba(255,215,0,0.5)] backdrop-blur-sm">
+                        <img src="https://static.readdy.ai/image/43b57c5738bad1db7fac177fe6f2f220/46ca856dcdb27461a44d2cf39bdb0b5a.jfif"
+                            alt="Logo" class="w-8 h-8" />
+                    </div>
+                    <div>
+                        <h1 class="text-lg font-bold text-black">СМАКУЄ</h1>
+                        <p class="text-xs text-gray-600">Крафтове виробництво</p>
+                    </div>
                 </div>
-                <span>Особистий кабінет</span>
-              </a>
-              <a
-                href="/cart.html"
-                data-readdy="true"
-                class="text-gray-600 hover:text-primary font-medium transition-colors flex items-center space-x-1"
-              >
-                <div class="w-4 h-4 flex items-center justify-center">
-                  <i class="ri-shopping-cart-line text-sm"></i>
+                <div class="flex items-center">
+                    <nav class="hidden md:flex items-center space-x-6">
+                        <a href="/index.html" data-readdy="true"
+                            class="text-gray-600 hover:text-primary font-medium transition-colors">Головна</a>
+                        <a href="/contacts.html" data-readdy="true"
+                            class="text-gray-600 hover:text-primary font-medium transition-colors">Контакти</a>
+                        <a href="/reviews.html" data-readdy="true"
+                            class="text-primary font-medium transition-colors">Відгуки</a>
+                        <a href="/account.html" data-readdy="true"
+                            class="text-gray-600 hover:text-primary font-medium transition-colors flex items-center space-x-1">
+                            <div class="w-4 h-4 flex items-center justify-center">
+                                <i class="ri-user-line text-sm"></i>
+                            </div>
+                            <span>Особистий кабінет</span>
+                        </a>
+                        <a href="/cart.html" data-readdy="true"
+                            class="text-gray-600 hover:text-primary font-medium transition-colors flex items-center space-x-1">
+                            <div class="w-4 h-4 flex items-center justify-center">
+                                <i class="ri-shopping-cart-line text-sm"></i>
+                            </div>
+                            <span class="hidden md:inline">Корзина</span>
+                        </a>
+                    </nav>
+                    <button class="md:hidden w-8 h-8 flex items-center justify-center ml-4" id="menuButton">
+                        <i class="ri-menu-line text-xl"></i>
+                    </button>
                 </div>
-                <span class="hidden md:inline">Корзина</span>
-              </a>
-            </nav>
-            <button
-              class="md:hidden w-8 h-8 flex items-center justify-center ml-4"
-              id="menuButton"
-            >
-              <i class="ri-menu-line text-xl"></i>
-            </button>
-          </div>
-          <nav class="hidden fixed inset-0 bg-white z-50" id="mobileNav"></nav>
+                <nav class="hidden fixed inset-0 bg-white z-50" id="mobileNav"></nav>
+            </div>
         </div>
-      </div>
     </header>
     <main>
-      <section class="reviews-hero-bg min-h-[40vh] flex items-center">
-        <div class="reviews-hero-overlay absolute inset-0"></div>
-        <div class="relative z-10 w-full">
-          <div class="w-full px-4">
-            <div class="text-center">
-              <h1
-                class="text-4xl md:text-5xl font-['Montserrat'] font-bold text-black mb-4 drop-shadow-[0_4px_8px_rgba(0,0,0,0.1)]"
-              >
-                Відгуки наших клієнтів
-              </h1>
-              <p
-                class="text-xl text-gray-800 font-light tracking-wide max-w-2xl mx-auto"
-              >
-                Ваша думка важлива для нас. Читайте відгуки інших клієнтів та
-                діліться власним досвідом
-              </p>
+        <section class="reviews-hero-bg min-h-[40vh] flex items-center">
+            <div class="reviews-hero-overlay absolute inset-0"></div>
+            <div class="relative z-10 w-full">
+                <div class="w-full px-4">
+                    <div class="text-center">
+                        <h1
+                            class="text-4xl md:text-5xl font-['Montserrat'] font-bold text-black mb-4 drop-shadow-[0_4px_8px_rgba(0,0,0,0.1)]">
+                            Відгуки наших клієнтів
+                        </h1>
+                        <p class="text-xl text-gray-800 font-light tracking-wide max-w-2xl mx-auto">
+                            Ваша думка важлива для нас. Читайте відгуки інших клієнтів та
+                            діліться власним досвідом
+                        </p>
+                    </div>
+                </div>
             </div>
-          </div>
-        </div>
-      </section>
-      <section class="py-20 bg-secondary">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div class="bg-white rounded-3xl p-8 md:p-12 shadow-xl mb-16">
-            <div class="text-center mb-12">
-              <h2 class="text-3xl md:text-4xl font-bold text-black mb-6">
-                Загальний рейтинг
-              </h2>
-              <div class="flex items-center justify-center space-x-4 mb-8">
-                <div class="text-6xl font-bold text-primary">4.8</div>
-                <div class="flex flex-col items-center">
-                  <div class="star-rating mb-2">
-                    <i class="ri-star-fill text-3xl text-primary"></i>
-                    <i class="ri-star-fill text-3xl text-primary"></i>
-                    <i class="ri-star-fill text-3xl text-primary"></i>
-                    <i class="ri-star-fill text-3xl text-primary"></i>
-                    <i class="ri-star-fill text-3xl text-primary"></i>
-                  </div>
-                  <p class="text-gray-600">Базується на 347 відгуках</p>
+        </section>
+        <section class="py-20 bg-secondary">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="bg-white rounded-3xl p-8 md:p-12 shadow-xl mb-16">
+                    <div class="text-center mb-12">
+                        <h2 class="text-3xl md:text-4xl font-bold text-black mb-6">
+                            Загальний рейтинг
+                        </h2>
+                        <div class="flex items-center justify-center space-x-4 mb-8">
+                            <div class="text-6xl font-bold text-primary">4.8</div>
+                            <div class="flex flex-col items-center">
+                                <div class="star-rating mb-2">
+                                    <i class="ri-star-fill text-3xl text-primary"></i>
+                                    <i class="ri-star-fill text-3xl text-primary"></i>
+                                    <i class="ri-star-fill text-3xl text-primary"></i>
+                                    <i class="ri-star-fill text-3xl text-primary"></i>
+                                    <i class="ri-star-fill text-3xl text-primary"></i>
+                                </div>
+                                <p class="text-gray-600">Базується на 347 відгуках</p>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                            <div class="text-center">
+                                <div
+                                    class="w-16 h-16 bg-primary rounded-full flex items-center justify-center mx-auto mb-4">
+                                    <i class="ri-cake-3-line text-2xl text-black"></i>
+                                </div>
+                                <h3 class="text-xl font-bold text-black mb-2">Торти</h3>
+                                <div class="star-rating justify-center mb-2">
+                                    <i class="ri-star-fill text-lg text-primary"></i>
+                                    <i class="ri-star-fill text-lg text-primary"></i>
+                                    <i class="ri-star-fill text-lg text-primary"></i>
+                                    <i class="ri-star-fill text-lg text-primary"></i>
+                                    <i class="ri-star-fill text-lg text-primary"></i>
+                                </div>
+                                <p class="text-gray-600">4.9 (156 відгуків)</p>
+                            </div>
+                            <div class="text-center">
+                                <div
+                                    class="w-16 h-16 bg-primary rounded-full flex items-center justify-center mx-auto mb-4">
+                                    <i class="ri-heart-3-line text-2xl text-black"></i>
+                                </div>
+                                <h3 class="text-xl font-bold text-black mb-2">Макаруни</h3>
+                                <div class="star-rating justify-center mb-2">
+                                    <i class="ri-star-fill text-lg text-primary"></i>
+                                    <i class="ri-star-fill text-lg text-primary"></i>
+                                    <i class="ri-star-fill text-lg text-primary"></i>
+                                    <i class="ri-star-fill text-lg text-primary"></i>
+                                    <i class="ri-star-half-line text-lg text-primary"></i>
+                                </div>
+                                <p class="text-gray-600">4.7 (98 відгуків)</p>
+                            </div>
+                            <div class="text-center">
+                                <div
+                                    class="w-16 h-16 bg-primary rounded-full flex items-center justify-center mx-auto mb-4">
+                                    <i class="ri-customer-service-line text-2xl text-black"></i>
+                                </div>
+                                <h3 class="text-xl font-bold text-black mb-2">
+                                    Обслуговування
+                                </h3>
+                                <div class="star-rating justify-center mb-2">
+                                    <i class="ri-star-fill text-lg text-primary"></i>
+                                    <i class="ri-star-fill text-lg text-primary"></i>
+                                    <i class="ri-star-fill text-lg text-primary"></i>
+                                    <i class="ri-star-fill text-lg text-primary"></i>
+                                    <i class="ri-star-fill text-lg text-primary"></i>
+                                </div>
+                                <p class="text-gray-600">4.8 (93 відгуки)</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-              </div>
-              <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div class="text-center">
-                  <div
-                    class="w-16 h-16 bg-primary rounded-full flex items-center justify-center mx-auto mb-4"
-                  >
-                    <i class="ri-cake-3-line text-2xl text-black"></i>
-                  </div>
-                  <h3 class="text-xl font-bold text-black mb-2">Торти</h3>
-                  <div class="star-rating justify-center mb-2">
-                    <i class="ri-star-fill text-lg text-primary"></i>
-                    <i class="ri-star-fill text-lg text-primary"></i>
-                    <i class="ri-star-fill text-lg text-primary"></i>
-                    <i class="ri-star-fill text-lg text-primary"></i>
-                    <i class="ri-star-fill text-lg text-primary"></i>
-                  </div>
-                  <p class="text-gray-600">4.9 (156 відгуків)</p>
+                <div class="bg-white rounded-3xl p-8 shadow-xl">
+                    <div
+                        class="flex flex-col md:flex-row md:items-center md:justify-between mb-8 space-y-4 md:space-y-0">
+                        <div class="flex flex-wrap gap-2">
+                            <button
+                                class="filter-btn active px-4 py-2 rounded-full border border-gray-300 text-sm font-medium whitespace-nowrap"
+                                data-filter="all">
+                                Усі відгуки
+                            </button>
+                            <button
+                                class="filter-btn px-4 py-2 rounded-full border border-gray-300 text-sm font-medium whitespace-nowrap"
+                                data-filter="cakes">
+                                Торти
+                            </button>
+                            <button
+                                class="filter-btn px-4 py-2 rounded-full border border-gray-300 text-sm font-medium whitespace-nowrap"
+                                data-filter="macarons">
+                                Макаруни
+                            </button>
+                            <button
+                                class="filter-btn px-4 py-2 rounded-full border border-gray-300 text-sm font-medium whitespace-nowrap"
+                                data-filter="pastries">
+                                Тістечка
+                            </button>
+                            <button
+                                class="filter-btn px-4 py-2 rounded-full border border-gray-300 text-sm font-medium whitespace-nowrap"
+                                data-filter="service">
+                                Обслуговування
+                            </button>
+                        </div>
+                        <div class="flex items-center space-x-4">
+                            <div class="relative">
+                                <input type="text" placeholder="Пошук відгуків..."
+                                    class="form-input pl-10 pr-4 py-2 border border-gray-300 rounded-xl bg-white text-sm w-64"
+                                    id="searchInput" />
+                                <div
+                                    class="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 flex items-center justify-center">
+                                    <i class="ri-search-line text-gray-400 text-sm"></i>
+                                </div>
+                            </div>
+                            <div class="relative">
+                                <button
+                                    class="form-input px-4 py-2 pr-8 border border-gray-300 rounded-xl bg-white text-sm appearance-none flex items-center"
+                                    id="sortButton">
+                                    <span>За датою</span>
+                                    <div class="ml-2 w-4 h-4 flex items-center justify-center">
+                                        <i class="ri-arrow-down-s-line text-gray-400 text-sm"></i>
+                                    </div>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8" id="reviewsContainer">
+
+                    </div>
+
+                    <!-- ------------------------------------------------------  -->
+                    <div class="text-center mt-12">
+                        <button
+                            class="bg-primary text-black px-8 py-3 !rounded-button font-semibold hover:bg-yellow-400 transition-colors whitespace-nowrap"
+                            id="loadMoreBtn">
+                            Завантажити більше відгуків
+                        </button>
+                    </div>
                 </div>
-                <div class="text-center">
-                  <div
-                    class="w-16 h-16 bg-primary rounded-full flex items-center justify-center mx-auto mb-4"
-                  >
-                    <i class="ri-heart-3-line text-2xl text-black"></i>
-                  </div>
-                  <h3 class="text-xl font-bold text-black mb-2">Макаруни</h3>
-                  <div class="star-rating justify-center mb-2">
-                    <i class="ri-star-fill text-lg text-primary"></i>
-                    <i class="ri-star-fill text-lg text-primary"></i>
-                    <i class="ri-star-fill text-lg text-primary"></i>
-                    <i class="ri-star-fill text-lg text-primary"></i>
-                    <i class="ri-star-half-line text-lg text-primary"></i>
-                  </div>
-                  <p class="text-gray-600">4.7 (98 відгуків)</p>
-                </div>
-                <div class="text-center">
-                  <div
-                    class="w-16 h-16 bg-primary rounded-full flex items-center justify-center mx-auto mb-4"
-                  >
-                    <i class="ri-customer-service-line text-2xl text-black"></i>
-                  </div>
-                  <h3 class="text-xl font-bold text-black mb-2">
-                    Обслуговування
-                  </h3>
-                  <div class="star-rating justify-center mb-2">
-                    <i class="ri-star-fill text-lg text-primary"></i>
-                    <i class="ri-star-fill text-lg text-primary"></i>
-                    <i class="ri-star-fill text-lg text-primary"></i>
-                    <i class="ri-star-fill text-lg text-primary"></i>
-                    <i class="ri-star-fill text-lg text-primary"></i>
-                  </div>
-                  <p class="text-gray-600">4.8 (93 відгуки)</p>
-                </div>
-              </div>
             </div>
-          </div>
-          <div class="bg-white rounded-3xl p-8 shadow-xl">
-            <div
-              class="flex flex-col md:flex-row md:items-center md:justify-between mb-8 space-y-4 md:space-y-0"
-            >
-              <div class="flex flex-wrap gap-2">
-                <button
-                  class="filter-btn active px-4 py-2 rounded-full border border-gray-300 text-sm font-medium whitespace-nowrap"
-                  data-filter="all"
-                >
-                  Усі відгуки
-                </button>
-                <button
-                  class="filter-btn px-4 py-2 rounded-full border border-gray-300 text-sm font-medium whitespace-nowrap"
-                  data-filter="cakes"
-                >
-                  Торти
-                </button>
-                <button
-                  class="filter-btn px-4 py-2 rounded-full border border-gray-300 text-sm font-medium whitespace-nowrap"
-                  data-filter="macarons"
-                >
-                  Макаруни
-                </button>
-                <button
-                  class="filter-btn px-4 py-2 rounded-full border border-gray-300 text-sm font-medium whitespace-nowrap"
-                  data-filter="pastries"
-                >
-                  Тістечка
-                </button>
-                <button
-                  class="filter-btn px-4 py-2 rounded-full border border-gray-300 text-sm font-medium whitespace-nowrap"
-                  data-filter="service"
-                >
-                  Обслуговування
-                </button>
-              </div>
-              <div class="flex items-center space-x-4">
-                <div class="relative">
-                  <input
-                    type="text"
-                    placeholder="Пошук відгуків..."
-                    class="form-input pl-10 pr-4 py-2 border border-gray-300 rounded-xl bg-white text-sm w-64"
-                    id="searchInput"
-                  />
-                  <div
-                    class="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 flex items-center justify-center"
-                  >
-                    <i class="ri-search-line text-gray-400 text-sm"></i>
-                  </div>
-                </div>
-                <div class="relative">
-                  <button
-                    class="form-input px-4 py-2 pr-8 border border-gray-300 rounded-xl bg-white text-sm appearance-none flex items-center"
-                    id="sortButton"
-                  >
-                    <span>За датою</span>
-                    <div class="ml-2 w-4 h-4 flex items-center justify-center">
-                      <i class="ri-arrow-down-s-line text-gray-400 text-sm"></i>
-                    </div>
-                  </button>
-                </div>
-              </div>
-            </div>
-            <div
-              class="grid grid-cols-1 md:grid-cols-2 gap-8"
-              id="reviewsContainer"
-            >
-              <div
-                class="review-card bg-gray-50 rounded-2xl p-6"
-                data-category="cakes"
-              >
-                <div class="flex items-start space-x-4 mb-4">
-                  <img
-                    src="https://readdy.ai/api/search-image?query=professional%20portrait%20photo%20of%20happy%20young%20woman%20customer%20smiling%20natural%20lighting%20clean%20background%20modern%20style&width=60&height=60&seq=customer-001&orientation=squarish"
-                    alt="Олена Петренко"
-                    class="w-12 h-12 rounded-full object-cover"
-                  />
-                  <div class="flex-1">
-                    <div class="flex items-center justify-between mb-2">
-                      <h4 class="font-bold text-black">Олена Петренко</h4>
-                      <span class="text-sm text-gray-500">2 дні тому</span>
-                    </div>
-                    <div class="star-rating mb-2">
-                      <i class="ri-star-fill text-lg text-primary"></i>
-                      <i class="ri-star-fill text-lg text-primary"></i>
-                      <i class="ri-star-fill text-lg text-primary"></i>
-                      <i class="ri-star-fill text-lg text-primary"></i>
-                      <i class="ri-star-fill text-lg text-primary"></i>
-                    </div>
-                    <span
-                      class="inline-block bg-primary px-2 py-1 rounded-full text-xs font-medium text-black"
-                      >Торти</span
-                    >
-                  </div>
-                </div>
-                <p class="text-gray-700 mb-4">
-                  Замовляла торт на день народження доньки. Результат перевершив
-                  усі очікування! Торт був не тільки красивий, але й неймовірно
-                  смачний. Дякую за професійну роботу!
-                </p>
-                <div class="mb-4">
-                  <img
-                    src="https://readdy.ai/api/search-image?query=beautiful%20birthday%20cake%20with%20colorful%20decorations%20professional%20bakery%20quality%20elegant%20design%20celebration%20cake%20clean%20white%20background&width=300&height=200&seq=cake-review-001&orientation=landscape"
-                    alt="Торт"
-                    class="w-full h-32 object-cover rounded-xl"
-                  />
-                </div>
-                <div
-                  class="flex items-center justify-between text-sm text-gray-500"
-                >
-                  <div class="flex items-center space-x-4">
-                    <button
-                      class="flex items-center space-x-1 hover:text-primary transition-colors"
-                    >
-                      <i class="ri-thumb-up-line"></i>
-                      <span>Корисно (12)</span>
-                    </button>
-                    <button
-                      class="flex items-center space-x-1 hover:text-primary transition-colors"
-                    >
-                      <i class="ri-chat-3-line"></i>
-                      <span>Відповісти</span>
-                    </button>
-                  </div>
-                </div>
-              </div>
-              <div
-                class="review-card bg-gray-50 rounded-2xl p-6"
-                data-category="macarons"
-              >
-                <div class="flex items-start space-x-4 mb-4">
-                  <img
-                    src="https://readdy.ai/api/search-image?query=professional%20portrait%20photo%20of%20middle%20aged%20man%20customer%20smiling%20business%20casual%20natural%20lighting%20clean%20background&width=60&height=60&seq=customer-002&orientation=squarish"
-                    alt="Андрій Коваленко"
-                    class="w-12 h-12 rounded-full object-cover"
-                  />
-                  <div class="flex-1">
-                    <div class="flex items-center justify-between mb-2">
-                      <h4 class="font-bold text-black">Андрій Коваленко</h4>
-                      <span class="text-sm text-gray-500">5 днів тому</span>
-                    </div>
-                    <div class="star-rating mb-2">
-                      <i class="ri-star-fill text-lg text-primary"></i>
-                      <i class="ri-star-fill text-lg text-primary"></i>
-                      <i class="ri-star-fill text-lg text-primary"></i>
-                      <i class="ri-star-fill text-lg text-primary"></i>
-                      <i class="ri-star-line text-lg text-gray-300"></i>
-                    </div>
-                    <span
-                      class="inline-block bg-purple-100 px-2 py-1 rounded-full text-xs font-medium text-purple-800"
-                      >Макаруни</span
-                    >
-                  </div>
-                </div>
-                <p class="text-gray-700 mb-4">
-                  Макаруни просто фантастичні! Ідеальна текстура, насичений
-                  смак. Брав для корпоративного заходу - всі були в захваті.
-                  Обов'язково замовлятиму ще.
-                </p>
-                <div
-                  class="flex items-center justify-between text-sm text-gray-500"
-                >
-                  <div class="flex items-center space-x-4">
-                    <button
-                      class="flex items-center space-x-1 hover:text-primary transition-colors"
-                    >
-                      <i class="ri-thumb-up-line"></i>
-                      <span>Корисно (8)</span>
-                    </button>
-                    <button
-                      class="flex items-center space-x-1 hover:text-primary transition-colors"
-                    >
-                      <i class="ri-chat-3-line"></i>
-                      <span>Відповісти</span>
-                    </button>
-                  </div>
-                </div>
-              </div>
-              <div
-                class="review-card bg-gray-50 rounded-2xl p-6"
-                data-category="service"
-              >
-                <div class="flex items-start space-x-4 mb-4">
-                  <img
-                    src="https://readdy.ai/api/search-image?query=professional%20portrait%20photo%20of%20young%20woman%20customer%20happy%20expression%20modern%20style%20natural%20lighting%20clean%20background&width=60&height=60&seq=customer-003&orientation=squarish"
-                    alt="Марія Іваненко"
-                    class="w-12 h-12 rounded-full object-cover"
-                  />
-                  <div class="flex-1">
-                    <div class="flex items-center justify-between mb-2">
-                      <h4 class="font-bold text-black">Марія Іваненко</h4>
-                      <span class="text-sm text-gray-500">1 тиждень тому</span>
-                    </div>
-                    <div class="star-rating mb-2">
-                      <i class="ri-star-fill text-lg text-primary"></i>
-                      <i class="ri-star-fill text-lg text-primary"></i>
-                      <i class="ri-star-fill text-lg text-primary"></i>
-                      <i class="ri-star-fill text-lg text-primary"></i>
-                      <i class="ri-star-fill text-lg text-primary"></i>
-                    </div>
-                    <span
-                      class="inline-block bg-green-100 px-2 py-1 rounded-full text-xs font-medium text-green-800"
-                      >Обслуговування</span
-                    >
-                  </div>
-                </div>
-                <p class="text-gray-700 mb-4">
-                  Неймовірно приємне обслуговування! Персонал дуже уважний та
-                  професійний. Допомогли з вибором, все пояснили. Атмосфера в
-                  кондитерській просто чудова.
-                </p>
-                <div
-                  class="flex items-center justify-between text-sm text-gray-500"
-                >
-                  <div class="flex items-center space-x-4">
-                    <button
-                      class="flex items-center space-x-1 hover:text-primary transition-colors"
-                    >
-                      <i class="ri-thumb-up-line"></i>
-                      <span>Корисно (15)</span>
-                    </button>
-                    <button
-                      class="flex items-center space-x-1 hover:text-primary transition-colors"
-                    >
-                      <i class="ri-chat-3-line"></i>
-                      <span>Відповісти</span>
-                    </button>
-                  </div>
-                </div>
-              </div>
-              <div
-                class="review-card bg-gray-50 rounded-2xl p-6"
-                data-category="pastries"
-              >
-                <div class="flex items-start space-x-4 mb-4">
-                  <img
-                    src="https://readdy.ai/api/search-image?query=professional%20portrait%20photo%20of%20elderly%20woman%20customer%20kind%20smile%20warm%20expression%20natural%20lighting%20clean%20background&width=60&height=60&seq=customer-004&orientation=squarish"
-                    alt="Ганна Мельник"
-                    class="w-12 h-12 rounded-full object-cover"
-                  />
-                  <div class="flex-1">
-                    <div class="flex items-center justify-between mb-2">
-                      <h4 class="font-bold text-black">Ганна Мельник</h4>
-                      <span class="text-sm text-gray-500">2 тижні тому</span>
-                    </div>
-                    <div class="star-rating mb-2">
-                      <i class="ri-star-fill text-lg text-primary"></i>
-                      <i class="ri-star-fill text-lg text-primary"></i>
-                      <i class="ri-star-fill text-lg text-primary"></i>
-                      <i class="ri-star-fill text-lg text-primary"></i>
-                      <i class="ri-star-half-line text-lg text-primary"></i>
-                    </div>
-                    <span
-                      class="inline-block bg-orange-100 px-2 py-1 rounded-full text-xs font-medium text-orange-800"
-                      >Тістечка</span
-                    >
-                  </div>
-                </div>
-                <p class="text-gray-700 mb-4">
-                  Тістечка як у дитинстві! Свіжі, смачні, з натуральних
-                  інгредієнтів. Особливо сподобались еклери та наполеони. Ціни
-                  адекватні за таку якість.
-                </p>
-                <div class="mb-4">
-                  <img
-                    src="https://readdy.ai/api/search-image?query=assorted%20pastries%20eclairs%20napoleon%20cakes%20elegant%20display%20professional%20bakery%20quality%20clean%20white%20background%20appetizing&width=300&height=200&seq=pastries-review-001&orientation=landscape"
-                    alt="Тістечка"
-                    class="w-full h-32 object-cover rounded-xl"
-                  />
-                </div>
-                <div
-                  class="flex items-center justify-between text-sm text-gray-500"
-                >
-                  <div class="flex items-center space-x-4">
-                    <button
-                      class="flex items-center space-x-1 hover:text-primary transition-colors"
-                    >
-                      <i class="ri-thumb-up-line"></i>
-                      <span>Корисно (6)</span>
-                    </button>
-                    <button
-                      class="flex items-center space-x-1 hover:text-primary transition-colors"
-                    >
-                      <i class="ri-chat-3-line"></i>
-                      <span>Відповісти</span>
-                    </button>
-                  </div>
-                </div>
-              </div>
-              <div
-                class="review-card bg-gray-50 rounded-2xl p-6"
-                data-category="cakes"
-              >
-                <div class="flex items-start space-x-4 mb-4">
-                  <img
-                    src="https://readdy.ai/api/search-image?query=professional%20portrait%20photo%20of%20young%20man%20customer%20satisfied%20expression%20casual%20style%20natural%20lighting%20clean%20background&width=60&height=60&seq=customer-005&orientation=squarish"
-                    alt="Віктор Савченко"
-                    class="w-12 h-12 rounded-full object-cover"
-                  />
-                  <div class="flex-1">
-                    <div class="flex items-center justify-between mb-2">
-                      <h4 class="font-bold text-black">Віктор Савченко</h4>
-                      <span class="text-sm text-gray-500">3 тижні тому</span>
-                    </div>
-                    <div class="star-rating mb-2">
-                      <i class="ri-star-fill text-lg text-primary"></i>
-                      <i class="ri-star-fill text-lg text-primary"></i>
-                      <i class="ri-star-fill text-lg text-primary"></i>
-                      <i class="ri-star-fill text-lg text-primary"></i>
-                      <i class="ri-star-fill text-lg text-primary"></i>
-                    </div>
-                    <span
-                      class="inline-block bg-primary px-2 py-1 rounded-full text-xs font-medium text-black"
-                      >Торти</span
-                    >
-                  </div>
-                </div>
-                <p class="text-gray-700 mb-4">
-                  Індивідуальне замовлення весільного торту. Працювали над
-                  дизайном разом, врахували всі побажання. Торт був центром
-                  уваги на весіллі. Дуже дякуємо!
-                </p>
-                <div
-                  class="flex items-center justify-between text-sm text-gray-500"
-                >
-                  <div class="flex items-center space-x-4">
-                    <button
-                      class="flex items-center space-x-1 hover:text-primary transition-colors"
-                    >
-                      <i class="ri-thumb-up-line"></i>
-                      <span>Корисно (20)</span>
-                    </button>
-                    <button
-                      class="flex items-center space-x-1 hover:text-primary transition-colors"
-                    >
-                      <i class="ri-chat-3-line"></i>
-                      <span>Відповісти</span>
-                    </button>
-                  </div>
-                </div>
-              </div>
-              <div
-                class="review-card bg-gray-50 rounded-2xl p-6"
-                data-category="macarons"
-              >
-                <div class="flex items-start space-x-4 mb-4">
-                  <img
-                    src="https://readdy.ai/api/search-image?query=professional%20portrait%20photo%20of%20young%20woman%20customer%20cheerful%20smile%20trendy%20style%20natural%20lighting%20clean%20background&width=60&height=60&seq=customer-006&orientation=squarish"
-                    alt="Юлія Бондаренко"
-                    class="w-12 h-12 rounded-full object-cover"
-                  />
-                  <div class="flex-1">
-                    <div class="flex items-center justify-between mb-2">
-                      <h4 class="font-bold text-black">Юлія Бондаренко</h4>
-                      <span class="text-sm text-gray-500">1 місяць тому</span>
-                    </div>
-                    <div class="star-rating mb-2">
-                      <i class="ri-star-fill text-lg text-primary"></i>
-                      <i class="ri-star-fill text-lg text-primary"></i>
-                      <i class="ri-star-fill text-lg text-primary"></i>
-                      <i class="ri-star-fill text-lg text-primary"></i>
-                      <i class="ri-star-half-line text-lg text-primary"></i>
-                    </div>
-                    <span
-                      class="inline-block bg-purple-100 px-2 py-1 rounded-full text-xs font-medium text-purple-800"
-                      >Макаруни</span
-                    >
-                  </div>
-                </div>
-                <p class="text-gray-700 mb-4">
-                  Великий вибір смаків макарунів! Спробувала лавандовий та
-                  солону карамель - просто неймовірно. Упаковка теж дуже
-                  красива, ідеально для подарунка.
-                </p>
-                <div class="mb-4">
-                  <img
-                    src="https://readdy.ai/api/search-image?query=colorful%20macarons%20variety%20of%20flavors%20elegant%20arrangement%20professional%20bakery%20quality%20gift%20box%20clean%20background&width=300&height=200&seq=macarons-review-001&orientation=landscape"
-                    alt="Макаруни"
-                    class="w-full h-32 object-cover rounded-xl"
-                  />
-                </div>
-                <div
-                  class="flex items-center justify-between text-sm text-gray-500"
-                >
-                  <div class="flex items-center space-x-4">
-                    <button
-                      class="flex items-center space-x-1 hover:text-primary transition-colors"
-                    >
-                      <i class="ri-thumb-up-line"></i>
-                      <span>Корисно (9)</span>
-                    </button>
-                    <button
-                      class="flex items-center space-x-1 hover:text-primary transition-colors"
-                    >
-                      <i class="ri-chat-3-line"></i>
-                      <span>Відповісти</span>
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="text-center mt-12">
-              <button
-                class="bg-primary text-black px-8 py-3 !rounded-button font-semibold hover:bg-yellow-400 transition-colors whitespace-nowrap"
-                id="loadMoreBtn"
-              >
-                Завантажити більше відгуків
-              </button>
-            </div>
-          </div>
-        </div>
-      </section>
+        </section>
     </main>
     <button
-      class="floating-btn bg-primary text-black px-6 py-3 !rounded-button font-semibold shadow-lg hover:shadow-xl whitespace-nowrap"
-      id="writeReviewBtn"
-    >
-      <div class="w-5 h-5 flex items-center justify-center mr-2 inline-block">
-        <i class="ri-edit-line"></i>
-      </div>
-      Написати відгук
-    </button>
-    <div
-      class="modal fixed inset-0 bg-black bg-opacity-50 hidden z-50"
-      id="reviewModal"
-    >
-      <div class="flex items-center justify-center min-h-screen p-4">
-        <div
-          class="bg-white rounded-3xl p-8 max-w-2xl w-full max-h-[90vh] overflow-y-auto"
-        >
-          <div class="flex items-center justify-between mb-6">
-            <h3 class="text-2xl font-bold text-black">Залишити відгук</h3>
-            <button
-              class="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-black transition-colors"
-              id="closeModalBtn"
-            >
-              <i class="ri-close-line text-xl"></i>
-            </button>
-          </div>
-          <form id="reviewForm" class="space-y-6">
-            <div>
-              <label class="block text-sm font-semibold text-black mb-2"
-                >Ваша оцінка *</label
-              >
-              <div class="star-rating" id="ratingInput">
-                <i
-                  class="ri-star-line text-3xl text-gray-300 star cursor-pointer"
-                  data-rating="1"
-                ></i>
-                <i
-                  class="ri-star-line text-3xl text-gray-300 star cursor-pointer"
-                  data-rating="2"
-                ></i>
-                <i
-                  class="ri-star-line text-3xl text-gray-300 star cursor-pointer"
-                  data-rating="3"
-                ></i>
-                <i
-                  class="ri-star-line text-3xl text-gray-300 star cursor-pointer"
-                  data-rating="4"
-                ></i>
-                <i
-                  class="ri-star-line text-3xl text-gray-300 star cursor-pointer"
-                  data-rating="5"
-                ></i>
-              </div>
-            </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div>
-                <label class="block text-sm font-semibold text-black mb-2"
-                  >Ваше ім'я *</label
-                >
-                <input
-                  type="text"
-                  class="form-input w-full px-4 py-3 border border-gray-300 rounded-xl bg-white text-sm"
-                  placeholder="Введіть ваше ім'я"
-                  required
-                />
-              </div>
-              <div>
-                <label class="block text-sm font-semibold text-black mb-2"
-                  >Категорія *</label
-                >
-                <div class="relative">
-                  <select
-                    class="form-input w-full px-4 py-3 pr-8 border border-gray-300 rounded-xl bg-white text-sm appearance-none"
-                    required
-                  >
-                    <option value="">Оберіть категорію</option>
-                    <option value="cakes">Торти</option>
-                    <option value="macarons">Макаруни</option>
-                    <option value="pastries">Тістечка</option>
-                    <option value="service">Обслуговування</option>
-                  </select>
-                  <div
-                    class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none"
-                  >
-                    <i class="ri-arrow-down-s-line text-gray-400"></i>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div>
-              <label class="block text-sm font-semibold text-black mb-2"
-                >Ваш відгук *</label
-              >
-              <textarea
-                rows="5"
-                class="form-input w-full px-4 py-3 border border-gray-300 rounded-xl bg-white text-sm resize-none"
-                placeholder="Поділіться вашими враженнями про наші десерти або обслуговування..."
-                required
-              ></textarea>
-            </div>
-            <div>
-              <label class="block text-sm font-semibold text-black mb-2"
-                >Додати фото (необов'язково)</label
-              >
-              <div
-                class="border-2 border-dashed border-gray-300 rounded-xl p-6 text-center hover:border-primary transition-colors cursor-pointer"
-                id="photoUpload"
-              >
-                <div
-                  class="w-12 h-12 flex items-center justify-center bg-gray-100 rounded-full mx-auto mb-3"
-                >
-                  <i class="ri-image-add-line text-xl text-gray-400"></i>
-                </div>
-                <p class="text-gray-600 text-sm">
-                  Натисніть для додавання фото або перетягніть файл сюди
-                </p>
-                <input
-                  type="file"
-                  class="hidden"
-                  accept="image/*"
-                  multiple
-                  id="photoInput"
-                />
-              </div>
-            </div>
-            <div class="flex items-center space-x-3">
-              <div class="relative">
-                <input type="checkbox" id="terms" class="sr-only" required />
-                <div
-                  class="w-5 h-5 border-2 border-gray-300 rounded cursor-pointer flex items-center justify-center checkbox-custom"
-                  onclick="toggleCheckbox('terms')"
-                >
-                  <i
-                    class="ri-check-line text-white text-sm hidden checkbox-icon"
-                  ></i>
-                </div>
-              </div>
-              <label for="terms" class="text-sm text-gray-600 cursor-pointer">
-                Я погоджуюся з
-                <a href="#" class="text-primary hover:underline"
-                  >умовами публікації відгуків</a
-                >
-              </label>
-            </div>
-            <div class="flex space-x-4">
-              <button
-                type="button"
-                class="flex-1 bg-gray-100 text-gray-700 px-6 py-3 !rounded-button font-semibold hover:bg-gray-200 transition-colors whitespace-nowrap"
-                id="cancelBtn"
-              >
-                Скасувати
-              </button>
-              <button
-                type="submit"
-                class="flex-1 bg-primary text-black px-6 py-3 !rounded-button font-semibold hover:bg-yellow-400 transition-colors whitespace-nowrap"
-              >
-                Опублікувати відгук
-              </button>
-            </div>
-          </form>
+        class="floating-btn bg-primary text-black px-6 py-3 !rounded-button font-semibold shadow-lg hover:shadow-xl whitespace-nowrap"
+        id="writeReviewBtn">
+        <div class="w-5 h-5 flex items-center justify-center mr-2 inline-block">
+            <i class="ri-edit-line"></i>
         </div>
-      </div>
+        Написати відгук
+    </button>
+    <div class="modal fixed inset-0 bg-black bg-opacity-50 hidden z-50" id="reviewModal">
+        <div class="flex items-center justify-center min-h-screen p-4">
+            <div class="bg-white rounded-3xl p-8 max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+                <div class="flex items-center justify-between mb-6">
+                    <h3 class="text-2xl font-bold text-black">Залишити відгук</h3>
+                    <button
+                        class="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-black transition-colors"
+                        id="closeModalBtn">
+                        <i class="ri-close-line text-xl"></i>
+                    </button>
+                </div>
+                <form id="reviewForm" class="space-y-6">
+                    <div>
+                        <label class="block text-sm font-semibold text-black mb-2">Ваша оцінка *</label>
+                        <div class="star-rating" id="ratingInput">
+                            <i class="ri-star-line text-3xl text-gray-300 star cursor-pointer" data-rating="1"></i>
+                            <i class="ri-star-line text-3xl text-gray-300 star cursor-pointer" data-rating="2"></i>
+                            <i class="ri-star-line text-3xl text-gray-300 star cursor-pointer" data-rating="3"></i>
+                            <i class="ri-star-line text-3xl text-gray-300 star cursor-pointer" data-rating="4"></i>
+                            <i class="ri-star-line text-3xl text-gray-300 star cursor-pointer" data-rating="5"></i>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-sm font-semibold text-black mb-2">Ваше ім'я *</label>
+                            <input type="text"
+                                class="form-input w-full px-4 py-3 border border-gray-300 rounded-xl bg-white text-sm"
+                                placeholder="Введіть ваше ім'я" required />
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold text-black mb-2">Категорія *</label>
+                            <div class="relative">
+                                <select
+                                    class="form-input w-full px-4 py-3 pr-8 border border-gray-300 rounded-xl bg-white text-sm appearance-none"
+                                    required>
+                                    <option value="">Оберіть категорію</option>
+                                    <option value="cakes">Торти</option>
+                                    <option value="macarons">Макаруни</option>
+                                    <option value="pastries">Тістечка</option>
+                                    <option value="service">Обслуговування</option>
+                                </select>
+                                <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                                    <i class="ri-arrow-down-s-line text-gray-400"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-black mb-2">Ваш відгук *</label>
+                        <textarea rows="5"
+                            class="form-input w-full px-4 py-3 border border-gray-300 rounded-xl bg-white text-sm resize-none"
+                            placeholder="Поділіться вашими враженнями про наші десерти або обслуговування..."
+                            required></textarea>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-black mb-2">Додати фото (необов'язково)</label>
+                        <div class="border-2 border-dashed border-gray-300 rounded-xl p-6 text-center hover:border-primary transition-colors cursor-pointer"
+                            id="photoUpload">
+                            <div
+                                class="w-12 h-12 flex items-center justify-center bg-gray-100 rounded-full mx-auto mb-3">
+                                <i class="ri-image-add-line text-xl text-gray-400"></i>
+                            </div>
+                            <p class="text-gray-600 text-sm">
+                                Натисніть для додавання фото або перетягніть файл сюди
+                            </p>
+                            <input type="file" class="hidden" accept="image/*" multiple id="photoInput" />
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-3">
+                        <div class="relative">
+                            <input type="checkbox" id="terms" class="sr-only" required />
+                            <div class="w-5 h-5 border-2 border-gray-300 rounded cursor-pointer flex items-center justify-center checkbox-custom"
+                                onclick="toggleCheckbox('terms')">
+                                <i class="ri-check-line text-white text-sm hidden checkbox-icon"></i>
+                            </div>
+                        </div>
+                        <label for="terms" class="text-sm text-gray-600 cursor-pointer">
+                            Я погоджуюся з
+                            <a href="#" class="text-primary hover:underline">умовами публікації відгуків</a>
+                        </label>
+                    </div>
+                    <div class="flex space-x-4">
+                        <button type="button"
+                            class="flex-1 bg-gray-100 text-gray-700 px-6 py-3 !rounded-button font-semibold hover:bg-gray-200 transition-colors whitespace-nowrap"
+                            id="cancelBtn">
+                            Скасувати
+                        </button>
+                        <button type="submit"
+                            class="flex-1 bg-primary text-black px-6 py-3 !rounded-button font-semibold hover:bg-yellow-400 transition-colors whitespace-nowrap">
+                            Опублікувати відгук
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
     <footer class="bg-black text-white py-16">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
-          <div class="col-span-1 md:col-span-2">
-            <div class="flex items-center space-x-3 mb-6">
-              <div
-                class="w-12 h-12 flex items-center justify-center bg-primary rounded-full shadow-[0_0_15px_rgba(255,215,0,0.5)] backdrop-blur-sm"
-              >
-                <img
-                  src="https://static.readdy.ai/image/43b57c5738bad1db7fac177fe6f2f220/46ca856dcdb27461a44d2cf39bdb0b5a.jfif"
-                  alt="Logo"
-                  class="w-8 h-8"
-                />
-              </div>
-              <div>
-                <h3 class="text-2xl font-bold">СМАКУЄ</h3>
-                <p class="text-sm text-gray-400">Крафтове виробництво</p>
-              </div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div class="col-span-1 md:col-span-2">
+                    <div class="flex items-center space-x-3 mb-6">
+                        <div
+                            class="w-12 h-12 flex items-center justify-center bg-primary rounded-full shadow-[0_0_15px_rgba(255,215,0,0.5)] backdrop-blur-sm">
+                            <img src="https://static.readdy.ai/image/43b57c5738bad1db7fac177fe6f2f220/46ca856dcdb27461a44d2cf39bdb0b5a.jfif"
+                                alt="Logo" class="w-8 h-8" />
+                        </div>
+                        <div>
+                            <h3 class="text-2xl font-bold">СМАКУЄ</h3>
+                            <p class="text-sm text-gray-400">Крафтове виробництво</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-300 mb-6 max-w-md">
+                        Створюємо неперевершені десерти з найкращих інгредієнтів. Кожен
+                        торт, макарун та тістечко — це витвір мистецтва.
+                    </p>
+                    <div class="flex space-x-4">
+                        <a href="#"
+                            class="w-10 h-10 bg-primary rounded-full flex items-center justify-center text-black hover:bg-yellow-400 transition-colors">
+                            <i class="ri-instagram-line"></i>
+                        </a>
+                        <a href="#"
+                            class="w-10 h-10 bg-primary rounded-full flex items-center justify-center text-black hover:bg-yellow-400 transition-colors">
+                            <i class="ri-facebook-line"></i>
+                        </a>
+                        <a href="#"
+                            class="w-10 h-10 bg-primary rounded-full flex items-center justify-center text-black hover:bg-yellow-400 transition-colors">
+                            <i class="ri-telegram-line"></i>
+                        </a>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Навігація</h4>
+                    <ul class="space-y-2">
+                        <li>
+                            <a href="https://readdy.ai/home/cb9458f8-9101-4315-a4f7-32608dd27b3b/434a1df6-3281-44e4-95e6-f09bfbd6453e"
+                                data-readdy="true"
+                                class="text-gray-300 hover:text-primary transition-colors">Головна</a>
+                        </li>
+                        <li>
+                            <a href="#" class="text-gray-300 hover:text-primary transition-colors">Меню</a>
+                        </li>
+                        <li>
+                            <a href="#" class="text-gray-300 hover:text-primary transition-colors">Про нас</a>
+                        </li>
+                        <li>
+                            <a href="#" class="text-gray-300 hover:text-primary transition-colors">Контакти</a>
+                        </li>
+                        <li>
+                            <a href="#" class="text-gray-300 hover:text-primary transition-colors">Відгуки</a>
+                        </li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Контакти</h4>
+                    <ul class="space-y-2">
+                        <li class="text-gray-300">+380 67 123 45 67</li>
+                        <li class="text-gray-300">+380 93 987 65 43</li>
+                        <li class="text-gray-300">info@smakuje.ua</li>
+                        <li class="text-gray-300">
+                            вул. Хрещатик, 25<br />Київ, Україна
+                        </li>
+                        <li class="text-gray-300">Пн-Нд: 8:00 - 22:00</li>
+                    </ul>
+                </div>
             </div>
-            <p class="text-gray-300 mb-6 max-w-md">
-              Створюємо неперевершені десерти з найкращих інгредієнтів. Кожен
-              торт, макарун та тістечко — це витвір мистецтва.
-            </p>
-            <div class="flex space-x-4">
-              <a
-                href="#"
-                class="w-10 h-10 bg-primary rounded-full flex items-center justify-center text-black hover:bg-yellow-400 transition-colors"
-              >
-                <i class="ri-instagram-line"></i>
-              </a>
-              <a
-                href="#"
-                class="w-10 h-10 bg-primary rounded-full flex items-center justify-center text-black hover:bg-yellow-400 transition-colors"
-              >
-                <i class="ri-facebook-line"></i>
-              </a>
-              <a
-                href="#"
-                class="w-10 h-10 bg-primary rounded-full flex items-center justify-center text-black hover:bg-yellow-400 transition-colors"
-              >
-                <i class="ri-telegram-line"></i>
-              </a>
+            <div class="border-t border-gray-800 mt-12 pt-8 text-center">
+                <p class="text-gray-400">&copy; 2024 Смакує. Всі права захищені.</p>
             </div>
-          </div>
-          <div>
-            <h4 class="text-lg font-semibold mb-4">Навігація</h4>
-            <ul class="space-y-2">
-              <li>
-                <a
-                  href="https://readdy.ai/home/cb9458f8-9101-4315-a4f7-32608dd27b3b/434a1df6-3281-44e4-95e6-f09bfbd6453e"
-                  data-readdy="true"
-                  class="text-gray-300 hover:text-primary transition-colors"
-                  >Головна</a
-                >
-              </li>
-              <li>
-                <a
-                  href="#"
-                  class="text-gray-300 hover:text-primary transition-colors"
-                  >Меню</a
-                >
-              </li>
-              <li>
-                <a
-                  href="#"
-                  class="text-gray-300 hover:text-primary transition-colors"
-                  >Про нас</a
-                >
-              </li>
-              <li>
-                <a
-                  href="#"
-                  class="text-gray-300 hover:text-primary transition-colors"
-                  >Контакти</a
-                >
-              </li>
-              <li>
-                <a
-                  href="#"
-                  class="text-gray-300 hover:text-primary transition-colors"
-                  >Відгуки</a
-                >
-              </li>
-            </ul>
-          </div>
-          <div>
-            <h4 class="text-lg font-semibold mb-4">Контакти</h4>
-            <ul class="space-y-2">
-              <li class="text-gray-300">+380 67 123 45 67</li>
-              <li class="text-gray-300">+380 93 987 65 43</li>
-              <li class="text-gray-300">info@smakuje.ua</li>
-              <li class="text-gray-300">
-                вул. Хрещатик, 25<br />Київ, Україна
-              </li>
-              <li class="text-gray-300">Пн-Нд: 8:00 - 22:00</li>
-            </ul>
-          </div>
         </div>
-        <div class="border-t border-gray-800 mt-12 pt-8 text-center">
-          <p class="text-gray-400">&copy; 2024 Смакує. Всі права захищені.</p>
-        </div>
-      </div>
     </footer>
     <script id="mobile-menu">
-      document.addEventListener("DOMContentLoaded", function () {
-        const menuButton = document.getElementById("menuButton");
-        const mobileNav = document.getElementById("mobileNav");
-        let isMenuOpen = false;
-        if (menuButton && mobileNav) {
-          menuButton.addEventListener("click", function () {
-            isMenuOpen = !isMenuOpen;
-            if (isMenuOpen) {
-              mobileNav.classList.remove("hidden");
-              mobileNav.innerHTML = `
+        document.addEventListener("DOMContentLoaded", function () {
+            const menuButton = document.getElementById("menuButton");
+            const mobileNav = document.getElementById("mobileNav");
+            let isMenuOpen = false;
+            if (menuButton && mobileNav) {
+                menuButton.addEventListener("click", function () {
+                    isMenuOpen = !isMenuOpen;
+                    if (isMenuOpen) {
+                        mobileNav.classList.remove("hidden");
+                        mobileNav.innerHTML = `
       <div class="flex flex-col h-full">
       <div class="flex items-center justify-between p-4 border-b">
       <div class="flex items-center space-x-2">
@@ -986,221 +529,284 @@
       </div>
       </div>
       `;
-              document.body.style.overflow = "hidden";
-              const closeMenu = document.getElementById("closeMenu");
-              if (closeMenu) {
-                closeMenu.addEventListener("click", function () {
-                  mobileNav.classList.add("hidden");
-                  document.body.style.overflow = "";
-                  isMenuOpen = false;
+                        document.body.style.overflow = "hidden";
+                        const closeMenu = document.getElementById("closeMenu");
+                        if (closeMenu) {
+                            closeMenu.addEventListener("click", function () {
+                                mobileNav.classList.add("hidden");
+                                document.body.style.overflow = "";
+                                isMenuOpen = false;
+                            });
+                        }
+                    } else {
+                        mobileNav.classList.add("hidden");
+                        document.body.style.overflow = "";
+                    }
                 });
-              }
-            } else {
-              mobileNav.classList.add("hidden");
-              document.body.style.overflow = "";
             }
-          });
-        }
-      });
+        });
     </script>
     <script id="reviews-functionality">
-      document.addEventListener("DOMContentLoaded", function () {
-        const filterButtons = document.querySelectorAll(".filter-btn");
-        const reviewCards = document.querySelectorAll(".review-card");
-        const searchInput = document.getElementById("searchInput");
-        const writeReviewBtn = document.getElementById("writeReviewBtn");
-        const reviewModal = document.getElementById("reviewModal");
-        const closeModalBtn = document.getElementById("closeModalBtn");
-        const cancelBtn = document.getElementById("cancelBtn");
-        const reviewForm = document.getElementById("reviewForm");
-        const ratingStars = document.querySelectorAll("#ratingInput .star");
-        const photoUpload = document.getElementById("photoUpload");
-        const photoInput = document.getElementById("photoInput");
-        let selectedRating = 0;
-        filterButtons.forEach((button) => {
-          button.addEventListener("click", function () {
-            filterButtons.forEach((btn) => btn.classList.remove("active"));
-            this.classList.add("active");
-            const filter = this.getAttribute("data-filter");
-            filterReviews(filter);
-          });
-        });
-        function filterReviews(filter) {
-          reviewCards.forEach((card) => {
-            if (filter === "all" || card.getAttribute("data-category") === filter) {
-              card.style.display = "block";
-            } else {
-              card.style.display = "none";
-            }
-          });
-        }
-        if (searchInput) {
-          searchInput.addEventListener("input", function () {
-            const searchTerm = this.value.toLowerCase();
-            reviewCards.forEach((card) => {
-              const text = card.textContent.toLowerCase();
-              if (text.includes(searchTerm)) {
-                card.style.display = "block";
-              } else {
-                card.style.display = "none";
-              }
+        document.addEventListener("DOMContentLoaded", function () {
+            const filterButtons = document.querySelectorAll(".filter-btn");
+            const reviewCards = document.querySelectorAll(".review-card");
+            const searchInput = document.getElementById("searchInput");
+            const writeReviewBtn = document.getElementById("writeReviewBtn");
+            const reviewModal = document.getElementById("reviewModal");
+            const closeModalBtn = document.getElementById("closeModalBtn");
+            const cancelBtn = document.getElementById("cancelBtn");
+            const reviewForm = document.getElementById("reviewForm");
+            const ratingStars = document.querySelectorAll("#ratingInput .star");
+            const photoUpload = document.getElementById("photoUpload");
+            const photoInput = document.getElementById("photoInput");
+            let selectedRating = 0;
+            filterButtons.forEach((button) => {
+                button.addEventListener("click", function () {
+                    filterButtons.forEach((btn) => btn.classList.remove("active"));
+                    this.classList.add("active");
+                    const filter = this.getAttribute("data-filter");
+                    filterReviews(filter);
+                });
             });
-          });
-        }
-        if (writeReviewBtn) {
-          writeReviewBtn.addEventListener("click", function () {
-            reviewModal.classList.remove("hidden");
-            document.body.style.overflow = "hidden";
-          });
-        }
-        function closeModal() {
-          reviewModal.classList.add("hidden");
-          document.body.style.overflow = "";
-          selectedRating = 0;
-          updateStarRating();
-          reviewForm.reset();
-        }
-        if (closeModalBtn) {
-          closeModalBtn.addEventListener("click", closeModal);
-        }
-        if (cancelBtn) {
-          cancelBtn.addEventListener("click", closeModal);
-        }
-        ratingStars.forEach((star) => {
-          star.addEventListener("click", function () {
-            selectedRating = parseInt(this.getAttribute("data-rating"));
-            updateStarRating();
-          });
-          star.addEventListener("mouseenter", function () {
-            const rating = parseInt(this.getAttribute("data-rating"));
-            highlightStars(rating);
-          });
-        });
-        document
-          .getElementById("ratingInput")
-          .addEventListener("mouseleave", function () {
-            updateStarRating();
-          });
-        function updateStarRating() {
-          ratingStars.forEach((star, index) => {
-            if (index < selectedRating) {
-              star.classList.remove("ri-star-line", "text-gray-300");
-              star.classList.add("ri-star-fill", "text-primary");
-            } else {
-              star.classList.remove("ri-star-fill", "text-primary");
-              star.classList.add("ri-star-line", "text-gray-300");
+            function filterReviews(filter) {
+                reviewCards.forEach((card) => {
+                    if (filter === "all" || card.getAttribute("data-category") === filter) {
+                        card.style.display = "block";
+                    } else {
+                        card.style.display = "none";
+                    }
+                });
             }
-          });
-        }
-        function highlightStars(rating) {
-          ratingStars.forEach((star, index) => {
-            if (index < rating) {
-              star.classList.remove("ri-star-line", "text-gray-300");
-              star.classList.add("ri-star-fill", "text-primary");
-            } else {
-              star.classList.remove("ri-star-fill", "text-primary");
-              star.classList.add("ri-star-line", "text-gray-300");
+            if (searchInput) {
+                searchInput.addEventListener("input", function () {
+                    const searchTerm = this.value.toLowerCase();
+                    reviewCards.forEach((card) => {
+                        const text = card.textContent.toLowerCase();
+                        if (text.includes(searchTerm)) {
+                            card.style.display = "block";
+                        } else {
+                            card.style.display = "none";
+                        }
+                    });
+                });
             }
-          });
-        }
-        if (photoUpload && photoInput) {
-          photoUpload.addEventListener("click", function () {
-            photoInput.click();
-          });
-          photoInput.addEventListener("change", function () {
-            const files = this.files;
-            if (files.length > 0) {
-              photoUpload.innerHTML = `
+            if (writeReviewBtn) {
+                writeReviewBtn.addEventListener("click", function () {
+                    reviewModal.classList.remove("hidden");
+                    document.body.style.overflow = "hidden";
+                });
+            }
+            function closeModal() {
+                reviewModal.classList.add("hidden");
+                document.body.style.overflow = "";
+                selectedRating = 0;
+                updateStarRating();
+                reviewForm.reset();
+            }
+            if (closeModalBtn) {
+                closeModalBtn.addEventListener("click", closeModal);
+            }
+            if (cancelBtn) {
+                cancelBtn.addEventListener("click", closeModal);
+            }
+            ratingStars.forEach((star) => {
+                star.addEventListener("click", function () {
+                    selectedRating = parseInt(this.getAttribute("data-rating"));
+                    updateStarRating();
+                });
+                star.addEventListener("mouseenter", function () {
+                    const rating = parseInt(this.getAttribute("data-rating"));
+                    highlightStars(rating);
+                });
+            });
+            document
+                .getElementById("ratingInput")
+                .addEventListener("mouseleave", function () {
+                    updateStarRating();
+                });
+            function updateStarRating() {
+                ratingStars.forEach((star, index) => {
+                    if (index < selectedRating) {
+                        star.classList.remove("ri-star-line", "text-gray-300");
+                        star.classList.add("ri-star-fill", "text-primary");
+                    } else {
+                        star.classList.remove("ri-star-fill", "text-primary");
+                        star.classList.add("ri-star-line", "text-gray-300");
+                    }
+                });
+            }
+            function highlightStars(rating) {
+                ratingStars.forEach((star, index) => {
+                    if (index < rating) {
+                        star.classList.remove("ri-star-line", "text-gray-300");
+                        star.classList.add("ri-star-fill", "text-primary");
+                    } else {
+                        star.classList.remove("ri-star-fill", "text-primary");
+                        star.classList.add("ri-star-line", "text-gray-300");
+                    }
+                });
+            }
+            if (photoUpload && photoInput) {
+                photoUpload.addEventListener("click", function () {
+                    photoInput.click();
+                });
+                photoInput.addEventListener("change", function () {
+                    const files = this.files;
+                    if (files.length > 0) {
+                        photoUpload.innerHTML = `
       <div class="w-12 h-12 flex items-center justify-center bg-primary rounded-full mx-auto mb-3">
       <i class="ri-check-line text-xl text-black"></i>
       </div>
       <p class="text-black text-sm font-medium">Обрано файлів: ${files.length}</p>
       `;
+                    }
+                });
             }
-          });
-        }
-        function toggleCheckbox(id) {
-          const checkbox = document.getElementById(id);
-          const checkboxCustom =
-            checkbox.parentElement.querySelector(".checkbox-custom");
-          const checkboxIcon = checkbox.parentElement.querySelector(".checkbox-icon");
-          checkbox.checked = !checkbox.checked;
-          if (checkbox.checked) {
-            checkboxCustom.classList.add("bg-primary", "border-primary");
-            checkboxCustom.classList.remove("border-gray-300");
-            checkboxIcon.classList.remove("hidden");
-          } else {
-            checkboxCustom.classList.remove("bg-primary", "border-primary");
-            checkboxCustom.classList.add("border-gray-300");
-            checkboxIcon.classList.add("hidden");
-          }
-        }
-        window.toggleCheckbox = toggleCheckbox;
-        if (reviewForm) {
-          reviewForm.addEventListener("submit", function (e) {
-            e.preventDefault();
-            if (selectedRating === 0) {
-              alert("Будь ласка, оберіть оцінку");
-              return;
+            function toggleCheckbox(id) {
+                const checkbox = document.getElementById(id);
+                const checkboxCustom =
+                    checkbox.parentElement.querySelector(".checkbox-custom");
+                const checkboxIcon = checkbox.parentElement.querySelector(".checkbox-icon");
+                checkbox.checked = !checkbox.checked;
+                if (checkbox.checked) {
+                    checkboxCustom.classList.add("bg-primary", "border-primary");
+                    checkboxCustom.classList.remove("border-gray-300");
+                    checkboxIcon.classList.remove("hidden");
+                } else {
+                    checkboxCustom.classList.remove("bg-primary", "border-primary");
+                    checkboxCustom.classList.add("border-gray-300");
+                    checkboxIcon.classList.add("hidden");
+                }
             }
-            const submitBtn = reviewForm.querySelector('button[type="submit"]');
-            const originalText = submitBtn.textContent;
-            submitBtn.textContent = "Публікуємо...";
-            submitBtn.disabled = true;
-            setTimeout(() => {
-              submitBtn.textContent = "Відгук опубліковано!";
-              submitBtn.classList.remove("bg-primary", "hover:bg-yellow-400");
-              submitBtn.classList.add("bg-green-500", "hover:bg-green-600");
-            }, 1500);
-            setTimeout(() => {
-              closeModal();
-              submitBtn.textContent = originalText;
-              submitBtn.disabled = false;
-              submitBtn.classList.remove("bg-green-500", "hover:bg-green-600");
-              submitBtn.classList.add("bg-primary", "hover:bg-yellow-400");
-            }, 3000);
-          });
-        }
-        reviewModal.addEventListener("click", function (e) {
-          if (e.target === reviewModal) {
-            closeModal();
-          }
+            window.toggleCheckbox = toggleCheckbox;
+            if (reviewForm) {
+                reviewForm.addEventListener("submit", function (e) {
+                    e.preventDefault();
+                    if (selectedRating === 0) {
+                        alert("Будь ласка, оберіть оцінку");
+                        return;
+                    }
+                    const submitBtn = reviewForm.querySelector('button[type="submit"]');
+                    const originalText = submitBtn.textContent;
+                    submitBtn.textContent = "Публікуємо...";
+                    submitBtn.disabled = true;
+                    setTimeout(() => {
+                        submitBtn.textContent = "Відгук опубліковано!";
+                        submitBtn.classList.remove("bg-primary", "hover:bg-yellow-400");
+                        submitBtn.classList.add("bg-green-500", "hover:bg-green-600");
+                    }, 1500);
+                    setTimeout(() => {
+                        closeModal();
+                        submitBtn.textContent = originalText;
+                        submitBtn.disabled = false;
+                        submitBtn.classList.remove("bg-green-500", "hover:bg-green-600");
+                        submitBtn.classList.add("bg-primary", "hover:bg-yellow-400");
+                    }, 3000);
+                });
+            }
+            reviewModal.addEventListener("click", function (e) {
+                if (e.target === reviewModal) {
+                    closeModal();
+                }
+            });
         });
-      });
+    </script>
+    <script>
+        // --- ШАГ 2: Определяем функцию-шаблон ---
+        function createReviewCard(review) {
+            // Генерируем HTML для звезд на основе рейтинга
+            let starsHtml = '';
+            for (let i = 0; i < 5; i++) {
+                starsHtml += `<i class="ri-star-fill text-lg ${i < review.rating ? 'text-primary' : 'text-gray-300'}"></i>`;
+            }
+    
+            // Если аватар не указан, генерируем случайный
+            const avatarUrl = review.authorAvatarUrl && review.authorAvatarUrl.trim() !== ''
+                ? review.authorAvatarUrl
+                : `https://api.dicebear.com/8.x/bottts-neutral/svg?seed=${encodeURIComponent(review.authorName)}`;
+    
+            // Возвращаем готовый HTML-код карточки
+            return `
+                <div class="review-card bg-gray-50 rounded-2xl p-6">
+                    <div class="flex items-start space-x-4 mb-4">
+                        <img src="${avatarUrl}" alt="${review.authorName}" class="w-12 h-12 rounded-full object-cover">
+                        <div class="flex-1">
+                            <div class="flex items-center justify-between mb-2">
+                                <h4 class="font-bold text-black">${review.authorName}</h4>
+                                <span class="text-sm text-gray-500">${review.date}</span>
+                            </div>
+                            <div class="flex items-center space-x-1 mb-2">${starsHtml}</div>
+                            <span class="inline-block bg-primary px-2 py-1 rounded-full text-xs font-medium text-black">${review.category}</span>
+                        </div>
+                    </div>
+                    <p class="text-gray-700 mb-4">${review.text}</p>
+                    <div class="mb-4">
+                        <img src="${review.imageUrl}" alt="Фото відгуку" class="w-full h-32 object-cover rounded-xl">
+                    </div>
+                    <div class="flex items-center justify-between text-sm text-gray-500">
+                        <div class="flex items-center space-x-4">
+                            <button class="flex items-center space-x-1 hover:text-primary transition-colors">
+                                <i class="ri-thumb-up-line"></i>
+                                <span>Корисно (${review.likes})</span>
+                            </button>
+                            <button class="flex items-center space-x-1 hover:text-primary transition-colors">
+                                <i class="ri-chat-3-line"></i>
+                                <span>Відповісти</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+    
+        // --- ШАГ 3: Загружаем и отображаем отзывы ---
+        document.addEventListener('DOMContentLoaded', async () => {
+            const container = document.getElementById('reviews-container');
+            try {
+                const response = await fetch('/api/reviews');
+                const reviews = await response.json();
+                // Используем функцию createReviewCard для каждого отзыва
+                container.innerHTML = reviews.map(review => createReviewCard(review)).join('');
+            } catch (error) {
+                console.error('Ошибка загрузки отзывов:', error);
+                container.innerHTML = '<p>Не вдалося завантажити відгуки.</p>';
+            }
+        });
     </script>
     <script id="smooth-animations">
-      document.addEventListener("DOMContentLoaded", function () {
-        const observerOptions = {
-          threshold: 0.1,
-          rootMargin: "0px 0px -50px 0px",
-        };
-        const observer = new IntersectionObserver((entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              entry.target.style.opacity = "1";
-              entry.target.style.transform = "translateY(0)";
+        document.addEventListener("DOMContentLoaded", function () {
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: "0px 0px -50px 0px",
+            };
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = "1";
+                        entry.target.style.transform = "translateY(0)";
+                    }
+                });
+            }, observerOptions);
+            const reviewCards = document.querySelectorAll(".review-card");
+            reviewCards.forEach((card, index) => {
+                card.style.opacity = "0";
+                card.style.transform = "translateY(30px)";
+                card.style.transition = `all 0.6s ease ${index * 0.1}s`;
+                observer.observe(card);
+            });
+            const loadMoreBtn = document.getElementById("loadMoreBtn");
+            if (loadMoreBtn) {
+                loadMoreBtn.addEventListener("click", function () {
+                    this.textContent = "Завантажуємо...";
+                    this.disabled = true;
+                    setTimeout(() => {
+                        this.textContent = "Завантажити більше відгуків";
+                        this.disabled = false;
+                    }, 2000);
+                });
             }
-          });
-        }, observerOptions);
-        const reviewCards = document.querySelectorAll(".review-card");
-        reviewCards.forEach((card, index) => {
-          card.style.opacity = "0";
-          card.style.transform = "translateY(30px)";
-          card.style.transition = `all 0.6s ease ${index * 0.1}s`;
-          observer.observe(card);
         });
-        const loadMoreBtn = document.getElementById("loadMoreBtn");
-        if (loadMoreBtn) {
-          loadMoreBtn.addEventListener("click", function () {
-            this.textContent = "Завантажуємо...";
-            this.disabled = true;
-            setTimeout(() => {
-              this.textContent = "Завантажити більше відгуків";
-              this.disabled = false;
-            }, 2000);
-          });
-        }
-      });
     </script>
-  </body>
+</body>
+
 </html>
