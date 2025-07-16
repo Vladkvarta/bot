@@ -496,8 +496,11 @@
     </footer>
 <!-- БЛОК 1: Шаблон для создания карточки отзыва -->
 <!-- Этот скрипт содержит только функцию-шаблон. Он ничего не делает сам по себе, но используется другими скриптами. -->
+<!-- БЛОК 1: Шаблон для создания карточки отзыва (с логами) -->
 <script id="review-card-template">
     function createReviewCard(review) {
+        console.log("Создаю карточку для:", review.authorName); // <-- ЛОГ 1: Проверяем, какие данные пришли в функцию
+
         // --- Логика для генерации звезд ---
         let starsHtml = '';
         for (let i = 0; i < 5; i++) {
@@ -505,26 +508,21 @@
         }
 
         // --- Логика для аватара пользователя ---
-        // Если hasAvatar: true, берем фото, иначе - стандартное.
         const avatarUrl = review.hasAvatar
             ? review.authorAvatarUrl
-            : '/img/avatars/default-avatar.png'; // Путь к вашему стандартному аватару
+            : '/img/avatars/default-avatar.png';
+        console.log(`- Условие hasAvatar: ${review.hasAvatar}, URL аватара: ${avatarUrl}`); // <-- ЛОГ 2: Проверяем условие для аватара
 
         // --- Логика для ФОТО/ЭМОЦИИ ---
         let imageHtml = '';
         if (review.hasPhoto) {
-            // Если hasPhoto: true, показываем фото отзыва
             imageHtml = `<img src="${review.imageUrl}" alt="Фото відгуку" class="w-full h-32 object-cover rounded-xl">`;
         } else {
-            // Если hasPhoto: false, показываем эмоцию по оценке
-            const emotionImageUrl = `/img/emotions/rating-${review.rating}.png`; // Путь к вашим эмоциям
-            imageHtml = `
-                <div class="w-full h-32 flex items-center justify-center bg-gray-100 rounded-xl">
-                    <img src="${emotionImageUrl}" alt="Оцінка ${review.rating}" class="w-16 h-16">
-                </div>
-            `;
+            const emotionImageUrl = `/img/emotions/rating-${review.rating}.png`;
+            imageHtml = `<div class="w-full h-32 flex items-center justify-center bg-gray-100 rounded-xl"><img src="${emotionImageUrl}" alt="Оцінка ${review.rating}" class="w-16 h-16"></div>`;
         }
-        
+        console.log(`- Условие hasPhoto: ${review.hasPhoto}`); // <-- ЛОГ 3: Проверяем условие для фото
+
         // --- Итоговый HTML-код карточки ---
         return `
             <div class="review-card bg-gray-50 rounded-2xl p-6" data-category="${review.category || 'all'}" data-id="${review.id}">
@@ -540,21 +538,11 @@
                     </div>
                 </div>
                 <p class="text-gray-700 mb-4">${review.text}</p>
-                
-                <div class="mb-4">
-                    ${imageHtml}
-                </div>
-                
+                <div class="mb-4">${imageHtml}</div>
                 <div class="flex items-center justify-between text-sm text-gray-500">
                     <div class="flex items-center space-x-4">
-                        <button class="flex items-center space-x-1 hover:text-primary transition-colors">
-                            <i class="ri-thumb-up-line"></i>
-                            <span>Корисно (${review.likes})</span>
-                        </button>
-                        <button class="flex items-center space-x-1 hover:text-primary transition-colors">
-                            <i class="ri-chat-3-line"></i>
-                            <span>Відповісти</span>
-                        </button>
+                        <button class="flex items-center space-x-1 hover:text-primary transition-colors"><i class="ri-thumb-up-line"></i><span>Корисно (${review.likes})</span></button>
+                        <button class="flex items-center space-x-1 hover:text-primary transition-colors"><i class="ri-chat-3-line"></i><span>Відповісти</span></button>
                     </div>
                 </div>
             </div>
@@ -564,26 +552,31 @@
 
 <!-- БЛОК 2: Основной загрузчик отзывов -->
 <!-- Этот скрипт загружает данные и вставляет их на страницу. После этого он "сообщает" другим скриптам, что работа сделана. -->
+<!-- БЛОК 2: Основной загрузчик отзывов (с логами) -->
 <script id="review-loader">
     document.addEventListener('DOMContentLoaded', async () => {
         const container = document.getElementById('reviewsContainer');
         if (!container) return;
+        console.log("Загрузчик отзывов (review-loader) запущен."); // <-- ЛОГ 4
 
         try {
             const response = await fetch('/api/reviews');
+            console.log("Ответ от /api/reviews получен:", response.status); // <-- ЛОГ 5
+
             const allReviews = await response.json();
-            
+            console.log("Данные из JSON загружены:", allReviews); // <-- ЛОГ 6
+
             if (allReviews && allReviews.length > 0) {
                  container.innerHTML = allReviews.map(review => createReviewCard(review)).join('');
             } else {
                  container.innerHTML = '<p class="col-span-full text-center">Відгуків поки немає.</p>';
             }
             
-            // ВАЖНО: "Сообщаем" другим скриптам, что отзывы загружены и готовы к работе
+            console.log("Отзывы добавлены на страницу. Отправляю событие 'reviewsRendered'."); // <-- ЛОГ 7
             document.dispatchEvent(new CustomEvent('reviewsRendered'));
 
         } catch (error) {
-            console.error('Ошибка загрузки отзывов:', error);
+            console.error('ОШИБКА в блоке загрузчика:', error); // <-- ЛОГ ОШИБКИ
             container.innerHTML = '<p class="col-span-full text-center text-red-500">Не вдалося завантажити відгуки.</p>';
         }
     });
@@ -592,7 +585,9 @@
 <!-- БЛОК 3: Функционал страницы (фильтры, модальные окна и т.д.) -->
 <!-- Этот скрипт "ждет" сигнала от загрузчика и только потом начинает работать. -->
 <script id="review-functionality">
+    
     document.addEventListener('reviewsRendered', () => {
+        console.log("Скрипт функционала (review-functionality) получил событие 'reviewsRendered' и начал работу."); // <-- ЛОГ 8
         // --- Логика для фильтров и поиска ---
         const filterButtons = document.querySelectorAll(".filter-btn");
         const searchInput = document.getElementById("searchInput");
@@ -701,6 +696,7 @@
 <!-- Этот скрипт также "ждет" сигнала от загрузчика. -->
 <script id="review-animations">
     document.addEventListener('reviewsRendered', () => {
+        console.log("Скрипт анимаций (review-animations) получил событие 'reviewsRendered' и начал работу."); // <-- ЛОГ 9
         const observer = new IntersectionObserver((entries) => {
             entries.forEach((entry) => {
                 if (entry.isIntersecting) {
