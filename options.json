@@ -1,28 +1,23 @@
-{
-    "btn_nut": {
-        "name": "Горішок з згущеним молоком",
-        "weight": 20,
-        "best_before_date": "7 днів",
-        "Compound": "Згущене молоко, фундук дроблений, пісочне печиво",
-        "description": "Смакота",
-        "price": 8
+[
+    {
+      "name": "Шоколадний торт 'Велюр'",
+      "description": "Ніжний шоколадний бісквіт з муссом та золотими акцентами.",
+      "price": "890 ₴",
+      "imageUrl": "/img/dessert-cake.jpg",
+      "category": "cakes"
     },
-    
-    "btn_tubule": {
-        "name": "Трубочка зі згущеним молоком",
-        "weight": 0,
-        "best_before_date": "7 днів",
-        "Compound": "Згущене молоко, вафля з пісочного тіста",
-        "description": "Смакота",
-        "price": 0
+    {
+      "name": "Французькі макаруни",
+      "description": "Набір з 12 макарунів різних смаків у подарунковій коробці.",
+      "price": "450 ₴",
+      "imageUrl": "/img/dessert-macarons.jpg",
+      "category": "pastries"
     },
-
-    "btn_wafer": {
-        "name": "Торт вафельний зі згущеним молоком та малиною",
-        "weight": 120,
-        "best_before_date": "4-5 днів",
-        "Compound": "Згущене молоко, вафлі, малина та горіх для декору",
-        "description": "Смакота",
-        "price": 37
+    {
+      "name": "Чізкейк 'Полуниця'",
+      "description": "Класичний чізкейк зі свіжими полуницями та ніжним кремом.",
+      "price": "320 ₴",
+      "imageUrl": "/img/dessert-cheesecake.jpg",
+      "category": "cakes"
     }
-}
+  ]
