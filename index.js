@@ -47,6 +47,7 @@ app.get('/api/reviews', (req, res) => {
         res.send(data);
     });
 });
+app.use('/img', express.static(path.join(__dirname, 'img')));
 
 // Эндпоинт для вебхука от GitHub
 app.post('/webhook/github', (req, res) => {
