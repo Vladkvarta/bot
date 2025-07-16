@@ -22,7 +22,8 @@ if (!BOT_TOKEN || !WEB_APP_URL || !GITHUB_SECRET) {
 const app = express();
 app.use(express.raw({ type: 'application/json' }));
 app.use(express.static(path.join(__dirname, 'public')));
-app.use('/img', express.static(path.join(__dirname, 'img')));
+// app.use('/img', express.static(path.join(__dirname, 'img')));
+
 
 
 // --- API ЭНДПОИНТЫ ---
@@ -47,7 +48,7 @@ app.get('/api/reviews', (req, res) => {
         res.send(data);
     });
 });
-app.use('/img', express.static(path.join(__dirname, 'img')));
+
 
 // Эндпоинт для вебхука от GitHub
 app.post('/webhook/github', (req, res) => {
