@@ -499,7 +499,7 @@
 <!-- БЛОК 1: Шаблон для создания карточки отзыва (с логами) -->
 <script id="review-card-template">
     function createReviewCard(review) {
-        console.log("Создаю карточку для:", review.authorName); // <-- ЛОГ 1: Проверяем, какие данные пришли в функцию
+        console.log(`--- Создаю карточку для: ${review.authorName} ---`);
 
         // --- Логика для генерации звезд ---
         let starsHtml = '';
@@ -508,21 +508,30 @@
         }
 
         // --- Логика для аватара пользователя ---
-        const avatarUrl = review.hasAvatar
-            ? review.authorAvatarUrl
-            : '/img/avatars/default-avatar.png';
-        console.log(`- Условие hasAvatar: ${review.hasAvatar}, URL аватара: ${avatarUrl}`); // <-- ЛОГ 2: Проверяем условие для аватара
+        let avatarUrl;
+        if (review.hasAvatar) {
+            avatarUrl = review.authorAvatarUrl;
+            console.log(`[Аватар] Условие hasAvatar: true. Использую реальный аватар: ${avatarUrl}`);
+        } else {
+            avatarUrl = '/img/avatars/default-avatar.png';
+            console.log(`[Аватар] Условие hasAvatar: false. Использую стандартный аватар: ${avatarUrl}`);
+        }
 
         // --- Логика для ФОТО/ЭМОЦИИ ---
         let imageHtml = '';
         if (review.hasPhoto) {
             imageHtml = `<img src="${review.imageUrl}" alt="Фото відгуку" class="w-full h-32 object-cover rounded-xl">`;
+            console.log(`[Фото] Условие hasPhoto: true. Использую реальное фото: ${review.imageUrl}`);
         } else {
             const emotionImageUrl = `/img/emotions/rating-${review.rating}.png`;
-            imageHtml = `<div class="w-full h-32 flex items-center justify-center bg-gray-100 rounded-xl"><img src="${emotionImageUrl}" alt="Оцінка ${review.rating}" class="w-16 h-16"></div>`;
+            imageHtml = `
+                <div class="w-full h-32 flex items-center justify-center bg-gray-100 rounded-xl">
+                    <img src="${emotionImageUrl}" alt="Оцінка ${review.rating}" class="w-16 h-16">
+                </div>
+            `;
+            console.log(`[Фото] Условие hasPhoto: false. Рейтинг: ${review.rating}. Использую эмоцию: ${emotionImageUrl}`);
         }
-        console.log(`- Условие hasPhoto: ${review.hasPhoto}`); // <-- ЛОГ 3: Проверяем условие для фото
-
+        
         // --- Итоговый HTML-код карточки ---
         return `
             <div class="review-card bg-gray-50 rounded-2xl p-6" data-category="${review.category || 'all'}" data-id="${review.id}">
@@ -541,8 +550,14 @@
                 <div class="mb-4">${imageHtml}</div>
                 <div class="flex items-center justify-between text-sm text-gray-500">
                     <div class="flex items-center space-x-4">
-                        <button class="flex items-center space-x-1 hover:text-primary transition-colors"><i class="ri-thumb-up-line"></i><span>Корисно (${review.likes})</span></button>
-                        <button class="flex items-center space-x-1 hover:text-primary transition-colors"><i class="ri-chat-3-line"></i><span>Відповісти</span></button>
+                        <button class="flex items-center space-x-1 hover:text-primary transition-colors">
+                            <i class="ri-thumb-up-line"></i>
+                            <span>Корисно (${review.likes})</span>
+                        </button>
+                        <button class="flex items-center space-x-1 hover:text-primary transition-colors">
+                            <i class="ri-chat-3-line"></i>
+                            <span>Відповісти</span>
+                        </button>
                     </div>
                 </div>
             </div>
