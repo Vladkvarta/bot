@@ -4,3 +4,4 @@ node_modules
 # Логи и временные файлы
 npm-debug.log*
 *.log
+credentials.json*
