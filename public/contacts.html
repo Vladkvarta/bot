@@ -11,6 +11,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css" rel="stylesheet" />
+    <link rel="icon" type="image/png" href="/img/favicon.png">
     <script>
         tailwind.config = {
             theme: {
@@ -201,17 +202,18 @@
                     <div class="contact-card bg-white rounded-3xl p-4 sm:p-8 text-center shadow-lg w-[calc(50%-1rem)] lg:w-[calc(25%-1.5rem)]"
                         style="opacity: 1; transform: translateY(0px); transition: 0.6s 0.1s;">
                         <a href="https://www.instagram.com/smakuie_kraft/" target="_blank">
-                        <div class="w-16 h-16 bg-primary rounded-full flex items-center justify-center mx-auto mb-6">
-                            <i class="ri-instagram-line text-2xl text-black"></i>
-                        </div>
-                    </a>
-                    <a href="https://www.instagram.com/smakuie_kraft/" target="_blank">
-                        <h3 class="text-xl font-bold text-black mb-4">Instargam</h3>
-                    </a>
+                            <div
+                                class="w-16 h-16 bg-primary rounded-full flex items-center justify-center mx-auto mb-6">
+                                <i class="ri-instagram-line text-2xl text-black"></i>
+                            </div>
+                        </a>
+                        <a href="https://www.instagram.com/smakuie_kraft/" target="_blank">
+                            <h3 class="text-xl font-bold text-black mb-4">Instargam</h3>
+                        </a>
                         <div class="space-y-2">
                             <a href="https://www.instagram.com/smakuie_kraft/" target="_blank">
-                            <p class="text-gray-500 text-sm">@smakuie_kraft</p>
-                        </a>
+                                <p class="text-gray-500 text-sm">@smakuie_kraft</p>
+                            </a>
                         </div>
                     </div>
                     <!-- -- -->
@@ -324,76 +326,90 @@
         </section>
         <section class="py-20 bg-primary">
             <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-                <h2 class="text-3xl md:text-4xl font-bold text-black mb-6">
-                    Соціальні мережі
-                </h2>
+                <h2 class="text-3xl md:text-4xl font-bold text-black mb-6">Відгуки наших клієнтів</h2>
                 <p class="text-xl text-gray-800 mb-12">
-                    Слідкуйте за нашими новинками та акціями в соціальних мережах
+                    Що говорять про нас наші улюблені клієнти
                 </p>
-                <div class="flex justify-center space-x-6">
-                    <a href="#"
-                        class="social-icon w-16 h-16 bg-black rounded-full flex items-center justify-center text-white hover:bg-gray-800 transition-colors">
-                        <i class="ri-instagram-fill text-2xl"></i>
-                    </a>
-                    <a href="#"
-                        class="social-icon w-16 h-16 bg-black rounded-full flex items-center justify-center text-white hover:bg-gray-800 transition-colors">
-                        <i class="ri-facebook-fill text-2xl"></i>
-                    </a>
-                    <a href="#"
-                        class="social-icon w-16 h-16 bg-black rounded-full flex items-center justify-center text-white hover:bg-gray-800 transition-colors">
-                        <i class="ri-telegram-fill text-2xl"></i>
-                    </a>
-                    <a href="#"
-                        class="social-icon w-16 h-16 bg-black rounded-full flex items-center justify-center text-white hover:bg-gray-800 transition-colors">
-                        <i class="ri-youtube-fill text-2xl"></i>
-                    </a>
-                    <a href="#"
-                        class="social-icon w-16 h-16 bg-black rounded-full flex items-center justify-center text-white hover:bg-gray-800 transition-colors">
-                        <i class="ri-tiktok-fill text-2xl"></i>
-                    </a>
-                </div>
-                <div class="mt-12 grid grid-cols-1 md:grid-cols-3 gap-8 text-left">
-                    <div class="bg-white rounded-2xl p-6">
-                        <div class="flex items-center space-x-3 mb-4">
-                            <div class="w-10 h-10 bg-primary rounded-full flex items-center justify-center">
-                                <i class="ri-instagram-line text-black"></i>
+                <div class="relative">
+                    <div class="testimonials-carousel overflow-hidden">
+                        <div class="testimonials-track flex transition-transform duration-300"
+                            style="transform: translateX(-100%);">
+                            <div class="testimonial-slide w-full flex-shrink-0 px-4">
+                                <div class="bg-white rounded-2xl p-8 shadow-lg">
+                                    <div class="flex items-center justify-center mb-6">
+                                        <img src="https://readdy.ai/api/search-image?query=professional%20portrait%20photo%20of%20a%20young%20ukrainian%20woman%20with%20blonde%20hair%2C%20natural%20makeup%2C%20warm%20smile%2C%20looking%20at%20camera%2C%20high%20quality%2C%20studio%20lighting&amp;width=80&amp;height=80&amp;seq=test-1&amp;orientation=squarish"
+                                            alt="Марія Петренко" class="w-20 h-20 rounded-full object-cover">
+                                    </div>
+                                    <p class="text-gray-700 text-lg mb-6">"Неймовірно смачні десерти! Замовляла торт на
+                                        день народження доньки - всі гості були у захваті. Особливо сподобався малиновий
+                                        мус та шоколадний ганаш."</p>
+                                    <div class="flex items-center justify-center space-x-1 mb-4">
+                                        <i class="ri-star-fill text-primary text-xl"></i>
+                                        <i class="ri-star-fill text-primary text-xl"></i>
+                                        <i class="ri-star-fill text-primary text-xl"></i>
+                                        <i class="ri-star-fill text-primary text-xl"></i>
+                                        <i class="ri-star-fill text-primary text-xl"></i>
+                                    </div>
+                                    <h4 class="font-bold text-black">Марія Петренко</h4>
+                                    <p class="text-sm text-gray-600">Київ</p>
+                                </div>
                             </div>
-                            <div>
-                                <h4 class="font-bold text-black">Instagram</h4>
-                                <p class="text-sm text-gray-600">@smakuje_kyiv</p>
+                            <div class="testimonial-slide w-full flex-shrink-0 px-4">
+                                <div class="bg-white rounded-2xl p-8 shadow-lg">
+                                    <div class="flex items-center justify-center mb-6">
+                                        <img src="https://readdy.ai/api/search-image?query=professional%20portrait%20photo%20of%20a%20middle-aged%20ukrainian%20man%20with%20dark%20hair%2C%20friendly%20smile%2C%20business%20casual%20attire%2C%20natural%20lighting&amp;width=80&amp;height=80&amp;seq=test-2&amp;orientation=squarish"
+                                            alt="Олександр Ковальчук" class="w-20 h-20 rounded-full object-cover">
+                                    </div>
+                                    <p class="text-gray-700 text-lg mb-6">"Регулярно замовляю тістечка для офісу. Колеги
+                                        в захваті від макарунів та еклерів. Сервіс на вищому рівні, завжди вчасна
+                                        доставка та бездоганна якість."</p>
+                                    <div class="flex items-center justify-center space-x-1 mb-4">
+                                        <i class="ri-star-fill text-primary text-xl"></i>
+                                        <i class="ri-star-fill text-primary text-xl"></i>
+                                        <i class="ri-star-fill text-primary text-xl"></i>
+                                        <i class="ri-star-fill text-primary text-xl"></i>
+                                        <i class="ri-star-fill text-primary text-xl"></i>
+                                    </div>
+                                    <h4 class="font-bold text-black">Олександр Ковальчук</h4>
+                                    <p class="text-sm text-gray-600">Київ</p>
+                                </div>
+                            </div>
+                            <div class="testimonial-slide w-full flex-shrink-0 px-4">
+                                <div class="bg-white rounded-2xl p-8 shadow-lg">
+                                    <div class="flex items-center justify-center mb-6">
+                                        <img src="https://readdy.ai/api/search-image?query=professional%20portrait%20photo%20of%20a%20young%20ukrainian%20woman%20with%20brown%20hair%2C%20elegant%20style%2C%20genuine%20smile%2C%20indoor%20setting&amp;width=80&amp;height=80&amp;seq=test-3&amp;orientation=squarish"
+                                            alt="Анна Мельник" class="w-20 h-20 rounded-full object-cover">
+                                    </div>
+                                    <p class="text-gray-700 text-lg mb-6">"Замовляла весільний торт - це було справжнє
+                                        витвір мистецтва! Не тільки виглядав неймовірно, але й смакував божественно.
+                                        Дякую за те, що зробили наше свято особливим!"</p>
+                                    <div class="flex items-center justify-center space-x-1 mb-4">
+                                        <i class="ri-star-fill text-primary text-xl"></i>
+                                        <i class="ri-star-fill text-primary text-xl"></i>
+                                        <i class="ri-star-fill text-primary text-xl"></i>
+                                        <i class="ri-star-fill text-primary text-xl"></i>
+                                        <i class="ri-star-fill text-primary text-xl"></i>
+                                    </div>
+                                    <h4 class="font-bold text-black">Анна Мельник</h4>
+                                    <p class="text-sm text-gray-600">Київ</p>
+                                </div>
                             </div>
                         </div>
-                        <p class="text-gray-700 text-sm">
-                            Фото наших десертів, процес приготування та щоденні історії
-                        </p>
                     </div>
-                    <div class="bg-white rounded-2xl p-6">
-                        <div class="flex items-center space-x-3 mb-4">
-                            <div class="w-10 h-10 bg-primary rounded-full flex items-center justify-center">
-                                <i class="ri-facebook-line text-black"></i>
-                            </div>
-                            <div>
-                                <h4 class="font-bold text-black">Facebook</h4>
-                                <p class="text-sm text-gray-600">Кондитерська Смакує</p>
-                            </div>
-                        </div>
-                        <p class="text-gray-700 text-sm">
-                            Новини, акції та спілкування з нашою спільнотою
-                        </p>
-                    </div>
-                    <div class="bg-white rounded-2xl p-6">
-                        <div class="flex items-center space-x-3 mb-4">
-                            <div class="w-10 h-10 bg-primary rounded-full flex items-center justify-center">
-                                <i class="ri-telegram-line text-black"></i>
-                            </div>
-                            <div>
-                                <h4 class="font-bold text-black">Telegram</h4>
-                                <p class="text-sm text-gray-600">@smakuje_bot</p>
-                            </div>
-                        </div>
-                        <p class="text-gray-700 text-sm">
-                            Швидке замовлення та оперативна підтримка клієнтів
-                        </p>
+                    <button
+                        class="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 w-12 h-12 bg-white rounded-full shadow-lg flex items-center justify-center text-black hover:bg-gray-50 transition-colors"
+                        id="prevTestimonial">
+                        <i class="ri-arrow-left-s-line text-2xl"></i>
+                    </button>
+                    <button
+                        class="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 w-12 h-12 bg-white rounded-full shadow-lg flex items-center justify-center text-black hover:bg-gray-50 transition-colors"
+                        id="nextTestimonial">
+                        <i class="ri-arrow-right-s-line text-2xl"></i>
+                    </button>
+                    <div class="flex justify-center space-x-2 mt-8">
+                        <button class="w-3 h-3 rounded-full transition-colors bg-opacity-20" data-slide="0"></button>
+                        <button class="w-3 h-3 rounded-full transition-colors bg-black" data-slide="1"></button>
+                        <button class="w-3 h-3 rounded-full transition-colors bg-opacity-20" data-slide="2"></button>
                     </div>
                 </div>
             </div>
