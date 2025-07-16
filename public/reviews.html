@@ -494,231 +494,210 @@
             </div>
         </div>
     </footer>
-    <script>
-        // --- ШАБЛОН ДЛЯ СОЗДАНИЯ КАРТОЧКИ ОТЗЫВА ---
-        // Эта функция создает HTML для одной карточки отзыва.
-        function createReviewCard(review) {
-            let starsHtml = '';
-            for (let i = 0; i < 5; i++) {
-                starsHtml += `<i class="ri-star-fill text-lg ${i < review.rating ? 'text-primary' : 'text-gray-300'}"></i>`;
-            }
-            const avatarUrl = review.authorAvatarUrl && review.authorAvatarUrl.trim() !== ''
-                ? review.authorAvatarUrl
-                : `https://api.dicebear.com/8.x/bottts-neutral/svg?seed=${encodeURIComponent(review.authorName)}`;
-            
-            return `
-                <div class="review-card bg-gray-50 rounded-2xl p-6" data-category="${review.category || 'all'}">
-                    <div class="flex items-start space-x-4 mb-4">
-                        <img src="${avatarUrl}" alt="${review.authorName}" class="w-12 h-12 rounded-full object-cover">
-                        <div class="flex-1">
-                            <div class="flex items-center justify-between mb-2">
-                                <h4 class="font-bold text-black">${review.authorName}</h4>
-                                <span class="text-sm text-gray-500">${review.date}</span>
-                            </div>
-                            <div class="flex items-center space-x-1 mb-2">${starsHtml}</div>
-                            <span class="inline-block bg-primary px-2 py-1 rounded-full text-xs font-medium text-black">${review.category}</span>
+<!-- БЛОК 1: Шаблон для создания карточки отзыва -->
+<!-- Этот скрипт содержит только функцию-шаблон. Он ничего не делает сам по себе, но используется другими скриптами. -->
+<script id="review-card-template">
+    function createReviewCard(review) {
+        let starsHtml = '';
+        for (let i = 0; i < 5; i++) {
+            starsHtml += `<i class="ri-star-fill text-lg ${i < review.rating ? 'text-primary' : 'text-gray-300'}"></i>`;
+        }
+        const avatarUrl = review.authorAvatarUrl && review.authorAvatarUrl.trim() !== ''
+            ? review.authorAvatarUrl
+            : `https://api.dicebear.com/8.x/bottts-neutral/svg?seed=${encodeURIComponent(review.authorName)}`;
+        
+        return `
+            <div class="review-card bg-gray-50 rounded-2xl p-6" data-category="${review.category || 'all'}">
+                <div class="flex items-start space-x-4 mb-4">
+                    <img src="${avatarUrl}" alt="${review.authorName}" class="w-12 h-12 rounded-full object-cover">
+                    <div class="flex-1">
+                        <div class="flex items-center justify-between mb-2">
+                            <h4 class="font-bold text-black">${review.authorName}</h4>
+                            <span class="text-sm text-gray-500">${review.date}</span>
                         </div>
-                    </div>
-                    <p class="text-gray-700 mb-4">${review.text}</p>
-                    <div class="mb-4">
-                        <img src="${review.imageUrl}" alt="Фото відгуку" class="w-full h-32 object-cover rounded-xl">
-                    </div>
-                    <div class="flex items-center justify-between text-sm text-gray-500">
-                        <div class="flex items-center space-x-4">
-                            <button class="flex items-center space-x-1 hover:text-primary transition-colors">
-                                <i class="ri-thumb-up-line"></i>
-                                <span>Корисно (${review.likes})</span>
-                            </button>
-                            <button class="flex items-center space-x-1 hover:text-primary transition-colors">
-                                <i class="ri-chat-3-line"></i>
-                                <span>Відповісти</span>
-                            </button>
-                        </div>
+                        <div class="flex items-center space-x-1 mb-2">${starsHtml}</div>
+                        <span class="inline-block bg-primary px-2 py-1 rounded-full text-xs font-medium text-black">${review.category}</span>
                     </div>
                 </div>
-            `;
+                <p class="text-gray-700 mb-4">${review.text}</p>
+                <div class="mb-4">
+                    <img src="${review.imageUrl}" alt="Фото відгуку" class="w-full h-32 object-cover rounded-xl">
+                </div>
+                <div class="flex items-center justify-between text-sm text-gray-500">
+                    <div class="flex items-center space-x-4">
+                        <button class="flex items-center space-x-1 hover:text-primary transition-colors">
+                            <i class="ri-thumb-up-line"></i>
+                            <span>Корисно (${review.likes})</span>
+                        </button>
+                        <button class="flex items-center space-x-1 hover:text-primary transition-colors">
+                            <i class="ri-chat-3-line"></i>
+                            <span>Відповісти</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+</script>
+
+<!-- БЛОК 2: Основной загрузчик отзывов -->
+<!-- Этот скрипт загружает данные и вставляет их на страницу. После этого он "сообщает" другим скриптам, что работа сделана. -->
+<script id="review-loader">
+    document.addEventListener('DOMContentLoaded', async () => {
+        const container = document.getElementById('reviewsContainer');
+        if (!container) return;
+
+        try {
+            const response = await fetch('/api/reviews');
+            const allReviews = await response.json();
+            
+            if (allReviews && allReviews.length > 0) {
+                 container.innerHTML = allReviews.map(review => createReviewCard(review)).join('');
+            } else {
+                 container.innerHTML = '<p class="col-span-full text-center">Відгуків поки немає.</p>';
+            }
+            
+            // ВАЖНО: "Сообщаем" другим скриптам, что отзывы загружены и готовы к работе
+            document.dispatchEvent(new CustomEvent('reviewsRendered'));
+
+        } catch (error) {
+            console.error('Ошибка загрузки отзывов:', error);
+            container.innerHTML = '<p class="col-span-full text-center text-red-500">Не вдалося завантажити відгуки.</p>';
         }
-    
-        // --- ОСНОВНАЯ ЛОГИКА СТРАНИЦЫ ---
-        document.addEventListener('DOMContentLoaded', async () => {
-            const container = document.getElementById('reviewsContainer');
-            if (!container) {
-                console.error('Контейнер для отзывов #reviewsContainer не найден!');
-                return;
+    });
+</script>
+
+<!-- БЛОК 3: Функционал страницы (фильтры, модальные окна и т.д.) -->
+<!-- Этот скрипт "ждет" сигнала от загрузчика и только потом начинает работать. -->
+<script id="review-functionality">
+    document.addEventListener('reviewsRendered', () => {
+        // --- Логика для фильтров и поиска ---
+        const filterButtons = document.querySelectorAll(".filter-btn");
+        const searchInput = document.getElementById("searchInput");
+
+        function applyFilters() {
+            const activeFilterBtn = document.querySelector(".filter-btn.active");
+            if (!activeFilterBtn) return;
+            const activeFilter = activeFilterBtn.getAttribute("data-filter");
+            const searchTerm = searchInput ? searchInput.value.toLowerCase() : "";
+            const reviewCards = document.querySelectorAll(".review-card");
+            reviewCards.forEach((card) => {
+                const categoryMatch = activeFilter === "all" || card.getAttribute("data-category") === activeFilter;
+                const searchMatch = card.textContent.toLowerCase().includes(searchTerm);
+                card.style.display = (categoryMatch && searchMatch) ? "block" : "none";
+            });
+        }
+
+        filterButtons.forEach(button => button.addEventListener("click", function () {
+            filterButtons.forEach(btn => btn.classList.remove("active"));
+            this.classList.add("active");
+            applyFilters();
+        }));
+        if (searchInput) searchInput.addEventListener("input", applyFilters);
+
+        // --- Логика для модального окна "Написать отзыв" ---
+        const writeReviewBtn = document.getElementById("writeReviewBtn");
+        const reviewModal = document.getElementById("reviewModal");
+        const closeModalBtn = document.getElementById("closeModalBtn");
+        const cancelBtn = document.getElementById("cancelBtn");
+        const reviewForm = document.getElementById("reviewForm");
+        const ratingStars = document.querySelectorAll("#ratingInput .star");
+        let selectedRating = 0;
+
+        const closeModal = () => {
+            if(reviewModal) {
+                reviewModal.classList.add("hidden");
+                document.body.style.overflow = "";
+                if(reviewForm) reviewForm.reset();
+                selectedRating = 0;
+                updateStarRating();
             }
-    
-            // Эта функция будет содержать ВЕСЬ ваш старый код.
-            // Она будет вызвана ПОСЛЕ того, как карточки загрузятся.
-            function initializePageFunctionality() {
-                
-                // --- Логика для фильтров и поиска ---
-                const filterButtons = document.querySelectorAll(".filter-btn");
-                const searchInput = document.getElementById("searchInput");
-    
-                function applyFilters() {
-                    const activeFilterBtn = document.querySelector(".filter-btn.active");
-                    if (!activeFilterBtn) return;
-    
-                    const activeFilter = activeFilterBtn.getAttribute("data-filter");
-                    const searchTerm = searchInput ? searchInput.value.toLowerCase() : "";
-                    const reviewCards = document.querySelectorAll(".review-card");
-    
-                    reviewCards.forEach((card) => {
-                        const categoryMatch = activeFilter === "all" || card.getAttribute("data-category") === activeFilter;
-                        const searchMatch = card.textContent.toLowerCase().includes(searchTerm);
-                        
-                        if (categoryMatch && searchMatch) {
-                            card.style.display = "block";
-                        } else {
-                            card.style.display = "none";
-                        }
-                    });
-                }
-    
-                filterButtons.forEach((button) => {
-                    button.addEventListener("click", function () {
-                        filterButtons.forEach((btn) => btn.classList.remove("active"));
-                        this.classList.add("active");
-                        applyFilters();
-                    });
-                });
-    
-                if (searchInput) {
-                    searchInput.addEventListener("input", applyFilters);
-                }
-    
-                // --- Логика для анимации появления ---
-                const observer = new IntersectionObserver((entries) => {
-                    entries.forEach((entry) => {
-                        if (entry.isIntersecting) {
-                            entry.target.style.opacity = "1";
-                            entry.target.style.transform = "translateY(0)";
-                        }
-                    });
-                }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
-                
-                const reviewCardsForAnimation = document.querySelectorAll(".review-card");
-                reviewCardsForAnimation.forEach((card, index) => {
-                    card.style.opacity = "0";
-                    card.style.transform = "translateY(30px)";
-                    card.style.transition = `all 0.6s ease ${index * 0.1}s`;
-                    observer.observe(card);
-                });
-                
-                // --- Логика для модального окна "Написать отзыв" ---
-                const writeReviewBtn = document.getElementById("writeReviewBtn");
-                const reviewModal = document.getElementById("reviewModal");
-                const closeModalBtn = document.getElementById("closeModalBtn");
-                const cancelBtn = document.getElementById("cancelBtn");
-                const reviewForm = document.getElementById("reviewForm");
-                const ratingStars = document.querySelectorAll("#ratingInput .star");
-                let selectedRating = 0;
-    
-                if (writeReviewBtn && reviewModal) {
-                     writeReviewBtn.addEventListener("click", () => {
-                        reviewModal.classList.remove("hidden");
-                        document.body.style.overflow = "hidden";
-                    });
-                }
-                
-                const closeModal = () => {
-                    if(reviewModal) {
-                        reviewModal.classList.add("hidden");
-                        document.body.style.overflow = "";
-                        if(reviewForm) reviewForm.reset();
-                        selectedRating = 0;
-                        updateStarRating();
-                    }
-                };
-                
-                if(closeModalBtn) closeModalBtn.addEventListener("click", closeModal);
-                if(cancelBtn) cancelBtn.addEventListener("click", closeModal);
-                if(reviewModal) reviewModal.addEventListener("click", (e) => {
-                    if (e.target === reviewModal) closeModal();
-                });
-    
-                // Логика для звезд в модальном окне
-                function updateStarRating() {
-                    ratingStars.forEach((star, index) => {
-                        if (index < selectedRating) {
-                            star.classList.replace("ri-star-line", "ri-star-fill");
-                            star.classList.add("text-primary");
-                        } else {
-                            star.classList.replace("ri-star-fill", "ri-star-line");
-                            star.classList.remove("text-primary");
-                        }
-                    });
-                }
-    
-                ratingStars.forEach(star => {
-                    star.addEventListener("click", function() {
-                        selectedRating = parseInt(this.dataset.rating);
-                        updateStarRating();
-                    });
-                });
-    
-                // Логика для отправки формы
-                if (reviewForm) {
-                    reviewForm.addEventListener("submit", function (e) {
-                        e.preventDefault();
-                        if (selectedRating === 0) {
-                            alert("Будь ласка, оберіть оцінку");
-                            return;
-                        }
-                        const submitBtn = reviewForm.querySelector('button[type="submit"]');
-                        const originalText = submitBtn.textContent;
-                        submitBtn.textContent = "Публікуємо...";
-                        submitBtn.disabled = true;
-                        setTimeout(() => {
-                            submitBtn.textContent = "Відгук опубліковано!";
-                            submitBtn.classList.remove("bg-primary", "hover:bg-yellow-400");
-                            submitBtn.classList.add("bg-green-500", "hover:bg-green-600");
-                        }, 1500);
-                        setTimeout(() => {
-                            closeModal();
-                            submitBtn.textContent = originalText;
-                            submitBtn.disabled = false;
-                            submitBtn.classList.remove("bg-green-500", "hover:bg-green-600");
-                            submitBtn.classList.add("bg-primary", "hover:bg-yellow-400");
-                        }, 3000);
-                    });
-                }
-    
-                // --- Логика для кнопки "Загрузить еще" ---
-                const loadMoreBtn = document.getElementById("loadMoreBtn");
-                if (loadMoreBtn) {
-                    loadMoreBtn.addEventListener("click", function () {
-                        this.textContent = "Завантажуємо...";
-                        this.disabled = true;
-                        setTimeout(() => {
-                            // Здесь в будущем будет логика подгрузки новых отзывов
-                            this.textContent = "Завантажити більше відгуків";
-                            this.disabled = false;
-                        }, 2000);
-                    });
-                }
-            }
-    
-            // --- Основной процесс загрузки ---
-            try {
-                const response = await fetch('/api/reviews');
-                const allReviews = await response.json();
-                
-                if (allReviews && allReviews.length > 0) {
-                     container.innerHTML = allReviews.map(review => createReviewCard(review)).join('');
-                } else {
-                     container.innerHTML = '<p class="col-span-full text-center">Відгуків поки немає.</p>';
-                }
-                
-                // ВАЖНО: Инициализируем всю функциональность ПОСЛЕ того, как карточки добавлены на страницу
-                initializePageFunctionality();
-    
-            } catch (error) {
-                console.error('Ошибка загрузки отзывов:', error);
-                container.innerHTML = '<p class="col-span-full text-center text-red-500">Не вдалося завантажити відгуки.</p>';
-            }
+        };
+
+        if (writeReviewBtn) writeReviewBtn.addEventListener("click", () => {
+            if(reviewModal) reviewModal.classList.remove("hidden");
+            document.body.style.overflow = "hidden";
         });
-    </script>
+        if(closeModalBtn) closeModalBtn.addEventListener("click", closeModal);
+        if(cancelBtn) cancelBtn.addEventListener("click", closeModal);
+        if(reviewModal) reviewModal.addEventListener("click", (e) => {
+            if (e.target === reviewModal) closeModal();
+        });
+
+        // Логика для звезд
+        function updateStarRating() {
+            ratingStars.forEach((star, index) => {
+                if (index < selectedRating) {
+                    star.classList.replace("ri-star-line", "ri-star-fill");
+                    star.classList.add("text-primary");
+                } else {
+                    star.classList.replace("ri-star-fill", "ri-star-line");
+                    star.classList.remove("text-primary");
+                }
+            });
+        }
+        ratingStars.forEach(star => star.addEventListener("click", function() {
+            selectedRating = parseInt(this.dataset.rating);
+            updateStarRating();
+        }));
+
+        // Логика для отправки формы
+        if (reviewForm) {
+            reviewForm.addEventListener("submit", function (e) {
+                e.preventDefault();
+                if (selectedRating === 0) {
+                    alert("Будь ласка, оберіть оцінку");
+                    return;
+                }
+                const submitBtn = reviewForm.querySelector('button[type="submit"]');
+                submitBtn.textContent = "Публікуємо...";
+                submitBtn.disabled = true;
+                setTimeout(() => {
+                    submitBtn.textContent = "Відгук опубліковано!";
+                    submitBtn.classList.replace("bg-primary", "bg-green-500");
+                }, 1500);
+                setTimeout(closeModal, 3000);
+            });
+        }
+
+        // --- Логика для кнопки "Загрузить еще" ---
+        const loadMoreBtn = document.getElementById("loadMoreBtn");
+        if (loadMoreBtn) {
+            loadMoreBtn.addEventListener("click", function () {
+                this.textContent = "Завантажуємо...";
+                this.disabled = true;
+                setTimeout(() => {
+                    this.textContent = "Завантажити більше відгуків";
+                    this.disabled = false;
+                }, 2000);
+            });
+        }
+    });
+</script>
+
+<!-- БЛОК 4: Анимации -->
+<!-- Этот скрипт также "ждет" сигнала от загрузчика. -->
+<script id="review-animations">
+    document.addEventListener('reviewsRendered', () => {
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = "1";
+                    entry.target.style.transform = "translateY(0)";
+                }
+            });
+        }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+        
+        const reviewCardsForAnimation = document.querySelectorAll(".review-card");
+        reviewCardsForAnimation.forEach((card, index) => {
+            card.style.opacity = "0";
+            card.style.transform = "translateY(30px)";
+            card.style.transition = `all 0.6s ease ${index * 0.1}s`;
+            observer.observe(card);
+        });
+    });
+</script>
+
     
 </body>
 
