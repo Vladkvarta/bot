@@ -494,240 +494,20 @@
             </div>
         </div>
     </footer>
-    <script id="mobile-menu">
-        document.addEventListener("DOMContentLoaded", function () {
-            const menuButton = document.getElementById("menuButton");
-            const mobileNav = document.getElementById("mobileNav");
-            let isMenuOpen = false;
-            if (menuButton && mobileNav) {
-                menuButton.addEventListener("click", function () {
-                    isMenuOpen = !isMenuOpen;
-                    if (isMenuOpen) {
-                        mobileNav.classList.remove("hidden");
-                        mobileNav.innerHTML = `
-      <div class="flex flex-col h-full">
-      <div class="flex items-center justify-between p-4 border-b">
-      <div class="flex items-center space-x-2">
-      <div class="w-12 h-12 flex items-center justify-center bg-primary rounded-full shadow-[0_0_15px_rgba(255,215,0,0.5)] backdrop-blur-sm">
-      <img src="https://static.readdy.ai/image/43b57c5738bad1db7fac177fe6f2f220/46ca856dcdb27461a44d2cf39bdb0b5a.jfif" alt="Logo" class="w-8 h-8">
-      </div>
-      <div>
-      <h1 class="text-lg font-bold text-black">СМАКУЄ</h1>
-      <p class="text-xs text-gray-600">Крафтове виробництво</p>
-      </div>
-      </div>
-      <button class="w-8 h-8 flex items-center justify-center" id="closeMenu">
-      <i class="ri-close-line text-xl"></i>
-      </button>
-      </div>
-      <div class="flex flex-col p-4 space-y-4">
-      <a href="https://readdy.ai/home/cb9458f8-9101-4315-a4f7-32608dd27b3b/434a1df6-3281-44e4-95e6-f09bfbd6453e" data-readdy="true" class="text-lg text-gray-800 hover:text-primary">Головна</a>
-      <a href="#" class="text-lg text-gray-800 hover:text-primary">Контакти</a>
-      <a href="#" class="text-lg text-primary">Відгуки</a>
-      <a href="https://readdy.ai/home/cb9458f8-9101-4315-a4f7-32608dd27b3b/6bfecefb-28f0-4a17-b50e-b37c2b782635" data-readdy="true" class="text-lg text-gray-800 hover:text-primary">Особистий кабінет</a>
-      <a href="#" class="text-lg text-gray-800 hover:text-primary">Корзина</a>
-      </div>
-      </div>
-      `;
-                        document.body.style.overflow = "hidden";
-                        const closeMenu = document.getElementById("closeMenu");
-                        if (closeMenu) {
-                            closeMenu.addEventListener("click", function () {
-                                mobileNav.classList.add("hidden");
-                                document.body.style.overflow = "";
-                                isMenuOpen = false;
-                            });
-                        }
-                    } else {
-                        mobileNav.classList.add("hidden");
-                        document.body.style.overflow = "";
-                    }
-                });
-            }
-        });
-    </script>
-    <script id="reviews-functionality">
-        document.addEventListener("DOMContentLoaded", function () {
-            const filterButtons = document.querySelectorAll(".filter-btn");
-            const reviewCards = document.querySelectorAll(".review-card");
-            const searchInput = document.getElementById("searchInput");
-            const writeReviewBtn = document.getElementById("writeReviewBtn");
-            const reviewModal = document.getElementById("reviewModal");
-            const closeModalBtn = document.getElementById("closeModalBtn");
-            const cancelBtn = document.getElementById("cancelBtn");
-            const reviewForm = document.getElementById("reviewForm");
-            const ratingStars = document.querySelectorAll("#ratingInput .star");
-            const photoUpload = document.getElementById("photoUpload");
-            const photoInput = document.getElementById("photoInput");
-            let selectedRating = 0;
-            filterButtons.forEach((button) => {
-                button.addEventListener("click", function () {
-                    filterButtons.forEach((btn) => btn.classList.remove("active"));
-                    this.classList.add("active");
-                    const filter = this.getAttribute("data-filter");
-                    filterReviews(filter);
-                });
-            });
-            function filterReviews(filter) {
-                reviewCards.forEach((card) => {
-                    if (filter === "all" || card.getAttribute("data-category") === filter) {
-                        card.style.display = "block";
-                    } else {
-                        card.style.display = "none";
-                    }
-                });
-            }
-            if (searchInput) {
-                searchInput.addEventListener("input", function () {
-                    const searchTerm = this.value.toLowerCase();
-                    reviewCards.forEach((card) => {
-                        const text = card.textContent.toLowerCase();
-                        if (text.includes(searchTerm)) {
-                            card.style.display = "block";
-                        } else {
-                            card.style.display = "none";
-                        }
-                    });
-                });
-            }
-            if (writeReviewBtn) {
-                writeReviewBtn.addEventListener("click", function () {
-                    reviewModal.classList.remove("hidden");
-                    document.body.style.overflow = "hidden";
-                });
-            }
-            function closeModal() {
-                reviewModal.classList.add("hidden");
-                document.body.style.overflow = "";
-                selectedRating = 0;
-                updateStarRating();
-                reviewForm.reset();
-            }
-            if (closeModalBtn) {
-                closeModalBtn.addEventListener("click", closeModal);
-            }
-            if (cancelBtn) {
-                cancelBtn.addEventListener("click", closeModal);
-            }
-            ratingStars.forEach((star) => {
-                star.addEventListener("click", function () {
-                    selectedRating = parseInt(this.getAttribute("data-rating"));
-                    updateStarRating();
-                });
-                star.addEventListener("mouseenter", function () {
-                    const rating = parseInt(this.getAttribute("data-rating"));
-                    highlightStars(rating);
-                });
-            });
-            document
-                .getElementById("ratingInput")
-                .addEventListener("mouseleave", function () {
-                    updateStarRating();
-                });
-            function updateStarRating() {
-                ratingStars.forEach((star, index) => {
-                    if (index < selectedRating) {
-                        star.classList.remove("ri-star-line", "text-gray-300");
-                        star.classList.add("ri-star-fill", "text-primary");
-                    } else {
-                        star.classList.remove("ri-star-fill", "text-primary");
-                        star.classList.add("ri-star-line", "text-gray-300");
-                    }
-                });
-            }
-            function highlightStars(rating) {
-                ratingStars.forEach((star, index) => {
-                    if (index < rating) {
-                        star.classList.remove("ri-star-line", "text-gray-300");
-                        star.classList.add("ri-star-fill", "text-primary");
-                    } else {
-                        star.classList.remove("ri-star-fill", "text-primary");
-                        star.classList.add("ri-star-line", "text-gray-300");
-                    }
-                });
-            }
-            if (photoUpload && photoInput) {
-                photoUpload.addEventListener("click", function () {
-                    photoInput.click();
-                });
-                photoInput.addEventListener("change", function () {
-                    const files = this.files;
-                    if (files.length > 0) {
-                        photoUpload.innerHTML = `
-      <div class="w-12 h-12 flex items-center justify-center bg-primary rounded-full mx-auto mb-3">
-      <i class="ri-check-line text-xl text-black"></i>
-      </div>
-      <p class="text-black text-sm font-medium">Обрано файлів: ${files.length}</p>
-      `;
-                    }
-                });
-            }
-            function toggleCheckbox(id) {
-                const checkbox = document.getElementById(id);
-                const checkboxCustom =
-                    checkbox.parentElement.querySelector(".checkbox-custom");
-                const checkboxIcon = checkbox.parentElement.querySelector(".checkbox-icon");
-                checkbox.checked = !checkbox.checked;
-                if (checkbox.checked) {
-                    checkboxCustom.classList.add("bg-primary", "border-primary");
-                    checkboxCustom.classList.remove("border-gray-300");
-                    checkboxIcon.classList.remove("hidden");
-                } else {
-                    checkboxCustom.classList.remove("bg-primary", "border-primary");
-                    checkboxCustom.classList.add("border-gray-300");
-                    checkboxIcon.classList.add("hidden");
-                }
-            }
-            window.toggleCheckbox = toggleCheckbox;
-            if (reviewForm) {
-                reviewForm.addEventListener("submit", function (e) {
-                    e.preventDefault();
-                    if (selectedRating === 0) {
-                        alert("Будь ласка, оберіть оцінку");
-                        return;
-                    }
-                    const submitBtn = reviewForm.querySelector('button[type="submit"]');
-                    const originalText = submitBtn.textContent;
-                    submitBtn.textContent = "Публікуємо...";
-                    submitBtn.disabled = true;
-                    setTimeout(() => {
-                        submitBtn.textContent = "Відгук опубліковано!";
-                        submitBtn.classList.remove("bg-primary", "hover:bg-yellow-400");
-                        submitBtn.classList.add("bg-green-500", "hover:bg-green-600");
-                    }, 1500);
-                    setTimeout(() => {
-                        closeModal();
-                        submitBtn.textContent = originalText;
-                        submitBtn.disabled = false;
-                        submitBtn.classList.remove("bg-green-500", "hover:bg-green-600");
-                        submitBtn.classList.add("bg-primary", "hover:bg-yellow-400");
-                    }, 3000);
-                });
-            }
-            reviewModal.addEventListener("click", function (e) {
-                if (e.target === reviewModal) {
-                    closeModal();
-                }
-            });
-        });
-    </script>
     <script>
-        // --- ШАГ 2: Определяем функцию-шаблон ---
+        // --- ШАБЛОН ДЛЯ СОЗДАНИЯ КАРТОЧКИ ОТЗЫВА ---
+        // Эта функция создает HTML для одной карточки отзыва.
         function createReviewCard(review) {
-            // Генерируем HTML для звезд на основе рейтинга
             let starsHtml = '';
             for (let i = 0; i < 5; i++) {
                 starsHtml += `<i class="ri-star-fill text-lg ${i < review.rating ? 'text-primary' : 'text-gray-300'}"></i>`;
             }
-    
-            // Если аватар не указан, генерируем случайный
             const avatarUrl = review.authorAvatarUrl && review.authorAvatarUrl.trim() !== ''
                 ? review.authorAvatarUrl
                 : `https://api.dicebear.com/8.x/bottts-neutral/svg?seed=${encodeURIComponent(review.authorName)}`;
-    
-            // Возвращаем готовый HTML-код карточки
+            
             return `
-                <div class="review-card bg-gray-50 rounded-2xl p-6">
+                <div class="review-card bg-gray-50 rounded-2xl p-6" data-category="${review.category || 'all'}">
                     <div class="flex items-start space-x-4 mb-4">
                         <img src="${avatarUrl}" alt="${review.authorName}" class="w-12 h-12 rounded-full object-cover">
                         <div class="flex-1">
@@ -759,54 +539,187 @@
             `;
         }
     
-        // --- ШАГ 3: Загружаем и отображаем отзывы ---
+        // --- ОСНОВНАЯ ЛОГИКА СТРАНИЦЫ ---
         document.addEventListener('DOMContentLoaded', async () => {
-            const container = document.getElementById('reviews-container');
+            const container = document.getElementById('reviewsContainer');
+            if (!container) {
+                console.error('Контейнер для отзывов #reviewsContainer не найден!');
+                return;
+            }
+    
+            // Эта функция будет содержать ВЕСЬ ваш старый код.
+            // Она будет вызвана ПОСЛЕ того, как карточки загрузятся.
+            function initializePageFunctionality() {
+                
+                // --- Логика для фильтров и поиска ---
+                const filterButtons = document.querySelectorAll(".filter-btn");
+                const searchInput = document.getElementById("searchInput");
+    
+                function applyFilters() {
+                    const activeFilterBtn = document.querySelector(".filter-btn.active");
+                    if (!activeFilterBtn) return;
+    
+                    const activeFilter = activeFilterBtn.getAttribute("data-filter");
+                    const searchTerm = searchInput ? searchInput.value.toLowerCase() : "";
+                    const reviewCards = document.querySelectorAll(".review-card");
+    
+                    reviewCards.forEach((card) => {
+                        const categoryMatch = activeFilter === "all" || card.getAttribute("data-category") === activeFilter;
+                        const searchMatch = card.textContent.toLowerCase().includes(searchTerm);
+                        
+                        if (categoryMatch && searchMatch) {
+                            card.style.display = "block";
+                        } else {
+                            card.style.display = "none";
+                        }
+                    });
+                }
+    
+                filterButtons.forEach((button) => {
+                    button.addEventListener("click", function () {
+                        filterButtons.forEach((btn) => btn.classList.remove("active"));
+                        this.classList.add("active");
+                        applyFilters();
+                    });
+                });
+    
+                if (searchInput) {
+                    searchInput.addEventListener("input", applyFilters);
+                }
+    
+                // --- Логика для анимации появления ---
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach((entry) => {
+                        if (entry.isIntersecting) {
+                            entry.target.style.opacity = "1";
+                            entry.target.style.transform = "translateY(0)";
+                        }
+                    });
+                }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+                
+                const reviewCardsForAnimation = document.querySelectorAll(".review-card");
+                reviewCardsForAnimation.forEach((card, index) => {
+                    card.style.opacity = "0";
+                    card.style.transform = "translateY(30px)";
+                    card.style.transition = `all 0.6s ease ${index * 0.1}s`;
+                    observer.observe(card);
+                });
+                
+                // --- Логика для модального окна "Написать отзыв" ---
+                const writeReviewBtn = document.getElementById("writeReviewBtn");
+                const reviewModal = document.getElementById("reviewModal");
+                const closeModalBtn = document.getElementById("closeModalBtn");
+                const cancelBtn = document.getElementById("cancelBtn");
+                const reviewForm = document.getElementById("reviewForm");
+                const ratingStars = document.querySelectorAll("#ratingInput .star");
+                let selectedRating = 0;
+    
+                if (writeReviewBtn && reviewModal) {
+                     writeReviewBtn.addEventListener("click", () => {
+                        reviewModal.classList.remove("hidden");
+                        document.body.style.overflow = "hidden";
+                    });
+                }
+                
+                const closeModal = () => {
+                    if(reviewModal) {
+                        reviewModal.classList.add("hidden");
+                        document.body.style.overflow = "";
+                        if(reviewForm) reviewForm.reset();
+                        selectedRating = 0;
+                        updateStarRating();
+                    }
+                };
+                
+                if(closeModalBtn) closeModalBtn.addEventListener("click", closeModal);
+                if(cancelBtn) cancelBtn.addEventListener("click", closeModal);
+                if(reviewModal) reviewModal.addEventListener("click", (e) => {
+                    if (e.target === reviewModal) closeModal();
+                });
+    
+                // Логика для звезд в модальном окне
+                function updateStarRating() {
+                    ratingStars.forEach((star, index) => {
+                        if (index < selectedRating) {
+                            star.classList.replace("ri-star-line", "ri-star-fill");
+                            star.classList.add("text-primary");
+                        } else {
+                            star.classList.replace("ri-star-fill", "ri-star-line");
+                            star.classList.remove("text-primary");
+                        }
+                    });
+                }
+    
+                ratingStars.forEach(star => {
+                    star.addEventListener("click", function() {
+                        selectedRating = parseInt(this.dataset.rating);
+                        updateStarRating();
+                    });
+                });
+    
+                // Логика для отправки формы
+                if (reviewForm) {
+                    reviewForm.addEventListener("submit", function (e) {
+                        e.preventDefault();
+                        if (selectedRating === 0) {
+                            alert("Будь ласка, оберіть оцінку");
+                            return;
+                        }
+                        const submitBtn = reviewForm.querySelector('button[type="submit"]');
+                        const originalText = submitBtn.textContent;
+                        submitBtn.textContent = "Публікуємо...";
+                        submitBtn.disabled = true;
+                        setTimeout(() => {
+                            submitBtn.textContent = "Відгук опубліковано!";
+                            submitBtn.classList.remove("bg-primary", "hover:bg-yellow-400");
+                            submitBtn.classList.add("bg-green-500", "hover:bg-green-600");
+                        }, 1500);
+                        setTimeout(() => {
+                            closeModal();
+                            submitBtn.textContent = originalText;
+                            submitBtn.disabled = false;
+                            submitBtn.classList.remove("bg-green-500", "hover:bg-green-600");
+                            submitBtn.classList.add("bg-primary", "hover:bg-yellow-400");
+                        }, 3000);
+                    });
+                }
+    
+                // --- Логика для кнопки "Загрузить еще" ---
+                const loadMoreBtn = document.getElementById("loadMoreBtn");
+                if (loadMoreBtn) {
+                    loadMoreBtn.addEventListener("click", function () {
+                        this.textContent = "Завантажуємо...";
+                        this.disabled = true;
+                        setTimeout(() => {
+                            // Здесь в будущем будет логика подгрузки новых отзывов
+                            this.textContent = "Завантажити більше відгуків";
+                            this.disabled = false;
+                        }, 2000);
+                    });
+                }
+            }
+    
+            // --- Основной процесс загрузки ---
             try {
                 const response = await fetch('/api/reviews');
-                const reviews = await response.json();
-                // Используем функцию createReviewCard для каждого отзыва
-                container.innerHTML = reviews.map(review => createReviewCard(review)).join('');
+                const allReviews = await response.json();
+                
+                if (allReviews && allReviews.length > 0) {
+                     container.innerHTML = allReviews.map(review => createReviewCard(review)).join('');
+                } else {
+                     container.innerHTML = '<p class="col-span-full text-center">Відгуків поки немає.</p>';
+                }
+                
+                // ВАЖНО: Инициализируем всю функциональность ПОСЛЕ того, как карточки добавлены на страницу
+                initializePageFunctionality();
+    
             } catch (error) {
                 console.error('Ошибка загрузки отзывов:', error);
-                container.innerHTML = '<p>Не вдалося завантажити відгуки.</p>';
+                container.innerHTML = '<p class="col-span-full text-center text-red-500">Не вдалося завантажити відгуки.</p>';
             }
         });
     </script>
-    <script id="smooth-animations">
-        document.addEventListener("DOMContentLoaded", function () {
-            const observerOptions = {
-                threshold: 0.1,
-                rootMargin: "0px 0px -50px 0px",
-            };
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach((entry) => {
-                    if (entry.isIntersecting) {
-                        entry.target.style.opacity = "1";
-                        entry.target.style.transform = "translateY(0)";
-                    }
-                });
-            }, observerOptions);
-            const reviewCards = document.querySelectorAll(".review-card");
-            reviewCards.forEach((card, index) => {
-                card.style.opacity = "0";
-                card.style.transform = "translateY(30px)";
-                card.style.transition = `all 0.6s ease ${index * 0.1}s`;
-                observer.observe(card);
-            });
-            const loadMoreBtn = document.getElementById("loadMoreBtn");
-            if (loadMoreBtn) {
-                loadMoreBtn.addEventListener("click", function () {
-                    this.textContent = "Завантажуємо...";
-                    this.disabled = true;
-                    setTimeout(() => {
-                        this.textContent = "Завантажити більше відгуків";
-                        this.disabled = false;
-                    }, 2000);
-                });
-            }
-        });
-    </script>
+    
 </body>
 
 </html>
