@@ -510,25 +510,17 @@
             ? review.authorAvatarUrl
             : `https://api.dicebear.com/8.x/bottts-neutral/svg?seed=${encodeURIComponent(review.authorName)}`;
         
-        // --- НОВАЯ ЛОГИКА: Замена фото десерта на эмодзи ---
+        // --- ИЗМЕНЕННАЯ ЛОГИКА: Создаем блок с фото, только если фото есть ---
         let imageHtml = '';
         if (review.imageUrl && review.imageUrl.trim() !== '') {
-            // Если фото есть, показываем его
-            imageHtml = `<img src="${review.imageUrl}" alt="Фото відгуку" class="w-full h-32 object-cover rounded-xl">`;
-        } else {
-            // Если фото нет, показываем эмодзи в зависимости от оценки
-            let emoji = '🤔'; // Эмодзи по умолчанию
-            if (review.rating === 5) emoji = '🤩';
-            else if (review.rating === 4) emoji = '�';
-            else if (review.rating === 3) emoji = '🙂';
-            else if (review.rating <= 2) emoji = '😕';
-            
+            // Если фото есть, создаем весь div с картинкой
             imageHtml = `
-                <div class="w-full h-32 flex items-center justify-center bg-gray-100 rounded-xl">
-                    <span class="text-5xl">${emoji}</span>
+                <div class="mb-4">
+                    <img src="${review.imageUrl}" alt="Фото відгуку" class="w-full h-32 object-cover rounded-xl">
                 </div>
             `;
         }
+        // Если фото нет, imageHtml останется пустой строкой, и блок не будет создан.
         
         // --- Итоговый HTML-код карточки ---
         return `
@@ -545,9 +537,9 @@
                     </div>
                 </div>
                 <p class="text-gray-700 mb-4">${review.text}</p>
-                <div class="mb-4">
-                    ${imageHtml}
-                </div>
+                
+                ${imageHtml}
+                
                 <div class="flex items-center justify-between text-sm text-gray-500">
                     <div class="flex items-center space-x-4">
                         <button class="flex items-center space-x-1 hover:text-primary transition-colors">
