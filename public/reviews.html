@@ -505,26 +505,29 @@
         }
 
         // --- Логика для аватара пользователя ---
-        // Если аватар не указан, генерируем случайный, как в Google Docs.
-        const avatarUrl = review.authorAvatarUrl && review.authorAvatarUrl.trim() !== ''
+        // Если hasAvatar: true, берем фото, иначе - стандартное.
+        const avatarUrl = review.hasAvatar
             ? review.authorAvatarUrl
-            : `https://api.dicebear.com/8.x/bottts-neutral/svg?seed=${encodeURIComponent(review.authorName)}`;
-        
-        // --- ИЗМЕНЕННАЯ ЛОГИКА: Создаем блок с фото, только если фото есть ---
+            : '/img/avatars/default-avatar.png'; // Путь к вашему стандартному аватару
+
+        // --- Логика для ФОТО/ЭМОЦИИ ---
         let imageHtml = '';
-        if (review.imageUrl && review.imageUrl.trim() !== '') {
-            // Если фото есть, создаем весь div с картинкой
+        if (review.hasPhoto) {
+            // Если hasPhoto: true, показываем фото отзыва
+            imageHtml = `<img src="${review.imageUrl}" alt="Фото відгуку" class="w-full h-32 object-cover rounded-xl">`;
+        } else {
+            // Если hasPhoto: false, показываем эмоцию по оценке
+            const emotionImageUrl = `/img/emotions/rating-${review.rating}.png`; // Путь к вашим эмоциям
             imageHtml = `
-                <div class="mb-4">
-                    <img src="${review.imageUrl}" alt="Фото відгуку" class="w-full h-32 object-cover rounded-xl">
+                <div class="w-full h-32 flex items-center justify-center bg-gray-100 rounded-xl">
+                    <img src="${emotionImageUrl}" alt="Оцінка ${review.rating}" class="w-16 h-16">
                 </div>
             `;
         }
-        // Если фото нет, imageHtml останется пустой строкой, и блок не будет создан.
         
         // --- Итоговый HTML-код карточки ---
         return `
-            <div class="review-card bg-gray-50 rounded-2xl p-6" data-category="${review.category || 'all'}">
+            <div class="review-card bg-gray-50 rounded-2xl p-6" data-category="${review.category || 'all'}" data-id="${review.id}">
                 <div class="flex items-start space-x-4 mb-4">
                     <img src="${avatarUrl}" alt="${review.authorName}" class="w-12 h-12 rounded-full object-cover">
                     <div class="flex-1">
@@ -538,7 +541,9 @@
                 </div>
                 <p class="text-gray-700 mb-4">${review.text}</p>
                 
-                ${imageHtml}
+                <div class="mb-4">
+                    ${imageHtml}
+                </div>
                 
                 <div class="flex items-center justify-between text-sm text-gray-500">
                     <div class="flex items-center space-x-4">

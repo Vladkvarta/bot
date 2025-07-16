@@ -1,22 +1,80 @@
 [
-    {
-      "authorName": "Олена Петренко",
-      "authorAvatarUrl": "/img/avatars/customer-001.png",
-      "date": "2 дні тому",
-      "rating": 5,
-      "category": "Торти",
-      "text": "Замовляла торт на день народження доньки. Результат перевершив усі очікування! Торт був не тільки красивий, але й неймовірно смачний. Дякую за професійну роботу!",
-      "imageUrl": "/img/reviews/cake-review-001.jpg",
-      "likes": 12
-    },
-    {
-      "authorName": "Олександр Ковальчук",
-      "authorAvatarUrl": "/img/avatars/customer-002.png",
-      "date": "5 днів тому",
-      "rating": 5,
-      "category": "Тістечка",
-      "text": "Регулярно замовляю макаруни для офісу. Колеги в захваті, сервіс на вищому рівні, завжди вчасна доставка.",
-      "imageUrl": "/img/reviews/macarons-review-001.jpg",
-      "likes": 8
-    }
-  ]
+  {
+    "id": "rev_1",
+    "authorName": "Олена Петренко",
+    "hasAvatar": true,
+    "authorAvatarUrl": "/img/avatars/olena.png",
+    "hasPhoto": true,
+    "imageUrl": "/img/reviews/cake-review-001.jpg",
+    "rating": 5,
+    "date": "2 дні тому",
+    "category": "cakes",
+    "text": "Замовляла торт на день народження доньки. Результат перевершив усі очікування! Торт був не тільки красивий, але й неймовірно смачний.",
+    "likes": 12
+  },
+  {
+    "id": "rev_2",
+    "authorName": "Олександр Ковальчук",
+    "hasAvatar": false,
+    "authorAvatarUrl": "",
+    "hasPhoto": false,
+    "imageUrl": "",
+    "rating": 5,
+    "date": "5 днів тому",
+    "category": "pastries",
+    "text": "Регулярно замовляю макаруни для офісу. Колеги в захваті, сервіс на вищому рівні, завжди вчасна доставка.",
+    "likes": 8
+  },
+  {
+    "id": "rev_3",
+    "authorName": "Марина Іванова",
+    "hasAvatar": true,
+    "authorAvatarUrl": "/img/avatars/marina.png",
+    "hasPhoto": true,
+    "imageUrl": "/img/reviews/sweets-review-001.jpg",
+    "rating": 4,
+    "date": "1 тиждень тому",
+    "category": "sweets",
+    "text": "Дуже смачні цукерки ручної роботи! Ідеальний варіант для подарунку. Трохи дорожче, ніж у магазині, але воно того варте.",
+    "likes": 15
+  },
+  {
+    "id": "rev_4",
+    "authorName": "Сергій Вовк",
+    "hasAvatar": false,
+    "authorAvatarUrl": "",
+    "hasPhoto": false,
+    "imageUrl": "",
+    "rating": 5,
+    "date": "2 тижні тому",
+    "category": "service",
+    "text": "Хочу відзначити чудове обслуговування. Менеджер допоміг обрати торт, врахував усі побажання. Дякую!",
+    "likes": 5
+  },
+  {
+    "id": "rev_5",
+    "authorName": "Ірина Сидоренко",
+    "hasAvatar": true,
+    "authorAvatarUrl": "/img/avatars/irina.png",
+    "hasPhoto": false,
+    "imageUrl": "",
+    "rating": 5,
+    "date": "3 тижні тому",
+    "category": "cakes",
+    "text": "Найкращий 'Наполеон' у моєму житті! Просто тане у роті. Тепер я ваш постійний клієнт.",
+    "likes": 22
+  },
+  {
+    "id": "rev_6",
+    "authorName": "Андрій Мельник",
+    "hasAvatar": false,
+    "authorAvatarUrl": "",
+    "hasPhoto": true,
+    "imageUrl": "/img/reviews/pastries-review-001.jpg",
+    "rating": 4,
+    "date": "1 місяць тому",
+    "category": "pastries",
+    "text": "Тістечка свіжі та смачні. Єдиний мінус - хотілося б трохи більший асортимент.",
+    "likes": 7
+  }
+]
