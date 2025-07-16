@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="uk">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>Контакти - Смакує - Крафтове виробництво солодощів</title>
+    <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css" rel="stylesheet" />
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#FFD700",
+                        secondary: "#FFF4E6",
+                    },
+                    borderRadius: {
+                        none: "0px",
+                        sm: "4px",
+                        DEFAULT: "8px",
+                        md: "12px",
+                        lg: "16px",
+                        xl: "20px",
+                        "2xl": "24px",
+                        "3xl": "32px",
+                        full: "9999px",
+                        button: "8px",
+                    },
+                },
+            },
+        };
+    </script>
+    <style>
+        :where([class^="ri-"])::before {
+            content: "\f3c2";
+        }
+
+        .contact-hero-bg {
+            background-image: url('/img/backGroundFonContacts.jpg');
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+
+        .contact-hero-overlay {
+            background: linear-gradient(135deg, rgba(255, 244, 230, 0.9) 0%, rgba(255, 215, 0, 0.8) 100%);
+            backdrop-filter: blur(8px);
+        }
+
+        .contact-card {
+            transition: all 0.3s ease;
+        }
+
+        .contact-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-input {
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #FFD700;
+            box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.1);
+        }
+
+        .social-icon {
+            transition: all 0.3s ease;
+        }
+
+        .social-icon:hover {
+            transform: scale(1.1);
+        }
+    </style>
+</head>
+
+<body class="bg-white">
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="w-full px-4">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center space-x-2">
+                    <div
+                        class="w-12 h-12 flex items-center justify-center bg-primary rounded-full shadow-[0_0_15px_rgba(255,215,0,0.5)] backdrop-blur-sm">
+                        <img src="/img/Logo.jfif" alt="Logo" class="w-8 h-8" />
+                    </div>
+                    <div>
+                        <h1 class="text-lg font-bold text-black">СМАКУЄ</h1>
+                        <p class="text-xs text-gray-600">Крафтове виробництво</p>
+                    </div>
+                </div>
+                <div class="flex items-center">
+                    <nav class="hidden md:flex items-center space-x-6">
+                        <a href="/index.html" data-readdy="true"
+                            class="text-gray-600 hover:text-primary font-medium transition-colors">Головна</a>
+                        <a href="/contacts.html" data-readdy="true"
+                            class="text-gray-800 hover:text-primary font-medium transition-colors">Контакти</a>
+                        <a href="/reviews.html" data-readdy="true"
+                            class="text-gray-600 hover:text-primary font-medium transition-colors">Відгуки</a>
+                        <a href="/account.html" data-readdy="true"
+                            class="text-gray-600 hover:text-primary font-medium transition-colors flex items-center space-x-1">
+                            <div class="w-4 h-4 flex items-center justify-center">
+                                <i class="ri-user-line text-sm"></i>
+                            </div>
+                            <span>Особистий кабінет</span>
+                        </a>
+                        <a href="/cart.html" data-readdy="true"
+                            class="text-gray-600 hover:text-primary font-medium transition-colors flex items-center space-x-1">
+                            <div class="w-4 h-4 flex items-center justify-center">
+                                <i class="ri-shopping-cart-line text-sm"></i>
+                            </div>
+                            <span class="hidden md:inline">Корзина</span>
+                        </a>
+                    </nav>
+                    <button class="md:hidden w-8 h-8 flex items-center justify-center ml-4" id="menuButton">
+                        <i class="ri-menu-line text-xl"></i>
+                    </button>
+                </div>
+                <nav class="hidden fixed inset-0 bg-white z-50" id="mobileNav"></nav>
+            </div>
+        </div>
+    </header>
+    <main>
+        <section class="contact-hero-bg min-h-[40vh] flex items-center">
+            <div class="contact-hero-overlay absolute inset-0"></div>
+            <div class="relative z-10 w-full">
+                <div class="w-full px-4">
+                    <div class="text-center">
+                        <h1
+                            class="text-4xl md:text-5xl font-['Montserrat'] font-bold text-black mb-4 drop-shadow-[0_4px_8px_rgba(0,0,0,0.1)]">
+                            Контакти
+                        </h1>
+                        <p class="text-xl text-gray-800 font-light tracking-wide max-w-2xl mx-auto">
+                            Зв'яжіться з нами будь-яким зручним способом. Ми завжди раді
+                            відповісти на ваші запитання та прийняти замовлення
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="py-20 bg-secondary">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
+                    <div class="contact-card bg-white rounded-3xl p-8 text-center shadow-lg"
+                        style="opacity: 1; transform: translateY(0px); transition: 0.6s;">
+                        <div class="w-16 h-16 bg-primary rounded-full flex items-center justify-center mx-auto mb-6">
+                            <i class="ri-map-pin-line text-2xl text-black"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-black mb-4">Адреса</h3>
+                        <p class="text-gray-600 leading-relaxed">
+                            вул. Валентинівська, 33<br>
+                            Харків, Україна<br>
+                        </p>
+                    </div>
+                    <div class="contact-card bg-white rounded-3xl p-8 text-center shadow-lg"
+                        style="opacity: 1; transform: translateY(0px); transition: 0.6s 0.1s;">
+                        <div class="w-16 h-16 bg-primary rounded-full flex items-center justify-center mx-auto mb-6">
+                            <i class="ri-phone-line text-2xl text-black"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-black mb-4">Телефони</h3>
+                        <div class="space-y-2">
+                            <p class="text-gray-600">+380 50 191 36 26</p>
+                            <p class="text-gray-500 text-sm">Пн-Нд: 9:00 - 18:00</p>
+                        </div>
+                    </div>
+                    <div class="contact-card bg-white rounded-3xl p-8 text-center shadow-lg"
+                        style="opacity: 1; transform: translateY(0px); transition: 0.6s 0.2s;">
+                        <div class="w-16 h-16 bg-primary rounded-full flex items-center justify-center mx-auto mb-6">
+                            <i class="ri-mail-line text-2xl text-black"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-black mb-4">Email</h3>
+                        <div class="space-y-2">
+                            <p class="text-gray-600">info@smakuje.ua</p>
+                            <p class="text-gray-500 text-sm">Відповідаємо протягом години</p>
+                        </div>
+                    </div>
+                    <div class="contact-card bg-white rounded-3xl p-8 text-center shadow-lg"
+                        style="opacity: 1; transform: translateY(0px); transition: 0.6s 0.3s;">
+                        <div class="w-16 h-16 bg-primary rounded-full flex items-center justify-center mx-auto mb-6">
+                            <i class="ri-time-line text-2xl text-black"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-black mb-4">Години роботи</h3>
+                        <div class="space-y-2">
+                            <p class="text-gray-600">Пн-Нд: 9:00 - 18:00</p>
+                            <p class="text-gray-500 text-sm">Без вихідних</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-white rounded-3xl overflow-hidden shadow-xl">
+                    <div class="h-96 relative">
+                        <!-- <div class="w-full h-full bg-center bg-cover"
+                            style="background-image: url('https://public.readdy.ai/gen_page/map_placeholder_1280x720.png')">
+                        </div> -->
+                        <div class="absolute inset-0 flex items-center justify-center">
+                            <iframe
+                                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2564.1559508600757!2d36.34073655!3d50.01307065!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNTDCsDAwJzQ3LjEiTiAzNsKwMjAnMzQuNSJF!5e0!3m2!1suk!2sua!4v1626913456789!5m2!1suk!2sua"
+                                width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"
+                                referrerpolicy="no-referrer-when-downgrade" class="rounded-3xl">
+                            </iframe>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="py-20 bg-white">
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold text-black mb-6">
+                        Форма зворотного зв'язку
+                    </h2>
+                    <p class="text-xl text-gray-700">
+                        Залиште ваше повідомлення, і ми зв'яжемося з вами найближчим часом
+                    </p>
+                </div>
+                <div class="bg-secondary rounded-3xl p-8 md:p-12">
+                    <form class="space-y-6" id="contactForm">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-sm font-semibold text-black mb-2">Ім'я *</label>
+                                <input type="text"
+                                    class="form-input w-full px-4 py-3 border border-gray-300 rounded-xl bg-white text-sm"
+                                    placeholder="Введіть ваше ім'я" required />
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold text-black mb-2">Email *</label>
+                                <input type="email"
+                                    class="form-input w-full px-4 py-3 border border-gray-300 rounded-xl bg-white text-sm"
+                                    placeholder="your@email.com" required />
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-sm font-semibold text-black mb-2">Телефон</label>
+                                <input type="tel"
+                                    class="form-input w-full px-4 py-3 border border-gray-300 rounded-xl bg-white text-sm"
+                                    placeholder="+380 67 123 45 67" />
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold text-black mb-2">Тема повідомлення</label>
+                                <div class="relative">
+                                    <select
+                                        class="form-input w-full px-4 py-3 pr-8 border border-gray-300 rounded-xl bg-white text-sm appearance-none">
+                                        <option>Загальне питання</option>
+                                        <option>Замовлення десертів</option>
+                                        <option>Індивідуальне замовлення</option>
+                                        <option>Співпраця</option>
+                                        <option>Скарга або пропозиція</option>
+                                    </select>
+                                    <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                                        <i class="ri-arrow-down-s-line text-gray-400"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold text-black mb-2">Повідомлення *</label>
+                            <textarea rows="5"
+                                class="form-input w-full px-4 py-3 border border-gray-300 rounded-xl bg-white text-sm resize-none"
+                                placeholder="Опишіть ваше питання або побажання детально..." required></textarea>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <div class="relative">
+                                <input type="checkbox" id="privacy" class="sr-only" required />
+                                <div class="w-5 h-5 border-2 border-gray-300 rounded cursor-pointer flex items-center justify-center checkbox-custom"
+                                    onclick="toggleCheckbox('privacy')">
+                                    <i class="ri-check-line text-white text-sm hidden checkbox-icon"></i>
+                                </div>
+                            </div>
+                            <label for="privacy" class="text-sm text-gray-600 cursor-pointer">
+                                Я погоджуюся з обробкою персональних даних та
+                                <a href="#" class="text-primary hover:underline">політикою конфіденційності</a>
+                            </label>
+                        </div>
+                        <div class="text-center">
+                            <button type="submit"
+                                class="bg-primary text-black px-8 py-4 !rounded-button font-semibold text-lg hover:bg-yellow-400 transition-colors whitespace-nowrap">
+                                Надіслати повідомлення
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+        <section class="py-20 bg-primary">
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                <h2 class="text-3xl md:text-4xl font-bold text-black mb-6">
+                    Соціальні мережі
+                </h2>
+                <p class="text-xl text-gray-800 mb-12">
+                    Слідкуйте за нашими новинками та акціями в соціальних мережах
+                </p>
+                <div class="flex justify-center space-x-6">
+                    <a href="#"
+                        class="social-icon w-16 h-16 bg-black rounded-full flex items-center justify-center text-white hover:bg-gray-800 transition-colors">
+                        <i class="ri-instagram-fill text-2xl"></i>
+                    </a>
+                    <a href="#"
+                        class="social-icon w-16 h-16 bg-black rounded-full flex items-center justify-center text-white hover:bg-gray-800 transition-colors">
+                        <i class="ri-facebook-fill text-2xl"></i>
+                    </a>
+                    <a href="#"
+                        class="social-icon w-16 h-16 bg-black rounded-full flex items-center justify-center text-white hover:bg-gray-800 transition-colors">
+                        <i class="ri-telegram-fill text-2xl"></i>
+                    </a>
+                    <a href="#"
+                        class="social-icon w-16 h-16 bg-black rounded-full flex items-center justify-center text-white hover:bg-gray-800 transition-colors">
+                        <i class="ri-youtube-fill text-2xl"></i>
+                    </a>
+                    <a href="#"
+                        class="social-icon w-16 h-16 bg-black rounded-full flex items-center justify-center text-white hover:bg-gray-800 transition-colors">
+                        <i class="ri-tiktok-fill text-2xl"></i>
+                    </a>
+                </div>
+                <div class="mt-12 grid grid-cols-1 md:grid-cols-3 gap-8 text-left">
+                    <div class="bg-white rounded-2xl p-6">
+                        <div class="flex items-center space-x-3 mb-4">
+                            <div class="w-10 h-10 bg-primary rounded-full flex items-center justify-center">
+                                <i class="ri-instagram-line text-black"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-black">Instagram</h4>
+                                <p class="text-sm text-gray-600">@smakuje_kyiv</p>
+                            </div>
+                        </div>
+                        <p class="text-gray-700 text-sm">
+                            Фото наших десертів, процес приготування та щоденні історії
+                        </p>
+                    </div>
+                    <div class="bg-white rounded-2xl p-6">
+                        <div class="flex items-center space-x-3 mb-4">
+                            <div class="w-10 h-10 bg-primary rounded-full flex items-center justify-center">
+                                <i class="ri-facebook-line text-black"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-black">Facebook</h4>
+                                <p class="text-sm text-gray-600">Кондитерська Смакує</p>
+                            </div>
+                        </div>
+                        <p class="text-gray-700 text-sm">
+                            Новини, акції та спілкування з нашою спільнотою
+                        </p>
+                    </div>
+                    <div class="bg-white rounded-2xl p-6">
+                        <div class="flex items-center space-x-3 mb-4">
+                            <div class="w-10 h-10 bg-primary rounded-full flex items-center justify-center">
+                                <i class="ri-telegram-line text-black"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-black">Telegram</h4>
+                                <p class="text-sm text-gray-600">@smakuje_bot</p>
+                            </div>
+                        </div>
+                        <p class="text-gray-700 text-sm">
+                            Швидке замовлення та оперативна підтримка клієнтів
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    <footer class="bg-black text-white py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div class="col-span-1 md:col-span-2">
+                    <div class="flex items-center space-x-3 mb-6">
+                        <div
+                            class="w-12 h-12 flex items-center justify-center bg-primary rounded-full shadow-[0_0_15px_rgba(255,215,0,0.5)] backdrop-blur-sm">
+                            <img src="https://static.readdy.ai/image/43b57c5738bad1db7fac177fe6f2f220/46ca856dcdb27461a44d2cf39bdb0b5a.jfif"
+                                alt="Logo" class="w-8 h-8" />
+                        </div>
+                        <div>
+                            <h3 class="text-2xl font-bold">СМАКУЄ</h3>
+                            <p class="text-sm text-gray-400">Крафтове виробництво</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-300 mb-6 max-w-md">
+                        Створюємо неперевершені десерти з найкращих інгредієнтів. Кожен
+                        торт, макарун та тістечко — це витвір мистецтва.
+                    </p>
+                    <div class="flex space-x-4">
+                        <a href="#"
+                            class="w-10 h-10 bg-primary rounded-full flex items-center justify-center text-black hover:bg-yellow-400 transition-colors">
+                            <i class="ri-instagram-line"></i>
+                        </a>
+                        <a href="#"
+                            class="w-10 h-10 bg-primary rounded-full flex items-center justify-center text-black hover:bg-yellow-400 transition-colors">
+                            <i class="ri-facebook-line"></i>
+                        </a>
+                        <a href="#"
+                            class="w-10 h-10 bg-primary rounded-full flex items-center justify-center text-black hover:bg-yellow-400 transition-colors">
+                            <i class="ri-telegram-line"></i>
+                        </a>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Навігація</h4>
+                    <ul class="space-y-2">
+                        <li>
+                            <a href="https://readdy.ai/home/cb9458f8-9101-4315-a4f7-32608dd27b3b/256969c3-23b4-48fb-8180-02d0ca498fe7"
+                                data-readdy="true"
+                                class="text-gray-300 hover:text-primary transition-colors">Головна</a>
+                        </li>
+                        <li>
+                            <a href="#" class="text-gray-300 hover:text-primary transition-colors">Меню</a>
+                        </li>
+                        <li>
+                            <a href="#" class="text-gray-300 hover:text-primary transition-colors">Про нас</a>
+                        </li>
+                        <li>
+                            <a href="#" class="text-gray-300 hover:text-primary transition-colors">Контакти</a>
+                        </li>
+                        <li>
+                            <a href="https://readdy.ai/home/cb9458f8-9101-4315-a4f7-32608dd27b3b/662fc8db-e1c7-49f7-84e5-cb0096b33930"
+                                data-readdy="true"
+                                class="text-gray-300 hover:text-primary transition-colors">Відгуки</a>
+                        </li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Контакти</h4>
+                    <ul class="space-y-2">
+                        <li class="text-gray-300">+380 67 123 45 67</li>
+                        <li class="text-gray-300">+380 93 987 65 43</li>
+                        <li class="text-gray-300">info@smakuje.ua</li>
+                        <li class="text-gray-300">
+                            вул. Хрещатик, 25<br />Київ, Україна
+                        </li>
+                        <li class="text-gray-300">Пн-Нд: 8:00 - 22:00</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-gray-800 mt-12 pt-8 text-center">
+                <p class="text-gray-400">&copy; 2024 Смакує. Всі права захищені.</p>
+            </div>
+        </div>
+    </footer>
+    <script id="mobile-menu">
+        document.addEventListener("DOMContentLoaded", function () {
+            const menuButton = document.getElementById("menuButton");
+            const mobileNav = document.getElementById("mobileNav");
+            let isMenuOpen = false;
+            if (menuButton && mobileNav) {
+                menuButton.addEventListener("click", function () {
+                    isMenuOpen = !isMenuOpen;
+                    if (isMenuOpen) {
+                        mobileNav.classList.remove("hidden");
+                        mobileNav.innerHTML = `
+      <div class="flex flex-col h-full">
+      <div class="flex items-center justify-between p-4 border-b">
+      <div class="flex items-center space-x-2">
+      <div class="w-12 h-12 flex items-center justify-center bg-primary rounded-full shadow-[0_0_15px_rgba(255,215,0,0.5)] backdrop-blur-sm">
+      <img src="https://static.readdy.ai/image/43b57c5738bad1db7fac177fe6f2f220/46ca856dcdb27461a44d2cf39bdb0b5a.jfif" alt="Logo" class="w-8 h-8">
+      </div>
+      <div>
+      <h1 class="text-lg font-bold text-black">СМАКУЄ</h1>
+      <p class="text-xs text-gray-600">Крафтове виробництво</p>
+      </div>
+      </div>
+      <button class="w-8 h-8 flex items-center justify-center" id="closeMenu">
+      <i class="ri-close-line text-xl"></i>
+      </button>
+      </div>
+      <div class="flex flex-col p-4 space-y-4">
+      <a href="https://readdy.ai/home/cb9458f8-9101-4315-a4f7-32608dd27b3b/256969c3-23b4-48fb-8180-02d0ca498fe7" data-readdy="true" class="text-lg text-gray-800 hover:text-primary">Головна</a>
+      <a href="#" class="text-lg text-gray-800 hover:text-primary">Контакти</a>
+      <a href="https://readdy.ai/home/cb9458f8-9101-4315-a4f7-32608dd27b3b/662fc8db-e1c7-49f7-84e5-cb0096b33930" data-readdy="true" class="text-lg text-gray-800 hover:text-primary">Відгуки</a>
+      <a href="#" class="text-lg text-gray-800 hover:text-primary">Особистий кабінет</a>
+      <a href="https://readdy.ai/home/cb9458f8-9101-4315-a4f7-32608dd27b3b/21cac106-8b6a-422b-9161-b01ff9bf8598" data-readdy="true" class="text-lg text-gray-800 hover:text-primary">Корзина</a>
+      </div>
+      </div>
+      `;
+                        document.body.style.overflow = "hidden";
+                        const closeMenu = document.getElementById("closeMenu");
+                        if (closeMenu) {
+                            closeMenu.addEventListener("click", function () {
+                                mobileNav.classList.add("hidden");
+                                document.body.style.overflow = "";
+                                isMenuOpen = false;
+                            });
+                        }
+                    } else {
+                        mobileNav.classList.add("hidden");
+                        document.body.style.overflow = "";
+                    }
+                });
+            }
+        });
+    </script>
+    <script id="contact-form">
+        document.addEventListener("DOMContentLoaded", function () {
+            const contactForm = document.getElementById("contactForm");
+            function toggleCheckbox(id) {
+                const checkbox = document.getElementById(id);
+                const checkboxCustom =
+                    checkbox.parentElement.querySelector(".checkbox-custom");
+                const checkboxIcon = checkbox.parentElement.querySelector(".checkbox-icon");
+                checkbox.checked = !checkbox.checked;
+                if (checkbox.checked) {
+                    checkboxCustom.classList.add("bg-primary", "border-primary");
+                    checkboxCustom.classList.remove("border-gray-300");
+                    checkboxIcon.classList.remove("hidden");
+                } else {
+                    checkboxCustom.classList.remove("bg-primary", "border-primary");
+                    checkboxCustom.classList.add("border-gray-300");
+                    checkboxIcon.classList.add("hidden");
+                }
+            }
+            window.toggleCheckbox = toggleCheckbox;
+            if (contactForm) {
+                contactForm.addEventListener("submit", function (e) {
+                    e.preventDefault();
+                    const submitBtn = contactForm.querySelector('button[type="submit"]');
+                    const originalText = submitBtn.textContent;
+                    submitBtn.textContent = "Надсилаємо...";
+                    submitBtn.disabled = true;
+                    setTimeout(() => {
+                        submitBtn.textContent = "Повідомлення надіслано!";
+                        submitBtn.classList.remove("bg-primary", "hover:bg-yellow-400");
+                        submitBtn.classList.add("bg-green-500", "hover:bg-green-600");
+                    }, 1500);
+                    setTimeout(() => {
+                        submitBtn.textContent = originalText;
+                        submitBtn.disabled = false;
+                        submitBtn.classList.remove("bg-green-500", "hover:bg-green-600");
+                        submitBtn.classList.add("bg-primary", "hover:bg-yellow-400");
+                        contactForm.reset();
+                        const checkboxes = contactForm.querySelectorAll(".checkbox-custom");
+                        checkboxes.forEach((checkbox) => {
+                            checkbox.classList.remove("bg-primary", "border-primary");
+                            checkbox.classList.add("border-gray-300");
+                            const icon = checkbox.querySelector(".checkbox-icon");
+                            if (icon) icon.classList.add("hidden");
+                        });
+                    }, 3000);
+                });
+            }
+        });
+    </script>
+    <script id="smooth-animations">
+        document.addEventListener("DOMContentLoaded", function () {
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: "0px 0px -50px 0px",
+            };
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = "1";
+                        entry.target.style.transform = "translateY(0)";
+                    }
+                });
+            }, observerOptions);
+            const contactCards = document.querySelectorAll(".contact-card");
+            contactCards.forEach((card, index) => {
+                card.style.opacity = "0";
+                card.style.transform = "translateY(30px)";
+                card.style.transition = `all 0.6s ease ${index * 0.1}s`;
+                observer.observe(card);
+            });
+            const links = document.querySelectorAll('a[href^="#"]');
+            links.forEach((link) => {
+                link.addEventListener("click", function (e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute("href"));
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: "smooth",
+                            block: "start",
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>
