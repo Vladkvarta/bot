@@ -1,0 +1,22 @@
+[
+    {
+      "authorName": "Олена Петренко",
+      "authorAvatarUrl": "/img/avatars/customer-001.png",
+      "date": "2 дні тому",
+      "rating": 5,
+      "category": "Торти",
+      "text": "Замовляла торт на день народження доньки. Результат перевершив усі очікування! Торт був не тільки красивий, але й неймовірно смачний. Дякую за професійну роботу!",
+      "imageUrl": "/img/reviews/cake-review-001.jpg",
+      "likes": 12
+    },
+    {
+      "authorName": "Олександр Ковальчук",
+      "authorAvatarUrl": "/img/avatars/customer-002.png",
+      "date": "5 днів тому",
+      "rating": 5,
+      "category": "Тістечка",
+      "text": "Регулярно замовляю макаруни для офісу. Колеги в захваті, сервіс на вищому рівні, завжди вчасна доставка.",
+      "imageUrl": "/img/reviews/macarons-review-001.jpg",
+      "likes": 8
+    }
+  ]

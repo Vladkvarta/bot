@@ -37,6 +37,16 @@ app.get('/api/products', (req, res) => {
         res.send(data);
     });
 });
+app.get('/api/reviews', (req, res) => {
+    fs.readFile(path.join(__dirname, 'reviews.json'), 'utf8', (err, data) => {
+        if (err) {
+            console.error("Ошибка чтения файла reviews.json:", err);
+            return res.status(500).json({ error: 'Внутренняя ошибка сервера' });
+        }
+        res.setHeader('Content-Type', 'application/json');
+        res.send(data);
+    });
+});
 
 // Эндпоинт для вебхука от GitHub
 app.post('/webhook/github', (req, res) => {
