@@ -6,3 +6,7 @@ npm-debug.log*
 *.log
 credentials.json
 
+# Файлы с динамическими данными
+# reviews.json
+# users.json
+# options.json
