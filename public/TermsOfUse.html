@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Умови використання - Смакує - Крафтове виробництво солодощів</title>
+<script src="https://cdn.tailwindcss.com/3.4.16"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css" rel="stylesheet">
+<script>
+tailwind.config = {
+theme: {
+extend: {
+colors: {
+primary: '#FFD700',
+secondary: '#FFF4E6'
+},
+borderRadius: {
+'none': '0px',
+'sm': '4px',
+DEFAULT: '8px',
+'md': '12px',
+'lg': '16px',
+'xl': '20px',
+'2xl': '24px',
+'3xl': '32px',
+'full': '9999px',
+'button': '8px'
+}
+}
+}
+}
+</script>
+<style>
+:where([class^="ri-"])::before {
+content: "\f3c2";
+}
+body {
+font-family: 'Montserrat', sans-serif;
+}
+.nav-item {
+transition: all 0.3s ease;
+}
+.nav-item:hover {
+background-color: rgba(255, 215, 0, 0.1);
+color: #FFD700;
+}
+.nav-item.active {
+background-color: #FFD700;
+color: black;
+}
+.section-link {
+transition: all 0.3s ease;
+}
+.section-link:hover {
+color: #FFD700;
+transform: translateX(4px);
+}
+.section-link.active {
+color: #FFD700;
+font-weight: 600;
+}
+.back-to-top {
+position: fixed;
+bottom: 2rem;
+right: 2rem;
+background: #FFD700;
+color: black;
+width: 3rem;
+height: 3rem;
+border-radius: 50%;
+display: flex;
+align-items: center;
+justify-content: center;
+box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+transition: all 0.3s ease;
+opacity: 0;
+visibility: hidden;
+transform: translateY(20px);
+}
+.back-to-top.visible {
+opacity: 1;
+visibility: visible;
+transform: translateY(0);
+}
+.back-to-top:hover {
+background: #F5C842;
+transform: translateY(-2px);
+box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+}
+.content-section {
+scroll-margin-top: 6rem;
+}
+.sidebar-nav {
+position: sticky;
+top: 8rem;
+max-height: calc(100vh - 10rem);
+overflow-y: auto;
+}
+.sidebar-nav::-webkit-scrollbar {
+width: 4px;
+}
+.sidebar-nav::-webkit-scrollbar-track {
+background: #f1f1f1;
+border-radius: 2px;
+}
+.sidebar-nav::-webkit-scrollbar-thumb {
+background: #FFD700;
+border-radius: 2px;
+}
+.terms-content h3 {
+color: #1f2937;
+font-weight: 600;
+margin-bottom: 1rem;
+}
+.terms-content p {
+color: #4b5563;
+line-height: 1.7;
+margin-bottom: 1rem;
+}
+.terms-content ul {
+color: #4b5563;
+margin-left: 1.5rem;
+margin-bottom: 1rem;
+}
+.terms-content li {
+margin-bottom: 0.5rem;
+line-height: 1.6;
+}
+.terms-content strong {
+color: #1f2937;
+font-weight: 600;
+}
+</style>
+</head>
+<body class="bg-gray-50">
+<header class="bg-white shadow-sm sticky top-0 z-50">
+<div class="w-full px-4">
+<div class="flex items-center justify-between h-16">
+<div class="flex items-center space-x-4">
+<a href="https://readdy.ai/home/cb9458f8-9101-4315-a4f7-32608dd27b3b/6bfecefb-28f0-4a17-b50e-b37c2b782635" data-readdy="true" class="flex items-center space-x-2 text-gray-600 hover:text-primary transition-colors">
+<div class="w-8 h-8 flex items-center justify-center">
+<i class="ri-arrow-left-line text-xl"></i>
+</div>
+<span class="font-medium">Назад до реєстрації</span>
+</a>
+</div>
+<div class="flex items-center space-x-3">
+<div class="w-10 h-10 flex items-center justify-center bg-primary rounded-full shadow-[0_0_15px_rgba(255,215,0,0.5)]">
+<img src="https://static.readdy.ai/image/43b57c5738bad1db7fac177fe6f2f220/46ca856dcdb27461a44d2cf39bdb0b5a.jfif" alt="Logo" class="w-6 h-6">
+</div>
+<div>
+<h1 class="text-lg font-bold text-black">СМАКУЄ</h1>
+<p class="text-xs text-gray-600">Крафтове виробництво</p>
+</div>
+</div>
+</div>
+</div>
+</header>
+
+<div class="flex min-h-screen">
+<aside class="w-80 bg-white shadow-sm">
+<div class="sidebar-nav p-6">
+<h2 class="text-lg font-bold text-black mb-6">Зміст документа</h2>
+<nav class="space-y-2">
+<a href="#general-terms" class="section-link block px-4 py-3 rounded-xl text-gray-700 hover:bg-gray-50">
+<div class="flex items-center space-x-3">
+<div class="w-5 h-5 flex items-center justify-center">
+<i class="ri-file-text-line"></i>
+</div>
+<span>Загальні положення</span>
+</div>
+</a>
+<a href="#service-rules" class="section-link block px-4 py-3 rounded-xl text-gray-700 hover:bg-gray-50">
+<div class="flex items-center space-x-3">
+<div class="w-5 h-5 flex items-center justify-center">
+<i class="ri-shield-check-line"></i>
+</div>
+<span>Правила користування</span>
+</div>
+</a>
+<a href="#responsibilities" class="section-link block px-4 py-3 rounded-xl text-gray-700 hover:bg-gray-50">
+<div class="flex items-center space-x-3">
+<div class="w-5 h-5 flex items-center justify-center">
+<i class="ri-scales-line"></i>
+</div>
+<span>Відповідальність сторін</span>
+</div>
+</a>
+<a href="#personal-data" class="section-link block px-4 py-3 rounded-xl text-gray-700 hover:bg-gray-50">
+<div class="flex items-center space-x-3">
+<div class="w-5 h-5 flex items-center justify-center">
+<i class="ri-user-settings-line"></i>
+</div>
+<span>Персональні дані</span>
+</div>
+</a>
+<a href="#order-payment" class="section-link block px-4 py-3 rounded-xl text-gray-700 hover:bg-gray-50">
+<div class="flex items-center space-x-3">
+<div class="w-5 h-5 flex items-center justify-center">
+<i class="ri-shopping-cart-line"></i>
+</div>
+<span>Замовлення та оплата</span>
+</div>
+</a>
+<a href="#return-policy" class="section-link block px-4 py-3 rounded-xl text-gray-700 hover:bg-gray-50">
+<div class="flex items-center space-x-3">
+<div class="w-5 h-5 flex items-center justify-center">
+<i class="ri-arrow-go-back-line"></i>
+</div>
+<span>Політика повернення</span>
+</div>
+</a>
+<a href="#contact-info" class="section-link block px-4 py-3 rounded-xl text-gray-700 hover:bg-gray-50">
+<div class="flex items-center space-x-3">
+<div class="w-5 h-5 flex items-center justify-center">
+<i class="ri-phone-line"></i>
+</div>
+<span>Контактна інформація</span>
+</div>
+</a>
+</nav>
+</div>
+</aside>
+
+<main class="flex-1 p-8">
+<div class="max-w-4xl mx-auto">
+<div class="text-center mb-12">
+<h1 class="text-4xl font-bold text-black mb-4">Умови використання</h1>
+<p class="text-xl text-gray-600">Правила та умови користування сервісом "Смакує"</p>
+<div class="flex items-center justify-center space-x-4 mt-6 text-sm text-gray-500">
+<span class="flex items-center space-x-1">
+<div class="w-4 h-4 flex items-center justify-center">
+<i class="ri-calendar-line"></i>
+</div>
+<span>Останнє оновлення: 15 грудня 2024</span>
+</span>
+<span class="flex items-center space-x-1">
+<div class="w-4 h-4 flex items-center justify-center">
+<i class="ri-time-line"></i>
+</div>
+<span>Версія 2.1</span>
+</span>
+</div>
+</div>
+
+<div class="terms-content space-y-12">
+<section id="general-terms" class="content-section bg-white rounded-2xl p-8 shadow-sm">
+<div class="flex items-center space-x-3 mb-6">
+<div class="w-10 h-10 flex items-center justify-center bg-primary rounded-full">
+<i class="ri-file-text-line text-lg text-black"></i>
+</div>
+<h2 class="text-2xl font-bold text-black">Загальні положення</h2>
+</div>
+<div class="space-y-4">
+<p>Ці Умови використання ("Умови") регулюють використання веб-сайту та послуг кондитерської "Смакує" ("Компанія", "ми", "нас", "наш"). Використовуючи наш сервіс, ви погоджуєтеся з цими Умовами.</p>
+<h3>1.1 Визначення термінів</h3>
+<ul class="list-disc space-y-2">
+<li><strong>Сервіс</strong> - веб-сайт, мобільний додаток та всі пов'язані послуги "Смакує"</li>
+<li><strong>Користувач</strong> - особа, яка використовує наш сервіс</li>
+<li><strong>Продукція</strong> - кондитерські вироби, торти, десерти та супутні товари</li>
+<li><strong>Замовлення</strong> - запит на придбання продукції через наш сервіс</li>
+</ul>
+<h3>1.2 Прийняття умов</h3>
+<p>Реєструючись на нашому сайті або здійснюючи замовлення, ви підтверджуєте, що:</p>
+<ul class="list-disc space-y-2">
+<li>Досягли віку 18 років або маєте згоду батьків/опікунів</li>
+<li>Надаєте достовірну та актуальну інформацію</li>
+<li>Погоджуєтеся дотримуватися всіх положень цих Умов</li>
+</ul>
+</div>
+</section>
+
+<section id="service-rules" class="content-section bg-white rounded-2xl p-8 shadow-sm">
+<div class="flex items-center space-x-3 mb-6">
+<div class="w-10 h-10 flex items-center justify-center bg-primary rounded-full">
+<i class="ri-shield-check-line text-lg text-black"></i>
+</div>
+<h2 class="text-2xl font-bold text-black">Правила користування сервісом</h2>
+</div>
+<div class="space-y-4">
+<h3>2.1 Реєстрація та акаунт</h3>
+<p>Для повноцінного використання сервісу необхідно створити особистий акаунт. При реєстрації ви зобов'язуєтеся:</p>
+<ul class="list-disc space-y-2">
+<li>Надавати точну та повну інформацію</li>
+<li>Підтримувати актуальність даних у профілі</li>
+<li>Зберігати конфіденційність паролю</li>
+<li>Негайно повідомляти про несанкціонований доступ</li>
+</ul>
+<h3>2.2 Заборонені дії</h3>
+<p>При використанні сервісу заборонено:</p>
+<ul class="list-disc space-y-2">
+<li>Надавати неправдиву інформацію</li>
+<li>Створювати фейкові акаунти</li>
+<li>Порушувати роботу сервісу</li>
+<li>Використовувати автоматизовані системи без дозволу</li>
+<li>Розміщувати неприйнятний контент у відгуках</li>
+</ul>
+<h3>2.3 Інтелектуальна власність</h3>
+<p>Весь контент сайту, включаючи тексти, зображення, логотипи та дизайн, є власністю "Смакує" та захищений авторським правом.</p>
+</div>
+</section>
+
+<section id="responsibilities" class="content-section bg-white rounded-2xl p-8 shadow-sm">
+<div class="flex items-center space-x-3 mb-6">
+<div class="w-10 h-10 flex items-center justify-center bg-primary rounded-full">
+<i class="ri-scales-line text-lg text-black"></i>
+</div>
+<h2 class="text-2xl font-bold text-black">Відповідальність сторін</h2>
+</div>
+<div class="space-y-4">
+<h3>3.1 Відповідальність Компанії</h3>
+<p>Компанія "Смакує" зобов'язується:</p>
+<ul class="list-disc space-y-2">
+<li>Надавати якісну продукцію відповідно до стандартів</li>
+<li>Дотримуватися термінів виготовлення та доставки</li>
+<li>Забезпечувати безпеку персональних даних</li>
+<li>Надавати достовірну інформацію про продукцію</li>
+<li>Вирішувати спірні питання у встановлені терміни</li>
+</ul>
+<h3>3.2 Відповідальність Користувача</h3>
+<p>Користувач несе відповідальність за:</p>
+<ul class="list-disc space-y-2">
+<li>Достовірність наданої інформації</li>
+<li>Своєчасну оплату замовлень</li>
+<li>Дотримання умов отримання продукції</li>
+<li>Повідомлення про алергени та особливі вимоги</li>
+</ul>
+<h3>3.3 Обмеження відповідальності</h3>
+<p>Компанія не несе відповідальності за:</p>
+<ul class="list-disc space-y-2">
+<li>Збитки, спричинені неправильним зберіганням продукції</li>
+<li>Затримки доставки через форс-мажорні обставини</li>
+<li>Дії третіх осіб</li>
+<li>Технічні збої, не залежні від Компанії</li>
+</ul>
+</div>
+</section>
+
+<section id="personal-data" class="content-section bg-white rounded-2xl p-8 shadow-sm">
+<div class="flex items-center space-x-3 mb-6">
+<div class="w-10 h-10 flex items-center justify-center bg-primary rounded-full">
+<i class="ri-user-settings-line text-lg text-black"></i>
+</div>
+<h2 class="text-2xl font-bold text-black">Обробка персональних даних</h2>
+</div>
+<div class="space-y-4">
+<h3>4.1 Збір персональних даних</h3>
+<p>Ми збираємо наступні категорії персональних даних:</p>
+<ul class="list-disc space-y-2">
+<li>Контактна інформація (ім'я, телефон, email, адреса)</li>
+<li>Дані про замовлення та платежі</li>
+<li>Інформація про використання сервісу</li>
+<li>Дані про переваги та алергени</li>
+</ul>
+<h3>4.2 Мета обробки</h3>
+<p>Персональні дані використовуються для:</p>
+<ul class="list-disc space-y-2">
+<li>Обробки та виконання замовлень</li>
+<li>Зв'язку з клієнтами</li>
+<li>Покращення якості послуг</li>
+<li>Маркетингових комунікацій (за згодою)</li>
+<li>Дотримання законодавчих вимог</li>
+</ul>
+<h3>4.3 Захист даних</h3>
+<p>Ми застосовуємо сучасні методи захисту інформації:</p>
+<ul class="list-disc space-y-2">
+<li>Шифрування даних при передачі та зберіганні</li>
+<li>Обмежений доступ до персональної інформації</li>
+<li>Регулярний аудит безпеки</li>
+<li>Навчання персоналу з питань конфіденційності</li>
+</ul>
+<h3>4.4 Права користувачів</h3>
+<p>Ви маєте право:</p>
+<ul class="list-disc space-y-2">
+<li>Отримувати інформацію про обробку ваших даних</li>
+<li>Вимагати виправлення неточних даних</li>
+<li>Видаляти персональні дані</li>
+<li>Обмежувати обробку</li>
+<li>Відкликати згоду на обробку</li>
+</ul>
+</div>
+</section>
+
+<section id="order-payment" class="content-section bg-white rounded-2xl p-8 shadow-sm">
+<div class="flex items-center space-x-3 mb-6">
+<div class="w-10 h-10 flex items-center justify-center bg-primary rounded-full">
+<i class="ri-shopping-cart-line text-lg text-black"></i>
+</div>
+<h2 class="text-2xl font-bold text-black">Умови замовлення та оплати</h2>
+</div>
+<div class="space-y-4">
+<h3>5.1 Оформлення замовлення</h3>
+<p>Процес замовлення включає:</p>
+<ul class="list-disc space-y-2">
+<li>Вибір продукції з каталогу</li>
+<li>Заповнення форми замовлення</li>
+<li>Вибір способу доставки</li>
+<li>Підтвердження замовлення менеджером</li>
+<li>Оплату згідно з обраним способом</li>
+</ul>
+<h3>5.2 Ціни та оплата</h3>
+<p>Умови оплати:</p>
+<ul class="list-disc space-y-2">
+<li>Ціни вказані в українських гривнях</li>
+<li>Оплата здійснюється до виготовлення продукції</li>
+<li>Приймаються готівкові та безготівкові платежі</li>
+<li>Можлива оплата банківськими картами онлайн</li>
+<li>Ціни можуть змінюватися без попереднього повідомлення</li>
+</ul>
+<h3>5.3 Терміни виконання</h3>
+<ul class="list-disc space-y-2">
+<li>Стандартні торти - 2-3 робочі дні</li>
+<li>Індивідуальні замовлення - 5-7 робочих днів</li>
+<li>Весільні торти - 7-14 робочих днів</li>
+<li>Дрібні кондитерські вироби - 1-2 дні</li>
+</ul>
+<h3>5.4 Доставка</h3>
+<p>Умови доставки:</p>
+<ul class="list-disc space-y-2">
+<li>Доставка по Києву - 150-300 грн залежно від району</li>
+<li>Безкоштовна доставка при замовленні від 1500 грн</li>
+<li>Самовивіз з кондитерської безкоштовно</li>
+<li>Доставка в інші міста обговорюється індивідуально</li>
+</ul>
+</div>
+</section>
+
+<section id="return-policy" class="content-section bg-white rounded-2xl p-8 shadow-sm">
+<div class="flex items-center space-x-3 mb-6">
+<div class="w-10 h-10 flex items-center justify-center bg-primary rounded-full">
+<i class="ri-arrow-go-back-line text-lg text-black"></i>
+</div>
+<h2 class="text-2xl font-bold text-black">Політика повернення</h2>
+</div>
+<div class="space-y-4">
+<h3>6.1 Умови повернення</h3>
+<p>Повернення продукції можливе у наступних випадках:</p>
+<ul class="list-disc space-y-2">
+<li>Невідповідність замовленої продукції</li>
+<li>Виявлення дефектів якості</li>
+<li>Порушення термінів доставки з вини Компанії</li>
+<li>Скасування замовлення до початку виготовлення</li>
+</ul>
+<h3>6.2 Процедура повернення</h3>
+<p>Для повернення необхідно:</p>
+<ul class="list-disc space-y-2">
+<li>Звернутися до служби підтримки протягом 24 годин</li>
+<li>Надати фото продукції (у разі дефектів)</li>
+<li>Заповнити заяву на повернення</li>
+<li>Дочекатися розгляду звернення</li>
+</ul>
+<h3>6.3 Компенсація</h3>
+<p>У разі обґрунтованого повернення:</p>
+<ul class="list-disc space-y-2">
+<li>Повна компенсація вартості продукції</li>
+<li>Відшкодування витрат на доставку</li>
+<li>Можливість заміни на аналогічну продукцію</li>
+<li>Додаткова компенсація у виняткових випадках</li>
+</ul>
+<h3>6.4 Винятки</h3>
+<p>Повернення не здійснюється у випадках:</p>
+<ul class="list-disc space-y-2">
+<li>Порушення умов зберігання клієнтом</li>
+<li>Механічні пошкодження після отримання</li>
+<li>Закінчення терміну придатності через затримку клієнта</li>
+<li>Суб'єктивне незадоволення смаком</li>
+</ul>
+</div>
+</section>
+
+<section id="contact-info" class="content-section bg-white rounded-2xl p-8 shadow-sm">
+<div class="flex items-center space-x-3 mb-6">
+<div class="w-10 h-10 flex items-center justify-center bg-primary rounded-full">
+<i class="ri-phone-line text-lg text-black"></i>
+</div>
+<h2 class="text-2xl font-bold text-black">Контактна інформація</h2>
+</div>
+<div class="space-y-6">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+<div class="space-y-4">
+<h3>Основні контакти</h3>
+<div class="space-y-3">
+<div class="flex items-center space-x-3">
+<div class="w-8 h-8 flex items-center justify-center bg-gray-100 rounded-full">
+<i class="ri-phone-line text-gray-600"></i>
+</div>
+<div>
+<p class="font-medium text-black">Телефон</p>
+<p class="text-gray-600">+380 44 123 45 67</p>
+</div>
+</div>
+<div class="flex items-center space-x-3">
+<div class="w-8 h-8 flex items-center justify-center bg-gray-100 rounded-full">
+<i class="ri-mail-line text-gray-600"></i>
+</div>
+<div>
+<p class="font-medium text-black">Email</p>
+<p class="text-gray-600">info@smakuye.com.ua</p>
+</div>
+</div>
+<div class="flex items-center space-x-3">
+<div class="w-8 h-8 flex items-center justify-center bg-gray-100 rounded-full">
+<i class="ri-map-pin-line text-gray-600"></i>
+</div>
+<div>
+<p class="font-medium text-black">Адреса</p>
+<p class="text-gray-600">вул. Хрещатик, 25<br>Київ, Україна, 01001</p>
+</div>
+</div>
+</div>
+</div>
+<div class="space-y-4">
+<h3>Режим роботи</h3>
+<div class="space-y-2">
+<div class="flex justify-between">
+<span class="text-gray-600">Понеділок - П'ятниця</span>
+<span class="font-medium text-black">09:00 - 20:00</span>
+</div>
+<div class="flex justify-between">
+<span class="text-gray-600">Субота</span>
+<span class="font-medium text-black">10:00 - 18:00</span>
+</div>
+<div class="flex justify-between">
+<span class="text-gray-600">Неділя</span>
+<span class="font-medium text-black">10:00 - 16:00</span>
+</div>
+</div>
+<h3 class="mt-6">Соціальні мережі</h3>
+<div class="flex space-x-4">
+<a href="#" class="w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-primary transition-colors">
+<i class="ri-facebook-fill text-gray-600"></i>
+</a>
+<a href="#" class="w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-primary transition-colors">
+<i class="ri-instagram-line text-gray-600"></i>
+</a>
+<a href="#" class="w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-primary transition-colors">
+<i class="ri-telegram-line text-gray-600"></i>
+</a>
+</div>
+</div>
+</div>
+<div class="bg-gray-50 rounded-xl p-6 mt-6">
+<h3>Служба підтримки</h3>
+<p class="text-gray-600 mb-4">З питань щодо умов використання звертайтеся:</p>
+<div class="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-4">
+<a href="mailto:support@smakuye.com.ua" class="text-primary hover:underline">support@smakuye.com.ua</a>
+<a href="tel:+380441234567" class="text-primary hover:underline">+380 44 123 45 67</a>
+</div>
+</div>
+</div>
+</section>
+</div>
+
+<div class="bg-white rounded-2xl p-8 shadow-sm mt-12 text-center">
+<div class="max-w-2xl mx-auto">
+<h3 class="text-xl font-bold text-black mb-4">Прийняття умов використання</h3>
+<p class="text-gray-600 mb-6">Ознайомившись з умовами використання, ви можете повернутися до реєстрації та підтвердити свою згоду з правилами нашого сервісу.</p>
+<div class="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-4 justify-center">
+<a href="https://readdy.ai/home/cb9458f8-9101-4315-a4f7-32608dd27b3b/6bfecefb-28f0-4a17-b50e-b37c2b782635" data-readdy="true" class="bg-primary text-black px-8 py-3 !rounded-button font-semibold hover:bg-yellow-400 transition-colors whitespace-nowrap">
+Повернутися до реєстрації
+</a>
+<button class="bg-gray-100 text-gray-700 px-8 py-3 !rounded-button font-semibold hover:bg-gray-200 transition-colors whitespace-nowrap" onclick="window.print()">
+Роздрукувати умови
+</button>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+
+<button class="back-to-top" onclick="scrollToTop()">
+<i class="ri-arrow-up-line text-lg"></i>
+</button>
+
+<script id="navigation-functionality">
+document.addEventListener('DOMContentLoaded', function() {
+const sectionLinks = document.querySelectorAll('.section-link');
+const sections = document.querySelectorAll('.content-section');
+const backToTopBtn = document.querySelector('.back-to-top');
+
+function updateActiveSection() {
+let currentSection = '';
+sections.forEach(section => {
+const rect = section.getBoundingClientRect();
+if (rect.top <= 150 && rect.bottom >= 150) {
+currentSection = section.id;
+}
+});
+
+sectionLinks.forEach(link => {
+link.classList.remove('active');
+if (link.getAttribute('href') === '#' + currentSection) {
+link.classList.add('active');
+}
+});
+}
+
+function toggleBackToTop() {
+if (window.pageYOffset > 300) {
+backToTopBtn.classList.add('visible');
+} else {
+backToTopBtn.classList.remove('visible');
+}
+}
+
+window.addEventListener('scroll', function() {
+updateActiveSection();
+toggleBackToTop();
+});
+
+sectionLinks.forEach(link => {
+link.addEventListener('click', function(e) {
+e.preventDefault();
+const targetId = this.getAttribute('href').substring(1);
+const targetSection = document.getElementById(targetId);
+if (targetSection) {
+targetSection.scrollIntoView({
+behavior: 'smooth',
+block: 'start'
+});
+}
+});
+});
+
+updateActiveSection();
+toggleBackToTop();
+});
+
+function scrollToTop() {
+window.scrollTo({
+top: 0,
+behavior: 'smooth'
+});
+}
+</script>
+
+</body>
+</html>
