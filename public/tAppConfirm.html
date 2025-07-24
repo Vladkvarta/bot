@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="uk">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Кошик - Sweet Delights</title>
+    <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Montserrat:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#FFD700',
+                        secondary: '#1a1a1a'
+                    },
+                    borderRadius: {
+                        'none': '0px',
+                        'sm': '4px',
+                        DEFAULT: '8px',
+                        'md': '12px',
+                        'lg': '16px',
+                        'xl': '20px',
+                        '2xl': '24px',
+                        '3xl': '32px',
+                        'full': '9999px',
+                        'button': '8px'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        :where([class^="ri-"])::before {
+            content: "\f3c2";
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .logo-font {
+            font-family: 'Pacifico', serif;
+        }
+
+        input[type="number"]::-webkit-outer-spin-button,
+        input[type="number"]::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        input[type="number"] {
+            -moz-appearance: textfield;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50 text-secondary">
+    <header class="fixed top-0 w-full bg-white shadow-sm z-50">
+        <div class="flex items-center justify-between px-4 py-3">
+            <a href="https://readdy.ai/home/cb9458f8-9101-4315-a4f7-32608dd27b3b/7a000919-2c77-4690-bf79-418053f5ce5c"
+                data-readdy="true" class="w-6 h-6 flex items-center justify-center cursor-pointer">
+                <i class="ri-arrow-left-line text-xl"></i>
+            </a>
+            <h1 class="font-semibold text-lg">Кошик</h1>
+            <button id="clear-cart" class="w-6 h-6 flex items-center justify-center cursor-pointer">
+                <i class="ri-delete-bin-line text-xl text-red-500"></i>
+            </button>
+        </div>
+    </header>
+    <main class="pt-16 pb-32">
+        <div id="cart-items" class="px-4 py-4 space-y-4">
+            <div class="bg-white rounded-lg shadow-sm p-4 cart-item">
+                <div class="flex items-start space-x-3">
+                    <img src="https://readdy.ai/api/search-image?query=Delicious%20chocolate%20cake%20with%20layers%2C%20professional%20food%20photography%2C%20isolated%20on%20white%20background%2C%20centered%20composition%2C%20soft%20lighting%2C%20high%20detail%20quality%2C%20realistic%20style%2C%20the%20cake%20should%20take%20up%2070%25%20of%20the%20frame&width=80&height=80&seq=cart-cake1&orientation=squarish"
+                        alt="Шоколадний торт" class="w-16 h-16 object-cover object-top rounded">
+                    <div class="flex-1">
+                        <div class="flex justify-between items-start mb-2">
+                            <div>
+                                <h3 class="font-medium text-sm">Шоколадний торт</h3>
+                                <p class="text-gray-600 text-xs">₴ 450 за шт.</p>
+                            </div>
+                            <button class="remove-item w-6 h-6 flex items-center justify-center cursor-pointer">
+                                <i class="ri-close-line text-gray-400"></i>
+                            </button>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center space-x-2">
+                                <button
+                                    class="quantity-decrease bg-gray-200 text-gray-700 w-7 h-7 rounded flex items-center justify-center text-sm cursor-pointer">
+                                    <i class="ri-subtract-line"></i>
+                                </button>
+                                <span class="quantity-display text-sm font-medium min-w-[2rem] text-center">1</span>
+                                <button
+                                    class="quantity-increase bg-primary text-secondary w-7 h-7 rounded flex items-center justify-center text-sm cursor-pointer">
+                                    <i class="ri-add-line"></i>
+                                </button>
+                            </div>
+                            <div class="text-right">
+                                <p class="font-medium text-sm item-total">₴ 450</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white rounded-lg shadow-sm p-4 cart-item">
+                <div class="flex items-start space-x-3">
+                    <img src="https://readdy.ai/api/search-image?query=Chocolate%20chip%20cookies%20stack%2C%20professional%20food%20photography%2C%20isolated%20on%20white%20background%2C%20centered%20composition%2C%20soft%20lighting%2C%20high%20detail%20quality%2C%20realistic%20style%2C%20the%20cookies%20should%20take%20up%2070%25%20of%20the%20frame&width=80&height=80&seq=cart-cookies1&orientation=squarish"
+                        alt="Печиво з шоколадом" class="w-16 h-16 object-cover object-top rounded">
+                    <div class="flex-1">
+                        <div class="flex justify-between items-start mb-2">
+                            <div>
+                                <h3 class="font-medium text-sm">Печиво з шоколадом</h3>
+                                <p class="text-gray-600 text-xs">₴ 85 за шт.</p>
+                            </div>
+                            <button class="remove-item w-6 h-6 flex items-center justify-center cursor-pointer">
+                                <i class="ri-close-line text-gray-400"></i>
+                            </button>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center space-x-2">
+                                <button
+                                    class="quantity-decrease bg-gray-200 text-gray-700 w-7 h-7 rounded flex items-center justify-center text-sm cursor-pointer">
+                                    <i class="ri-subtract-line"></i>
+                                </button>
+                                <span class="quantity-display text-sm font-medium min-w-[2rem] text-center">1</span>
+                                <button
+                                    class="quantity-increase bg-primary text-secondary w-7 h-7 rounded flex items-center justify-center text-sm cursor-pointer">
+                                    <i class="ri-add-line"></i>
+                                </button>
+                            </div>
+                            <div class="text-right">
+                                <p class="font-medium text-sm item-total">₴ 85</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="px-4 py-4">
+            <div class="bg-white rounded-lg shadow-sm p-4 mb-4">
+                <h2 class="font-semibold text-base mb-3">Підсумок замовлення</h2>
+                <div class="space-y-2 text-sm">
+                    <div class="flex justify-between">
+                        <span class="text-gray-600">Кількість товарів:</span>
+                        <span id="total-items">2 шт.</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-gray-600">Вартість товарів:</span>
+                        <span id="subtotal">₴ 535</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-gray-600">Доставка:</span>
+                        <span id="delivery-cost">₴ 50</span>
+                    </div>
+                    <hr class="my-2">
+                    <div class="flex justify-between font-semibold text-base">
+                        <span>До сплати:</span>
+                        <span id="total-amount">₴ 585</span>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white rounded-lg shadow-sm p-4">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="font-semibold text-base">Авторизація</h2>
+                    <div class="flex space-x-2">
+                        <button id="login-tab"
+                            class="text-sm font-medium px-3 py-1 rounded-full bg-primary text-secondary">Вхід</button>
+                        <button id="register-tab"
+                            class="text-sm font-medium px-3 py-1 rounded-full text-gray-600">Реєстрація</button>
+                    </div>
+                </div>
+                <form id="login-form" class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                        <input type="email" name="email" id="login-email"
+                            class="w-full px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                            placeholder="Введіть email" required>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Пароль</label>
+                        <input type="password" name="password" id="login-password"
+                            class="w-full px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                            placeholder="Введіть пароль" required>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <label class="flex items-center">
+                            <input type="checkbox" class="w-4 h-4 text-primary">
+                            <span class="ml-2 text-sm text-gray-600">Запам'ятати мене</span>
+                        </label>
+                        <a href="#" class="text-sm text-primary hover:underline">Забули пароль?</a>
+                    </div>
+                    <button type="submit"
+                        class="w-full bg-primary text-secondary py-2 rounded !rounded-button font-medium">Увійти</button>
+                </form>
+                <div id="delivery-addresses" class="hidden space-y-4">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="font-semibold text-base">Адреси доставки</h2>
+                        <button id="add-address"
+                            class="text-primary hover:underline text-sm font-medium flex items-center">
+                            <i class="ri-add-line mr-1"></i>
+                            Додати адресу
+                        </button>
+                    </div>
+                    <div class="space-y-3">
+                        <div class="bg-gray-50 p-4 rounded-lg border border-gray-200 cursor-pointer delivery-address transition-all duration-200 hover:border-primary"
+                            onclick="selectAddress(this)">
+                            <div class="flex items-start justify-between">
+                                <div class="flex-1">
+                                    <div class="flex items-center gap-2">
+                                        <div
+                                            class="w-4 h-4 rounded-full border-2 border-gray-300 address-radio flex items-center justify-center">
+                                            <div class="w-2 h-2 rounded-full bg-primary hidden"></div>
+                                        </div>
+                                        <p class="font-medium text-sm mb-1">Дім</p>
+                                    </div>
+                                    <p class="text-gray-600 text-sm mt-2">вул. Хрещатик 1, кв. 10</p>
+                                    <p class="text-gray-600 text-sm">Київ, 01001</p>
+                                </div>
+                                <div class="flex items-center space-x-2">
+                                    <button
+                                        class="w-8 h-8 flex items-center justify-center text-gray-500 hover:text-primary"
+                                        onclick="event.stopPropagation()">
+                                        <i class="ri-edit-line"></i>
+                                    </button>
+                                    <button
+                                        class="w-8 h-8 flex items-center justify-center text-gray-500 hover:text-red-500"
+                                        onclick="event.stopPropagation()">
+                                        <i class="ri-delete-bin-line"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-gray-50 p-4 rounded-lg border border-gray-200 cursor-pointer delivery-address transition-all duration-200 hover:border-primary"
+                            onclick="selectAddress(this)">
+                            <div class="flex items-start justify-between">
+                                <div class="flex-1">
+                                    <div class="flex items-center gap-2">
+                                        <div
+                                            class="w-4 h-4 rounded-full border-2 border-gray-300 address-radio flex items-center justify-center">
+                                            <div class="w-2 h-2 rounded-full bg-primary hidden"></div>
+                                        </div>
+                                        <p class="font-medium text-sm mb-1">Офіс</p>
+                                    </div>
+                                    <p class="text-gray-600 text-sm mt-2">вул. Велика Васильківська 72, оф. 25</p>
+                                    <p class="text-gray-600 text-sm">Київ, 03150</p>
+                                </div>
+                                <div class="flex items-center space-x-2">
+                                    <button
+                                        class="w-8 h-8 flex items-center justify-center text-gray-500 hover:text-primary"
+                                        onclick="event.stopPropagation()">
+                                        <i class="ri-edit-line"></i>
+                                    </button>
+                                    <button
+                                        class="w-8 h-8 flex items-center justify-center text-gray-500 hover:text-red-500"
+                                        onclick="event.stopPropagation()">
+                                        <i class="ri-delete-bin-line"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <form id="register-form" class="hidden space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Ім'я</label>
+                        <input type="text" id="register-name"
+                            class="w-full px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                            placeholder="Введіть ім'я" required>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                        <input type="email" id="register-email"
+                            class="w-full px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                            placeholder="Введіть email" required>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Пароль</label>
+                        <input type="password" id="register-password"
+                            class="w-full px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                            placeholder="Створіть пароль" required>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Підтвердження пароля</label>
+                        <input type="password" id="register-password-confirm"
+                            class="w-full px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                            placeholder="Підтвердіть пароль" required>
+                    </div>
+                    <button type="submit"
+                        class="w-full bg-primary text-secondary py-2 rounded !rounded-button font-medium">Зареєструватися</button>
+                </form>
+                <div class="mt-4">
+                    <div class="relative flex items-center justify-center">
+                        <div class="border-t border-gray-300 w-full"></div>
+                        <span class="bg-white px-2 text-sm text-gray-500">або</span>
+                        <div class="border-t border-gray-300 w-full"></div>
+                    </div>
+                    <button id="google-auth"
+                        class="mt-4 w-full border border-gray-300 rounded !rounded-button py-2 px-4 flex items-center justify-center space-x-2 hover:bg-gray-50">
+                        <i class="ri-google-fill text-[#4285F4]"></i>
+                        <span class="text-sm font-medium">Продовжити з Google</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+    <footer class="fixed bottom-0 w-full bg-black p-4 z-50">
+        <button id="place-order"
+            class="hidden w-full bg-primary text-secondary py-3 rounded !rounded-button font-medium text-sm cursor-pointer flex items-center justify-center space-x-2">
+            <span class="text-secondary">ОФОРМИТИ ЗАМОВЛЕННЯ</span>
+            <span id="footer-total" class="text-secondary">₴ 585</span>
+        </button>
+    </footer>
+    <div id="success-modal"
+        class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center px-4">
+        <div class="bg-white rounded-lg p-6 w-full max-w-sm">
+            <div class="text-center">
+                <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i class="ri-check-line text-2xl text-green-600"></i>
+                </div>
+                <h3 class="font-semibold text-lg mb-2">Замовлення оформлено!</h3>
+                <p class="text-gray-600 text-sm mb-4">Дякуємо за ваше замовлення. Ми зв'яжемося з вами найближчим часом
+                    для підтвердження.</p>
+                <button id="close-modal"
+                    class="w-full bg-primary text-secondary py-2 rounded !rounded-button font-medium text-sm cursor-pointer">
+                    Зрозуміло
+                </button>
+            </div>
+        </div>
+    </div>
+    <script id="cart-quantity-controls">
+        document.addEventListener('DOMContentLoaded', function () {
+            const cartItems = document.querySelectorAll('.cart-item');
+            cartItems.forEach(item => {
+                const decreaseBtn = item.querySelector('.quantity-decrease');
+                const increaseBtn = item.querySelector('.quantity-increase');
+                const quantityDisplay = item.querySelector('.quantity-display');
+                const itemTotal = item.querySelector('.item-total');
+                const priceText = item.querySelector('.text-gray-600').textContent;
+                const unitPrice = parseInt(priceText.match(/₴ (\d+)/)[1]);
+                decreaseBtn.addEventListener('click', function () {
+                    let quantity = parseInt(quantityDisplay.textContent);
+                    if (quantity > 1) {
+                        quantity--;
+                        quantityDisplay.textContent = quantity;
+                        itemTotal.textContent = `₴ ${quantity * unitPrice}`;
+                        updateTotals();
+                    }
+                });
+                increaseBtn.addEventListener('click', function () {
+                    let quantity = parseInt(quantityDisplay.textContent);
+                    quantity++;
+                    quantityDisplay.textContent = quantity;
+                    itemTotal.textContent = `₴ ${quantity * unitPrice}`;
+                    updateTotals();
+                });
+            });
+        });
+    </script>
+    <script id="cart-item-removal">
+        document.addEventListener('DOMContentLoaded', function () {
+            const removeButtons = document.querySelectorAll('.remove-item');
+            removeButtons.forEach(button => {
+                button.addEventListener('click', function () {
+                    const cartItem = this.closest('.cart-item');
+                    cartItem.remove();
+                    updateTotals();
+                    checkEmptyCart();
+                });
+            });
+            const clearCartBtn = document.getElementById('clear-cart');
+            clearCartBtn.addEventListener('click', function () {
+                const cartItems = document.querySelectorAll('.cart-item');
+                cartItems.forEach(item => item.remove());
+                updateTotals();
+                checkEmptyCart();
+            });
+        });
+    </script>
+    <script id="totals-calculation">
+        document.addEventListener('DOMContentLoaded', function () {
+            function updateTotals() {
+                const cartItems = document.querySelectorAll('.cart-item');
+                let totalItems = 0;
+                let subtotal = 0;
+                cartItems.forEach(item => {
+                    const quantity = parseInt(item.querySelector('.quantity-display').textContent);
+                    const itemTotalText = item.querySelector('.item-total').textContent;
+                    const itemPrice = parseInt(itemTotalText.match(/₴ (\d+)/)[1]);
+                    totalItems += quantity;
+                    subtotal += itemPrice;
+                });
+                const deliveryCost = subtotal > 0 ? 50 : 0;
+                const totalAmount = subtotal + deliveryCost;
+                document.getElementById('total-items').textContent = `${totalItems} шт.`;
+                document.getElementById('subtotal').textContent = `₴ ${subtotal}`;
+                document.getElementById('delivery-cost').textContent = `₴ ${deliveryCost}`;
+                document.getElementById('total-amount').textContent = `₴ ${totalAmount}`;
+                document.getElementById('footer-total').textContent = `₴ ${totalAmount}`;
+            }
+            function checkEmptyCart() {
+                const cartItems = document.querySelectorAll('.cart-item');
+                if (cartItems.length === 0) {
+                    document.getElementById('cart-items').innerHTML = `
+<div class="text-center py-12">
+<div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+<i class="ri-shopping-cart-line text-2xl text-gray-400"></i>
+</div>
+<h3 class="font-medium text-base mb-2">Кошик порожній</h3>
+<p class="text-gray-600 text-sm mb-4">Додайте товари з каталогу</p>
+<a href="https://readdy.ai/home/cb9458f8-9101-4315-a4f7-32608dd27b3b/7a000919-2c77-4690-bf79-418053f5ce5c" data-readdy="true" class="inline-block bg-primary text-secondary px-6 py-2 rounded !rounded-button font-medium text-sm cursor-pointer">
+Перейти до каталогу
+</a>
+</div>
+`;
+                }
+            }
+            window.updateTotals = updateTotals;
+            window.checkEmptyCart = checkEmptyCart;
+        });
+    </script>
+    <script id="order-placement">
+        document.addEventListener('DOMContentLoaded', function () {
+            const placeOrderBtn = document.getElementById('place-order');
+            const successModal = document.getElementById('success-modal');
+            const closeModalBtn = document.getElementById('close-modal');
+            const contactForm = document.getElementById('contact-form');
+            placeOrderBtn.addEventListener('click', function () {
+                const cartItems = document.querySelectorAll('.cart-item');
+                if (cartItems.length === 0) {
+                    return;
+                }
+                const name = document.getElementById('customer-name').value.trim();
+                const phone = document.getElementById('customer-phone').value.trim();
+                const address = document.getElementById('customer-address').value.trim();
+                if (!name || !phone || !address) {
+                    const firstEmptyField = document.querySelector('#customer-name:invalid, #customer-phone:invalid, #customer-address:invalid') ||
+                        document.querySelector('#customer-name[value=""], #customer-phone[value=""], #customer-address[value=""]');
+                    if (firstEmptyField) {
+                        firstEmptyField.focus();
+                    }
+                    return;
+                }
+                successModal.classList.remove('hidden');
+            });
+            closeModalBtn.addEventListener('click', function () {
+                successModal.classList.add('hidden');
+                window.location.href = 'https://readdy.ai/home/cb9458f8-9101-4315-a4f7-32608dd27b3b/7a000919-2c77-4690-bf79-418053f5ce5c';
+            });
+        });
+    </script>
+    <script id="auth-form-controls">
+        document.addEventListener('DOMContentLoaded', function () {
+            const loginTab = document.getElementById('login-tab');
+            const registerTab = document.getElementById('register-tab');
+            const loginForm = document.getElementById('login-form');
+            const registerForm = document.getElementById('register-form');
+            const deliveryAddresses = document.getElementById('delivery-addresses');
+            const placeOrderBtn = document.getElementById('place-order');
+
+            function selectAddress(element) {
+                document.querySelectorAll('.delivery-address').forEach(address => {
+                    address.classList.remove('border-primary', 'bg-primary/5');
+                    const radio = address.querySelector('.address-radio');
+                    radio.classList.remove('border-primary');
+                    radio.querySelector('div').classList.add('hidden');
+                });
+
+                element.classList.add('border-primary', 'bg-primary/5');
+                const radio = element.querySelector('.address-radio');
+                radio.classList.add('border-primary');
+                radio.querySelector('div').classList.remove('hidden');
+
+                placeOrderBtn.classList.remove('hidden');
+            }
+
+            window.selectAddress = selectAddress;
+            document.querySelectorAll('.delivery-address').forEach(address => {
+                address.addEventListener('click', function (e) {
+                    if (e.target.closest('button')) return;
+                    const radio = this.querySelector('input[type="radio"]');
+                    radio.checked = true;
+                    placeOrderBtn.classList.remove('hidden');
+                });
+            });
+            loginTab.addEventListener('click', function () {
+                loginTab.classList.add('bg-primary', 'text-secondary');
+                loginTab.classList.remove('text-gray-600');
+                registerTab.classList.remove('bg-primary', 'text-secondary');
+                registerTab.classList.add('text-gray-600');
+                loginForm.classList.remove('hidden');
+                registerForm.classList.add('hidden');
+                deliveryAddresses.classList.add('hidden');
+            });
+            registerTab.addEventListener('click', function () {
+                registerTab.classList.add('bg-primary', 'text-secondary');
+                registerTab.classList.remove('text-gray-600');
+                loginTab.classList.remove('bg-primary', 'text-secondary');
+                loginTab.classList.add('text-gray-600');
+                registerForm.classList.remove('hidden');
+                loginForm.classList.add('hidden');
+                deliveryAddresses.classList.add('hidden');
+            });
+            loginForm.addEventListener('submit', function (e) {
+                e.preventDefault();
+                const email = document.getElementById('login-email').value;
+                const password = document.getElementById('login-password').value;
+                if (email && password) {
+                    loginForm.classList.add('hidden');
+                    registerForm.classList.add('hidden');
+                    loginTab.parentElement.classList.add('hidden');
+                    deliveryAddresses.classList.remove('hidden');
+                }
+            });
+            registerForm.addEventListener('submit', function (e) {
+                e.preventDefault();
+                const name = document.getElementById('register-name').value;
+                const email = document.getElementById('register-email').value;
+                const password = document.getElementById('register-password').value;
+                const passwordConfirm = document.getElementById('register-password-confirm').value;
+                if (password !== passwordConfirm) {
+                    const passwordConfirmInput = document.getElementById('register-password-confirm');
+                    passwordConfirmInput.classList.add('border-red-500');
+                    return;
+                }
+                if (name && email && password && passwordConfirm) {
+                    registerForm.classList.add('hidden');
+                    loginForm.classList.add('hidden');
+                    loginTab.parentElement.classList.add('hidden');
+                    deliveryAddresses.classList.remove('hidden');
+                }
+            });
+            const googleAuthBtn = document.getElementById('google-auth');
+            googleAuthBtn.addEventListener('click', function () {
+                loginForm.classList.add('hidden');
+                registerForm.classList.add('hidden');
+                loginTab.parentElement.classList.add('hidden');
+                deliveryAddresses.classList.remove('hidden');
+            });
+            document.getElementById('add-address').addEventListener('click', function () {
+                const newAddress = document.createElement('div');
+                newAddress.className = 'bg-gray-50 p-4 rounded-lg border border-gray-200';
+                newAddress.innerHTML = `
+<div class="flex items-start justify-between">
+<div class="flex-1">
+<p class="font-medium text-sm mb-1">Нова адреса</p>
+<p class="text-gray-600 text-sm">Натисніть редагувати, щоб додати деталі</p>
+</div>
+<div class="flex items-center space-x-2">
+<button class="w-8 h-8 flex items-center justify-center text-gray-500 hover:text-primary">
+<i class="ri-edit-line"></i>
+</button>
+<button class="w-8 h-8 flex items-center justify-center text-gray-500 hover:text-red-500">
+<i class="ri-delete-bin-line"></i>
+</button>
+</div>
+</div>
+`;
+                document.querySelector('#delivery-addresses .space-y-3').appendChild(newAddress);
+            });
+        });
+    </script>
+</body>
+
+</html>
