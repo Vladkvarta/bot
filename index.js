@@ -20,7 +20,7 @@ if (!BOT_TOKEN || !WEB_APP_URL || !GITHUB_SECRET) {
 
 // --- ИНИЦИАЛИЗАЦИЯ EXPRESS ---
 const app = express();
-/ Этот обработчик перехватывает запросы к корневому URL ('/')
+// Этот обработчик перехватывает запросы к корневому URL ('/')
 // и отдает tAppMain.html в качестве главной страницы.
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'tAppMain.html'));
