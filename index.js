@@ -90,11 +90,11 @@ const bot = new Telegraf(BOT_TOKEN);
 
 const createMainMenu = () => {
     return Markup.keyboard([
-        [Markup.button.webApp('🍰 Каталог', `${WEB_APP_URL}`)],
-        [
-            Markup.button.webApp('👤 Профіль', `${WEB_APP_URL}/login.html`),
-            Markup.button.webApp('📋 Мої замовлення', `${WEB_APP_URL}/orders.html`)
-        ]
+        [Markup.button.webApp('🍰 Каталог', `${WEB_APP_URL}/tAppMain.html`)],
+        // [
+        //     Markup.button.webApp('👤 Профіль', `${WEB_APP_URL}/login.html`),
+        //     Markup.button.webApp('📋 Мої замовлення', `${WEB_APP_URL}/orders.html`)
+        // ]
     ]).resize();
 };
 
