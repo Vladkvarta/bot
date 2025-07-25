@@ -20,9 +20,17 @@ if (!BOT_TOKEN || !WEB_APP_URL || !GITHUB_SECRET) {
 
 // --- ИНИЦИАЛИЗАЦИЯ EXPRESS ---
 const app = express();
+/ Этот обработчик перехватывает запросы к корневому URL ('/')
+// и отдает tAppMain.html в качестве главной страницы.
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'tAppMain.html'));
+});
+
+// Middleware для обработки raw JSON (для вебхуков)
 app.use(express.raw({ type: 'application/json' }));
+
+// Middleware для раздачи всех остальных статических файлов
 app.use(express.static(path.join(__dirname, 'public')));
-// app.use('/img', express.static(path.join(__dirname, 'img')));
 
 
 
