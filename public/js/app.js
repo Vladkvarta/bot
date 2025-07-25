@@ -31,8 +31,8 @@ const App = {
             localStorage.removeItem('user');
             localStorage.removeItem('cart'); // Also clear cart on logout
             alert('Вы вышли из системы.');
-            // window.location.href = '/index.html';
-             window.location.href = '/tAppMain.html';
+             window.location.href = '/index.html';
+            //  window.location.href = '/tAppMain.html';
         },
 
         getUser() {
