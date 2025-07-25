@@ -31,7 +31,7 @@ echo "Шаг 5: Перезагрузка приложения через PM2..."
 # Используем 'reload' для "бесшовного" перезапуска без остановки
 /home/admin/.nvm/versions/node/v22.17.0/bin/pm2 reload ecosystem.config.js
 
-echo "Шаг 6: Сохранение списка процессов PM2..."
+echo "Шаг 6: Сохранение списка процессов PM2...."
 /home/admin/.nvm/versions/node/v22.17.0/bin/pm2 save
 
 echo "--- Развертывание успешно завершено ---"
