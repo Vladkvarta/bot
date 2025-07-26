@@ -1,118 +1,166 @@
-// --- CENTRAL APP LOGIC ---
+document.addEventListener('DOMContentLoaded', () => {
+    const tg = window.Telegram.WebApp;
+    tg.expand();
 
-const App = {
-    // Mock product data based on your main page design
-    products: [
-        { id: 1, name: 'Шоколадний торт "Велюр"', price: 890, wholesalePrice: 650 },
-        { id: 2, name: 'Французькі макаруни', price: 450, wholesalePrice: 320 },
-        { id: 3, name: 'Чізкейк "Полуниця"', price: 320, wholesalePrice: 240 },
-        { id: 4, name: 'Капкейки "Ваніль"', price: 280, wholesalePrice: 200 },
-        { id: 5, name: 'Тірамісу класичне', price: 180, wholesalePrice: 130 },
-        { id: 6, name: 'Фруктовий тарт', price: 420, wholesalePrice: 310 },
-    ],
+    let products = [];
+    let cart = JSON.parse(localStorage.getItem('cart')) || {};
 
-    // --- AUTHENTICATION MODULE ---
-    Auth: {
-        // Mock login. In a real app, this would be a server call.
-        login(email) {
-            // Determine user status based on email for this demo
-            const isWholesale = email.includes('opt');
-            const user = {
-                email: email,
-                status: isWholesale ? 'опт' : 'розница',
-                discount: isWholesale ? 0 : 5 // 5% discount for retail users
-            };
-            localStorage.setItem('user', JSON.stringify(user));
-            alert('Вход выполнен успешно!');
-            window.location.href = '/account.html';
-        },
+    // --- РОУТЕР ПРИЛОЖЕНИЯ ---
+    if (document.getElementById('products-grid')) {
+        initMainPage();
+    } else if (document.getElementById('cart-items-container')) {
+        // Логика для страницы confirm.html будет здесь
+    }
 
-        logout() {
-            localStorage.removeItem('user');
-            localStorage.removeItem('cart'); // Also clear cart on logout
-            alert('Вы вышли из системы.');
-             window.location.href = '/index.html';
-            //  window.location.href = '/tAppMain.html';
-        },
+    // --- ЛОГИКА ГЛАВНОЙ СТРАНИЦЫ ---
+    async function initMainPage() {
+        await fetchProducts();
+        renderProducts();
+        updateHeader();
 
-        getUser() {
-            try {
-                return JSON.parse(localStorage.getItem('user'));
-            } catch (e) {
-                return null;
-            }
-        },
-
-        isLoggedIn() {
-            return !!this.getUser();
-        },
-
-        // This function checks login status and redirects if necessary
-        handleAccountLink(e) {
-            e.preventDefault();
-            if (App.Auth.isLoggedIn()) {
-                window.location.href = '/account.html';
+        document.getElementById('view-order-btn').addEventListener('click', () => {
+            if (Object.keys(cart).length === 0) {
+                tg.showAlert('Ваш кошик порожній!');
             } else {
-                window.location.href = '/login.html';
-            }
-        }
-    },
-
-    // --- CART MODULE ---
-    Cart: {
-        get() {
-            try {
-                return JSON.parse(localStorage.getItem('cart')) || [];
-            } catch (e) {
-                return [];
-            }
-        },
-
-        save(cart) {
-            localStorage.setItem('cart', JSON.stringify(cart));
-            this.updateCartCount();
-        },
-
-        add(productId) {
-            let cart = this.get();
-            const product = App.products.find(p => p.id === productId);
-            if (!product) return;
-
-            const existingItem = cart.find(item => item.id === productId);
-            if (existingItem) {
-                existingItem.quantity++;
-            } else {
-                cart.push({ ...product, quantity: 1 });
-            }
-            this.save(cart);
-            alert(`"${product.name}" добавлен в корзину!`);
-        },
-        
-        updateCartCount() {
-            const cartCountEl = document.getElementById('cart-count');
-            if(cartCountEl) {
-                const cart = this.get();
-                const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
-                cartCountEl.textContent = totalItems;
-            }
-        }
-    },
-
-    // --- INITIALIZATION ---
-    init() {
-        // This function runs on every page
-        document.addEventListener('DOMContentLoaded', () => {
-            // Update cart counter in the header
-            App.Cart.updateCartCount();
-
-            // Attach event listener to the account link
-            const accountLink = document.getElementById('account-link');
-            if (accountLink) {
-                accountLink.addEventListener('click', App.Auth.handleAccountLink);
+                window.location.href = '/confirm.html';
             }
         });
+        
+        document.getElementById('close-btn').addEventListener('click', () => {
+            tg.close();
+        });
     }
-};
 
-// Start the app logic
-App.init();
+    async function fetchProducts() {
+        try {
+            const response = await fetch('/api/products');
+            products = await response.json();
+            localStorage.setItem('products', JSON.stringify(products));
+        } catch (error) {
+            console.error('Failed to fetch products:', error);
+        }
+    }
+
+    // --- ФУНКЦИИ ОТРИСОВКИ (RENDER) ---
+    function renderProducts() {
+        const grid = document.getElementById('products-grid');
+        grid.innerHTML = '';
+        products.forEach(product => {
+            const isOutOfStock = product.stock.status === 'out_of_stock';
+            const card = document.createElement('div');
+            card.className = 'bg-white rounded-lg shadow-sm overflow-hidden flex flex-col';
+            card.setAttribute('data-product-id', product.productId);
+
+            // Используем ВАШ шаблон карточки
+            card.innerHTML = `
+                <div class="relative">
+                    <img src="${product.images[0].url}" alt="${product.name}" class="w-full h-32 object-cover object-top ${isOutOfStock ? 'grayscale' : ''}">
+                    ${product.isNew ? `<div class="absolute top-2 right-2 bg-primary text-secondary text-xs px-2 py-1 rounded-full font-medium">НОВИНКА</div>` : ''}
+                    ${isOutOfStock ? `<div class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center"><span class="text-white font-bold text-center">Немає в наявності</span></div>` : ''}
+                </div>
+                <div class="p-3 flex flex-col flex-1">
+                    <div class="flex-1">
+                        <h3 class="font-medium text-sm mb-1">${product.name}</h3>
+                        <p class="text-gray-600 text-xs">₴ ${product.price}</p>
+                    </div>
+                    <div class="flex items-center justify-center pt-2">
+                        ${!isOutOfStock ? `
+                        <div class="quantity-controls hidden flex items-center space-x-2">
+                            <button class="quantity-decrease bg-gray-200 text-gray-700 w-7 h-7 rounded flex items-center justify-center text-sm cursor-pointer">-</button>
+                            <span class="quantity text-sm font-medium min-w-[20px] text-center">1</span>
+                            <button class="quantity-increase bg-primary text-secondary w-7 h-7 rounded flex items-center justify-center text-sm cursor-pointer">+</button>
+                        </div>
+                        <button class="add-to-cart bg-primary text-secondary px-3 py-1 rounded-lg text-xs font-medium cursor-pointer w-full">ДОДАТИ</button>
+                        ` : ''}
+                    </div>
+                </div>
+            `;
+            grid.appendChild(card);
+            updateProductCardUI(product.productId);
+        });
+        addCardEventListeners();
+    }
+
+    // --- УПРАВЛЕНИЕ КОРЗИНОЙ И UI ---
+    function handleCartChange(productId, action) {
+        const currentQuantity = cart[productId] || 0;
+        switch (action) {
+            case 'add': // Срабатывает при клике на "ДОДАТИ"
+                cart[productId] = 1;
+                break;
+            case 'increase':
+                cart[productId]++;
+                break;
+            case 'decrease':
+                if (currentQuantity > 1) {
+                    cart[productId]--;
+                } else {
+                    delete cart[productId];
+                }
+                break;
+        }
+        localStorage.setItem('cart', JSON.stringify(cart));
+        updateProductCardUI(productId);
+        updateHeader();
+    }
+
+    function addCardEventListeners() {
+        document.querySelectorAll('.add-to-cart').forEach(btn => {
+            const card = btn.closest('[data-product-id]');
+            const productId = card.dataset.productId;
+            btn.addEventListener('click', () => handleCartChange(productId, 'add'));
+        });
+        document.querySelectorAll('.quantity-increase').forEach(btn => {
+            const card = btn.closest('[data-product-id]');
+            const productId = card.dataset.productId;
+            btn.addEventListener('click', () => handleCartChange(productId, 'increase'));
+        });
+        document.querySelectorAll('.quantity-decrease').forEach(btn => {
+            const card = btn.closest('[data-product-id]');
+            const productId = card.dataset.productId;
+            btn.addEventListener('click', () => handleCartChange(productId, 'decrease'));
+        });
+    }
+
+    function updateProductCardUI(productId) {
+        const card = document.querySelector(`[data-product-id="${productId}"]`);
+        if (!card) return;
+
+        const quantity = cart[productId];
+        const controls = card.querySelector('.quantity-controls');
+        const addBtn = card.querySelector('.add-to-cart');
+        const quantitySpan = card.querySelector('.quantity');
+
+        if (quantity > 0) {
+            quantitySpan.textContent = quantity;
+            controls.classList.remove('hidden');
+            addBtn.classList.add('hidden');
+        } else {
+            controls.classList.add('hidden');
+            addBtn.classList.remove('hidden');
+        }
+    }
+
+    function updateHeader() {
+        const cartTotalEl = document.getElementById('cart-total');
+        const cartBadgeEl = document.getElementById('cart-badge');
+
+        const uniqueItemsCount = Object.keys(cart).length;
+        
+        if (uniqueItemsCount > 0) {
+            const totalSum = Object.keys(cart).reduce((sum, productId) => {
+                const product = products.find(p => p.productId === productId);
+                return sum + (product.price * cart[productId]);
+            }, 0);
+
+            cartTotalEl.textContent = `₴ ${totalSum}`;
+            cartTotalEl.classList.remove('hidden');
+            
+            cartBadgeEl.textContent = uniqueItemsCount;
+            cartBadgeEl.classList.remove('hidden');
+        } else {
+            cartTotalEl.classList.add('hidden');
+            cartBadgeEl.classList.add('hidden');
+        }
+    }
+});

@@ -2,490 +2,289 @@
 <html lang="uk">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Смакує - Крафтове виробництво солодощів</title>
-    <script src="https://cdn.tailwindcss.com/3.4.16"></script>
-    <link href="/style.css" rel="stylesheet">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css" rel="stylesheet">
-    <link rel="icon" type="image/png" href="/img/favicon.png">
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        primary: '#FFD700',
-                        secondary: '#FFF4E6'
-                    },
-                    borderRadius: {
-                        'none': '0px',
-                        'sm': '4px',
-                        DEFAULT: '8px',
-                        'md': '12px',
-                        'lg': '16px',
-                        'xl': '20px',
-                        '2xl': '24px',
-                        '3xl': '32px',
-                        'full': '9999px',
-                        'button': '8px'
-                    }
-                }
-            }
-        }
-    </script>
-    <style>
-        :where([class^="ri-"])::before {
-            content: "\f3c2";
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sweet Delights</title>
+  <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Montserrat:wght@400;500;600;700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css" />
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: "#FFD700",
+            secondary: "#1a1a1a",
+          },
+          borderRadius: {
+            none: "0px",
+            sm: "4px",
+            DEFAULT: "8px",
+            md: "12px",
+            lg: "16px",
+            xl: "20px",
+            "2xl": "24px",
+            "3xl": "32px",
+            full: "9999px",
+            button: "8px",
+          },
+        },
+      },
+    };
+  </script>
+  <style>
+    :where([class^="ri-"])::before {
+      content: "\f3c2";
+    }
 
-        .category-btn.active {
-            background-color: #FFD700;
-            color: black;
-        }
+    body {
+      font-family: 'Montserrat', sans-serif;
+    }
 
-        .hero-bg {
-            background-image: url('/img/backGroundFonMain.jpg');
-            background-size: cover;
-            background-position: center;
-            position: relative;
-        }
+    .logo-font {
+      font-family: 'Pacifico', serif;
+    }
 
-        .hero-overlay {
-            background: linear-gradient(135deg, rgba(255, 215, 0, 0.85) 0%, rgba(255, 244, 230, 0.75) 100%);
-            backdrop-filter: blur(8px);
-        }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
 
-        .dessert-card {
-            transition: all 0.3s ease;
-        }
-
-        .dessert-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-        }
-    </style>
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+  </style>
 </head>
 
-<body class="bg-white">
-    <header class="bg-white shadow-sm sticky top-0 z-50">
-        <div class="w-full px-4">
-            <div class="flex items-center justify-between h-16">
-                <div class="flex items-center space-x-2">
-                    <div
-                        class="w-12 h-12 flex items-center justify-center bg-primary rounded-full shadow-[0_0_15px_rgba(255,215,0,0.5)] backdrop-blur-sm">
-                        <img src="/img/Logo.jfif" alt="Logo" class="w-8 h-8">
-                    </div>
-                    <div>
-                        <h1 class="text-lg font-bold text-black">СМАКУЄ</h1>
-                        <p class="text-xs text-gray-600">Крафтове виробництво</p>
-                    </div>
-                </div>
-                <div class="flex items-center">
-                    <nav class="hidden md:flex items-center space-x-6">
-                        <div class="flex space-x-4">
-                            <a href="https://www.instagram.com/smakuie_kraft/" target="_blank"
-                                class="w-10 h-10 bg-primary rounded-full flex items-center justify-center text-black hover:bg-yellow-400 transition-colors">
-                                <i class="ri-instagram-line"></i>
-                            </a>
-                            <!-- <a href="#" target="_blank"
-                                class="w-10 h-10 bg-primary rounded-full flex items-center justify-center text-black hover:bg-yellow-400 transition-colors">
-                                <i class="ri-facebook-line"></i>
-                            </a> -->
-                            <a href="https://t.me/Smakuie_Bot" target="_blank"
-                                class="w-10 h-10 bg-primary rounded-full flex items-center justify-center text-black hover:bg-yellow-400 transition-colors">
-                                <i class="ri-telegram-line"></i>
-                            </a>
-                        </div>
-                        <a href="/index.html"
-                            class="text-gray-800 hover:text-primary font-medium transition-colors">Головна</a>
-                        <a href="/contacts.html" data-readdy="true"
-                            class="text-gray-600 hover:text-primary font-medium transition-colors">Контакти</a>
-                        <a href="/reviews.html"
-                            class="text-gray-600 hover:text-primary font-medium transition-colors">Відгуки</a>
-                        <a href="/account.html"
-                            class="text-gray-600 hover:text-primary font-medium transition-colors flex items-center space-x-1">
-                            <div class="w-4 h-4 flex items-center justify-center">
-                                <i class="ri-user-line text-sm"></i>
-                            </div>
-                            <span>Особистий кабінет</span>
-                        </a>
-                        <a href="/cart.html" data-readdy="true"
-                            class="text-gray-600 hover:text-primary font-medium transition-colors flex items-center space-x-1">
-                            <div class="w-4 h-4 flex items-center justify-center">
-                                <i class="ri-shopping-cart-line text-sm"></i>
-                            </div>
-                            <span class="hidden md:inline">Корзина</span>
-                        </a>
-                    </nav>
-                    <button class="md:hidden w-8 h-8 flex items-center justify-center ml-4" id="menuButton">
-                        <i class="ri-menu-line text-xl"></i>
-                    </button>
-                </div>
-                <nav class="hidden fixed inset-0 bg-white z-50" id="mobileNav">
-                    <a href="/index.html"
-                        class="text-gray-800 hover:text-primary font-medium transition-colors">Головна</a>
-                    <a href="/contacts.html"
-                        class="text-gray-600 hover:text-primary font-medium transition-colors">Контакти</a>
-                    <a href="/reviews.html"
-                        class="text-gray-600 hover:text-primary font-medium transition-colors">Відгуки</a>
-                    <a href="/account.html"
-                        class="text-gray-600 hover:text-primary font-medium transition-colors flex items-center space-x-1">
-                        <div class="w-4 h-4 flex items-center justify-center">
-                            <i class="ri-user-line text-sm"></i>
-                        </div>
-                        <span>Особистий кабінет</span>
-                    </a>
-                    <a href="/account.html"
-                        class="text-gray-600 hover:text-primary font-medium transition-colors flex items-center space-x-1">
-                        <div class="w-4 h-4 flex items-center justify-center">
-                            <i class="ri-shopping-cart-line text-sm"></i>
-                        </div>
-                    </a>
-                </nav>
+<body class="bg-gray-50 text-secondary">
+  <header class="fixed top-0 w-full bg-white shadow-sm z-50">
+    <div class="flex items-center justify-between px-4 py-3">
+      <div class="flex items-center space-x-2">
+        <span class="logo-font text-xl text-secondary">Sweet Delights</span>
+      </div>
+      <div class="flex items-center space-x-4">
+        <div class="flex items-center">
+          <span id="cart-total" class="text-sm font-medium text-secondary mr-2 hidden">₴ 0</span>
+          <div class="relative">
+            <div class="w-6 h-6 flex items-center justify-center cursor-pointer">
+              <i class="ri-shopping-cart-line text-xl"></i>
             </div>
+            <div id="cart-badge"
+              class="absolute -top-2 -right-2 bg-primary text-secondary text-xs rounded-full w-5 h-5 flex items-center justify-center font-medium hidden">
+              0
+            </div>
+          </div>
         </div>
-    </header>
-    <main>
-        <section class="hero-bg min-h-[40vh] flex items-center">
-            <div
-                class="hero-overlay absolute inset-0 backdrop-blur-md bg-gradient-to-br from-[rgba(255,244,230,0.9)] to-[rgba(255,215,0,0.3)]">
-            </div>
-            <div class="relative z-10 w-full">
-                <div class="w-full px-4">
-                    <div class="text-center">
-                        <div class="mb-8">
-                            <div
-                                class="w-32 h-32 mx-auto mb-6 flex items-center justify-center bg-primary/90 backdrop-blur-xl rounded-full shadow-[0_0_64px_rgba(255,215,0,0.25)] relative overflow-hidden">
-                                <img src="/img/Logo.jfif" alt="Logo" class="w-24 h-24 relative z-10 rounded-full">
-                            </div>
-                            <h1
-                                class="text-4xl font-['Montserrat'] font-bold text-black mb-4 drop-shadow-[0_4px_8px_rgba(0,0,0,0.1)]">
-                                СМАКУЄ</h1>
-                            <p class="text-lg text-gray-800 font-light tracking-wide">Крафтове виробництво солодощів</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-        <section class="py-20 bg-secondary">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="text-center mb-16">
-                    <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold text-black mb-6">Популярні десерти</h2>
-                    <p class="text-xl text-gray-700 max-w-2xl mx-auto">
-                        Найулюбленіші смаколики наших клієнтів, створені за унікальними рецептами
-                    </p>
-                </div>
-                <div class="flex justify-center mb-8">
-                    <div class="inline-flex bg-white rounded-full p-1 shadow-md">
-                        <button
-                            class="category-btn active px-6 py-2 rounded-full text-black font-medium whitespace-nowrap"
-                            data-category="all">Всі</button>
-                        <button class="category-btn px-6 py-2 rounded-full text-gray-600 font-medium whitespace-nowrap"
-                            data-category="cakes">Торти</button>
-                        <button class="category-btn px-6 py-2 rounded-full text-gray-600 font-medium whitespace-nowrap"
-                            data-category="pastries">Тістечка</button>
-                        <button class="category-btn px-6 py-2 rounded-full text-gray-600 font-medium whitespace-nowrap"
-                            data-category="sweets">Цукерки</button>
-                    </div>
-                </div>
-                <div id="products-grid" class="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6 mb-12">
-                </div>
-                <div class="text-center flex items-center justify-center gap-4">
-                    <button id="loadMoreBtn"
-                        class="border-2 border-black text-black px-8 py-4 !rounded-button font-semibold text-lg hover:bg-black hover:text-white transition-colors whitespace-nowrap transform-none">
-                        <span>Переглянути всі десерти</span>
-                    </button>
-                    <div id="loadingSpinner"
-                        class="hidden w-6 h-6 border-2 border-black border-t-transparent rounded-full animate-spin">
-                    </div>
-                </div>
-            </div>
-        </section>
-        <section class="py-20 bg-white">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-                    <div>
-                        <h2 class="text-4xl md:text-5xl font-bold text-black mb-6">Чому обирають нас?</h2>
-                        <div class="space-y-6">
-                            <div class="flex items-start space-x-4">
-                                <div
-                                    class="w-12 h-12 bg-primary rounded-full flex items-center justify-center flex-shrink-0">
-                                    <i class="ri-leaf-line text-xl text-black"></i>
-                                </div>
-                                <div>
-                                    <h3 class="text-xl font-bold text-black mb-2">Натуральні інгредієнти</h3>
-                                    <p class="text-gray-600">Використовуємо тільки найкращі та найсвіжіші продукти без
-                                        штучних добавок</p>
-                                </div>
-                            </div>
-                            <div class="flex items-start space-x-4">
-                                <div
-                                    class="w-12 h-12 bg-primary rounded-full flex items-center justify-center flex-shrink-0">
-                                    <i class="ri-hand-heart-line text-xl text-black"></i>
-                                </div>
-                                <div>
-                                    <h3 class="text-xl font-bold text-black mb-2">Ручна робота</h3>
-                                    <p class="text-gray-600">Кожен десерт створюється вручну з особливою увагою до
-                                        деталей</p>
-                                </div>
-                            </div>
-                            <div class="flex items-start space-x-4">
-                                <div
-                                    class="w-12 h-12 bg-primary rounded-full flex items-center justify-center flex-shrink-0">
-                                    <i class="ri-time-line text-xl text-black"></i>
-                                </div>
-                                <div>
-                                    <h3 class="text-xl font-bold text-black mb-2">Швидка доставка</h3>
-                                    <p class="text-gray-600">Доставляємо свіжі десерти по всьому місту протягом 2 годин
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="h-96 bg-cover bg-center rounded-3xl" style="background-image: url('/img/tort.jpg')">
-                    </div>
-                </div>
-            </div>
-        </section>
-        <section class="py-20 bg-primary">
-            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-                <h2 class="text-4xl md:text-5xl font-bold text-black mb-6">Готові замовити?</h2>
-                <p class="text-xl text-gray-800 mb-12 max-w-2xl mx-auto">
-                    Зв'яжіться з нами прямо зараз, щоб замовити ваші улюблені десерти.
-                    Ми працюємо щодня з 9:00 до 21:00
-                </p>
-                <div class="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-4">
-                    <a href="tel:+380984113948"
-                        class="sm:w-auto bg-black text-white px-8 py-4 !rounded-button font-semibold text-lg hover:bg-gray-800 transition-colors whitespace-nowrap flex items-center space-x-2">
-                        <div class="w-5 h-5 flex items-center justify-center">
-                            <i class="ri-phone-line"></i>
-                        </div>
-                        <span>+380 98 411 39 48</span>
-                    </a>
-
-                    <a href="https://t.me/Smakuie_Bot" target="_blank"
-                        class="sm:w-auto border-2 border-black text-black px-4 py-3 !rounded-button font-semibold text-lg hover:bg-black hover:text-white transition-colors whitespace-nowrap flex items-center space-x-2">
-
-                        <div class="w-5 h-5 flex items-center justify-center">
-
-                            <i class="ri-message-3-line"></i>
-
-                        </div>
-
-                        <span>Написати в Telegram</span>
-                    </a>
-                </div>
-            </div>
-        </section>
-    </main>
-    <footer class="bg-black text-white py-16">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div class="col-span-1 md:col-span-1">
-                    <div class="flex items-center space-x-3 mb-6">
-                        <div
-                            class="w-12 h-12 flex items-center justify-center bg-primary rounded-full shadow-[0_0_15px_rgba(255,215,0,0.5)] backdrop-blur-sm">
-                            <img src="https://static.readdy.ai/image/43b57c5738bad1db7fac177fe6f2f220/46ca856dcdb27461a44d2cf39bdb0b5a.jfif"
-                                alt="Logo" class="w-8 h-8">
-                        </div>
-                        <div>
-                            <h3 class="text-2xl font-bold">СМАКУЄ</h3>
-                            <p class="text-sm text-gray-400">Крафтове виробництво</p>
-                        </div>
-                    </div>
-                    <p class="text-gray-300 mb-6 max-w-md">
-                        Створюємо неперевершені десерти з найкращих інгредієнтів.
-                        Кожен торт, макарун та тістечко — це витвір мистецтва.
-                    </p>
-                    <div class="flex space-x-4">
-                        <a href="https://www.instagram.com/smakuie_kraft/" target="_blank"
-                            class="w-10 h-10 bg-primary rounded-full flex items-center justify-center text-black hover:bg-yellow-400 transition-colors">
-                            <i class="ri-instagram-line"></i>
-                        </a>
-                        <!-- <a href="#" target="_blank"
-                            class="w-10 h-10 bg-primary rounded-full flex items-center justify-center text-black hover:bg-yellow-400 transition-colors">
-                            <i class="ri-facebook-line"></i>
-                        </a> -->
-                        <a href="https://t.me/Smakuie_Bot" target="_blank"
-                            class="w-10 h-10 bg-primary rounded-full flex items-center justify-center text-black hover:bg-yellow-400 transition-colors">
-                            <i class="ri-telegram-line"></i>
-                        </a>
-                    </div>
-                </div>
-                <div class="pl-0 lg:pl-20">
-                    <h4 class="text-lg font-semibold mb-4">Навігація</h4>
-                    <ul class="space-y-2">
-                        <li><a href="/index.html" class="text-gray-300 hover:text-primary transition-colors">Головна</a>
-                        </li>
-                        <li><a href="/about.html" class="text-gray-300 hover:text-primary transition-colors">Про нас</a>
-                        </li>
-                        <li><a href="/reviews.html"
-                                class="text-gray-300 hover:text-primary transition-colors">Відгуки</a></li>
-                    </ul>
-                </div>
-                <div>
-                    <h4 class="text-lg font-semibold mb-4">Контакти</h4>
-                    <ul class="space-y-2">
-                        <li class="text-gray-300">+380 50 191 36 26</li>
-                        <li class="text-gray-300">info@smakuje.ua</li>
-                        <li class="text-gray-300">вул. Валентинівська, 33<br>Харків, Україна</li>
-                        <li class="text-gray-300">Пн-Нд: 9:00 - 18:00</li>
-                    </ul>
-                </div>
-            </div>
-            <div class="border-t border-gray-800 mt-12 pt-8 text-center">
-                <p class="text-gray-400">&copy; 2022 Смакує. Всі права захищені.</p>
-            </div>
+        <div class="w-6 h-6 flex items-center justify-center cursor-pointer">
+          <i class="ri-close-line text-xl"></i>
         </div>
-    </footer>
-    <script id="mobile-menu">
-        document.addEventListener('DOMContentLoaded', function () {
-            const menuButton = document.getElementById('menuButton');
-            const mobileNav = document.getElementById('mobileNav');
-            let isMenuOpen = false;
-            if (menuButton && mobileNav) {
-                menuButton.addEventListener('click', function () {
-                    isMenuOpen = !isMenuOpen;
-                    if (isMenuOpen) {
-                        mobileNav.classList.remove('hidden');
-                        mobileNav.innerHTML = `
-<div class="flex flex-col h-full">
-<div class="flex items-center justify-between p-4 border-b">
-<div class="flex items-center space-x-2">
-<div class="w-12 h-12 flex items-center justify-center bg-primary rounded-full shadow-[0_0_15px_rgba(255,215,0,0.5)] backdrop-blur-sm">
-<img src="/img/Logo.jfif" alt="Logo" class="w-8 h-8">
-</div>
-<div>
-<h1 class="text-lg font-bold text-black">СМАКУЄ</h1>
-<p class="text-xs text-gray-600">Крафтове виробництво</p>
-</div>
-</div>
-<button class="w-8 h-8 flex items-center justify-center" id="closeMenu">
-<i class="ri-close-line text-xl"></i>
-</button>
-</div>
-<div class="flex flex-col p-4 space-y-4">
-<a href="/index.html" class="text-lg text-gray-800 hover:text-primary">Головна</a>
-<a href="/account.html" class="text-lg text-gray-800 hover:text-primary">Особистий кабінет</a>
-<a href="/card.html" class="text-lg text-gray-800 hover:text-primary">Кошик</a>
-<a href="/about.html" data-readdy="true" class="text-lg text-gray-800 hover:text-primary">Контакти</a>
-<a href="/reviews.html" class="text-lg text-gray-800 hover:text-primary">Відгуки</a>
-</div>
-</div>
-`;
-                        document.body.style.overflow = 'hidden';
-                        const closeMenu = document.getElementById('closeMenu');
-                        if (closeMenu) {
-                            closeMenu.addEventListener('click', function () {
-                                mobileNav.classList.add('hidden');
-                                document.body.style.overflow = '';
-                                isMenuOpen = false;
-                            });
-                        }
-                    } else {
-                        mobileNav.classList.add('hidden');
-                        document.body.style.overflow = '';
-                    }
-                });
+      </div>
+    </div>
+  </header>
+  <main class="pt-16 pb-20">
+    <div class="px-4 py-4">
+      <div class="flex space-x-1.5 overflow-x-auto pb-2 mb-6 no-scrollbar">
+        <button
+          class="category-btn bg-primary text-secondary px-3 py-1.5 rounded-full text-sm font-medium whitespace-nowrap active"
+          data-category="all">
+          Усі
+        </button>
+        <button
+          class="category-btn bg-gray-200 text-gray-700 px-3 py-1.5 rounded-full text-sm font-medium whitespace-nowrap"
+          data-category="cakes">
+          Торти
+        </button>
+        <button
+          class="category-btn bg-gray-200 text-gray-700 px-3 py-1.5 rounded-full text-sm font-medium whitespace-nowrap"
+          data-category="cookies">
+          Печиво
+        </button>
+        <button
+          class="category-btn bg-gray-200 text-gray-700 px-3 py-1.5 rounded-full text-sm font-medium whitespace-nowrap"
+          data-category="pastries">
+          Випічка
+        </button>
+        <button
+          class="category-btn bg-gray-200 text-gray-700 px-3 py-1.5 rounded-full text-sm font-medium whitespace-nowrap"
+          data-category="ice-cream">
+          Морозиво
+        </button>
+        <button
+          class="category-btn bg-gray-200 text-gray-700 px-3 py-1.5 rounded-full text-sm font-medium whitespace-nowrap"
+          data-category="drinks">
+          Напої
+        </button>
+        <button
+          class="category-btn bg-gray-200 text-gray-700 px-3 py-1.5 rounded-full text-sm font-medium whitespace-nowrap"
+          data-category="other">
+          Інше
+        </button>
+      </div>
+      <div class="grid grid-cols-2 gap-4" id="products-grid">
+        <p class="col-span-2 text-center text-gray-500 py-10">Завантаження каталогу...</p>
+      </div>
+    </div>
+  </main>
+  <footer class="fixed bottom-0 w-full bg-primary p-4 z-50">
+    <a href="tAppConfirm.html" data-readdy="true">
+      <button id="view-order-btn"
+        class="w-full bg-secondary text-primary py-3 rounded !rounded-button font-medium text-sm cursor-pointer">
+        ПЕРЕГЛЯНУТИ ЗАМОВЛЕННЯ
+      </button>
+    </a>
+  </footer>
+  <script id="category-filter">
+    document.addEventListener("DOMContentLoaded", function () {
+      const categoryBtns = document.querySelectorAll(".category-btn");
+      const productCards = document.querySelectorAll(".product-card");
+      categoryBtns.forEach((btn) => {
+        btn.addEventListener("click", function () {
+          categoryBtns.forEach((b) => {
+            b.classList.remove("bg-primary", "text-secondary", "active");
+            b.classList.add("bg-gray-200", "text-gray-700");
+          });
+          this.classList.remove("bg-gray-200", "text-gray-700");
+          this.classList.add("bg-primary", "text-secondary", "active");
+          const category = this.dataset.category;
+          productCards.forEach((card) => {
+            if (category === "all" || card.dataset.category === category) {
+              card.style.display = "block";
+            } else {
+              card.style.display = "none";
             }
+          });
         });
-    </script>
-    <script id="dynamic-products-script">
-        document.addEventListener('DOMContentLoaded', function () {
-
-            const productsGrid = document.getElementById('products-grid');
-            const loadingSpinner = document.getElementById('loadingSpinner');
-            const categoryBtns = document.querySelectorAll('.category-btn');
-
-            // Функция-шаблон для создания HTML-кода одной карточки
-            function createProductCard(product) {
-                return `
-                    <div class="dessert-card bg-white rounded-xl sm:rounded-3xl overflow-hidden shadow-lg" data-category="${product.category || 'all'}">
-                        <div class="h-32 sm:h-64 bg-cover bg-center" style="background-image: url('${product.imageUrl}')"></div>
-                        <div class="p-3 sm:p-6">
-                            <h3 class="text-sm sm:text-2xl font-bold text-black mb-2 truncate">${product.name}</h3>
-                            <p class="hidden sm:block text-gray-600 mb-4 min-h-[72px]">${product.description}</p>
-                            <div class="flex flex-col gap-2">
-                                <span class="text-base sm:text-2xl font-bold text-primary text-center">${product.price}</span>
-                                <button class="w-full bg-primary text-black px-3 py-1.5 sm:px-6 sm:py-2 !rounded-button text-sm sm:text-base font-semibold hover:bg-yellow-400 transition-colors whitespace-nowrap">
-                                    Замовити
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                `;
-            }
-
-            // Функция для фильтрации карточек по категориям
-            function setupCategoryFilter() {
-                categoryBtns.forEach(btn => {
-                    btn.addEventListener('click', () => {
-                        categoryBtns.forEach(b => b.classList.remove('active'));
-                        btn.classList.add('active');
-
-                        const category = btn.dataset.category;
-                        const cards = document.querySelectorAll('.dessert-card');
-
-                        cards.forEach(card => {
-                            if (category === 'all' || card.dataset.category === category) {
-                                card.style.display = 'block';
-                            } else {
-                                card.style.display = 'none';
-                            }
-                        });
-                    });
-                });
-            }
-
-            // Главная функция для загрузки и отображения данных
-            async function displayProducts() {
-                if (loadingSpinner) loadingSpinner.style.display = 'block'; // Показываем спиннер
-
-                try {
-                    const response = await fetch('/api/products');
-                    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-
-                    const products = await response.json();
-
-                    if (products && products.length > 0) {
-                        productsGrid.innerHTML = products.map(product => createProductCard(product)).join('');
-                    } else {
-                        productsGrid.innerHTML = '<p class="col-span-full text-center">Товари не знайдено.</p>';
-                    }
-
-                    setupCategoryFilter(); // Настраиваем фильтрацию после загрузки
-
-                } catch (error) {
-                    console.error('Ошибка при загрузке товаров:', error);
-                    productsGrid.innerHTML = '<p class="col-span-full text-center text-red-500">Не вдалося завантажити товари.</p>';
-                } finally {
-                    if (loadingSpinner) loadingSpinner.style.display = 'none'; // Прячем спиннер
-                }
-            }
-
-            displayProducts(); // Запускаем загрузку
+      });
+    });
+  </script>
+  <script id="quantity-controls">
+    document.addEventListener("DOMContentLoaded", function () {
+      let pressTimer;
+      const updateQuantity = (btn, isIncrement) => {
+        const card = btn.closest(".product-card");
+        const quantitySpan = card.querySelector(".quantity");
+        let quantity = parseInt(quantitySpan.textContent);
+        if (isIncrement) {
+          quantity++;
+        } else if (quantity > 0) {
+          quantity--;
+        }
+        quantitySpan.textContent = quantity;
+        if (quantity === 0) {
+          const controls = card.querySelector(".quantity-controls");
+          const addBtn = card.querySelector(".add-to-cart");
+          controls.classList.add("hidden");
+          addBtn.classList.remove("hidden");
+        }
+        updateCartBadge();
+      };
+      document.querySelectorAll(".quantity-btn").forEach((btn) => {
+        const isIncrement = btn.querySelector(".ri-add-line") !== null;
+        btn.addEventListener("mousedown", (e) => {
+          e.stopPropagation();
+          updateQuantity(btn, isIncrement);
+          pressTimer = setInterval(() => {
+            updateQuantity(btn, isIncrement);
+          }, 150);
         });
-    </script>
-    <script id="smooth-scroll">
-        document.addEventListener('DOMContentLoaded', function () {
-            const links = document.querySelectorAll('a[href^="#"]');
-            links.forEach(link => {
-                link.addEventListener('click', function (e) {
-                    e.preventDefault();
-                    const target = document.querySelector(this.getAttribute('href'));
-                    if (target) {
-                        target.scrollIntoView({
-                            behavior: 'smooth',
-                            block: 'start'
-                        });
-                    }
-                });
-            });
+        btn.addEventListener("mouseup", () => {
+          clearInterval(pressTimer);
         });
-    </script>
+        btn.addEventListener("mouseleave", () => {
+          clearInterval(pressTimer);
+        });
+        btn.addEventListener("touchstart", (e) => {
+          e.stopPropagation();
+          updateQuantity(btn, isIncrement);
+          pressTimer = setInterval(() => {
+            updateQuantity(btn, isIncrement);
+          }, 150);
+        });
+        btn.addEventListener("touchend", () => {
+          clearInterval(pressTimer);
+        });
+      });
+    });
+  </script>
+  <script id="cart-management">
+    document.addEventListener("DOMContentLoaded", function () {
+      const addToCartBtns = document.querySelectorAll(".add-to-cart");
+      addToCartBtns.forEach((btn) => {
+        btn.addEventListener("click", function (e) {
+          e.stopPropagation();
+          const card = this.closest(".product-card");
+          const quantitySpan = card.querySelector(".quantity");
+          const controls = card.querySelector(".quantity-controls");
+          quantitySpan.textContent = "1";
+          controls.classList.remove("hidden");
+          this.classList.add("hidden");
+          updateCartBadge();
+        });
+      });
+      function updateCartBadge() {
+        const quantities = document.querySelectorAll(".quantity");
+        let uniqueItems = 0;
+        let total = 0;
+
+        quantities.forEach((q) => {
+          const quantity = parseInt(q.textContent);
+          if (quantity > 0) {
+            uniqueItems++;
+            const price = parseInt(
+              q
+                .closest(".product-card")
+                .querySelector(".text-gray-600")
+                .textContent.replace("₴", "")
+                .trim(),
+            );
+            total += quantity * price;
+          }
+        });
+
+        const badge = document.getElementById("cart-badge");
+        const cartTotal = document.getElementById("cart-total");
+
+        if (uniqueItems > 0) {
+          badge.textContent = uniqueItems;
+          badge.classList.remove("hidden");
+          cartTotal.textContent = `₴ ${total}`;
+          cartTotal.classList.remove("hidden");
+        } else {
+          badge.classList.add("hidden");
+          cartTotal.classList.add("hidden");
+        }
+      }
+      window.updateCartBadge = updateCartBadge;
+    });
+  </script>
+  <script id="order-view">
+    document.addEventListener("DOMContentLoaded", function () {
+      const viewOrderBtn = document.getElementById("view-order-btn");
+      const orderLink = viewOrderBtn.closest("a");
+      viewOrderBtn.addEventListener("click", function (e) {
+        const quantities = document.querySelectorAll(".quantity");
+        let hasItems = false;
+        quantities.forEach((q) => {
+          if (parseInt(q.textContent) > 0) {
+            hasItems = true;
+          }
+        });
+        if (!hasItems) {
+          e.preventDefault();
+          orderLink.removeAttribute("href");
+          console.log("Кошик порожній");
+        } else {
+          orderLink.setAttribute(
+            "href",
+            "/tAppConfirm.html",
+          );
+        }
+      });
+    });
+  </script>
 </body>
 
 </html>

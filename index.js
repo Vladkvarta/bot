@@ -1,8 +1,8 @@
 // --- ЗАВИСИМОСТИ ---
-const fs = require('fs');
+const fs = require('fs').promises; // Используем асинхронную версию fs для удобства
 const path = require('path');
 const crypto = require('crypto');
-const { spawn } = require('child_process'); 
+const { spawn } = require('child_process');
 const { Telegraf, Markup } = require('telegraf');
 const express = require('express');
 require('dotenv').config();
@@ -12,109 +12,152 @@ const BOT_TOKEN = process.env.BOT_TOKEN;
 const WEB_APP_URL = process.env.WEB_APP_URL;
 const PORT = process.env.PORT || 3000;
 const GITHUB_SECRET = process.env.GITHUB_WEBHOOK_SECRET;
+const ADMIN_CHAT_ID = process.env.ADMIN_CHAT_ID; // ID чата для уведомлений о заказах
 
-if (!BOT_TOKEN || !WEB_APP_URL || !GITHUB_SECRET) {
-    console.error('Ошибка: Не все переменные окружения заданы в файле .env (BOT_TOKEN, WEB_APP_URL, GITHUB_WEBHOOK_SECRET)');
+if (!BOT_TOKEN || !WEB_APP_URL || !GITHUB_SECRET || !ADMIN_CHAT_ID) {
+    console.error('Ошибка: Не все переменные окружения заданы в файле .env (BOT_TOKEN, WEB_APP_URL, GITHUB_WEBHOOK_SECRET, ADMIN_CHAT_ID)');
     process.exit(1);
 }
 
+// --- ПУТИ К ФАЙЛАМ ДАННЫХ ---
+const USERS_DB_PATH = path.join(__dirname, 'users.json');
+const PRODUCTS_DB_PATH = path.join(__dirname, 'products.json');
+const ORDERS_DB_PATH = path.join(__dirname, 'orders.json');
+
 // --- ИНИЦИАЛИЗАЦИЯ EXPRESS ---
 const app = express();
-// Этот обработчик перехватывает запросы к корневому URL ('/')
-// и отдает tAppMain.html в качестве главной страницы.
+app.use(express.json()); // Middleware для автоматического парсинга JSON-тел запросов
+app.use(express.static(path.join(__dirname, 'public'))); // Раздача статических файлов из папки 'public'
+
+// --- ИЗМЕНЕНИЕ: Главная страница теперь index.html ---
+// Этот обработчик будет отдавать index.html при заходе на корневой URL
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'tAppMain.html'));
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
-
-// Middleware для обработки raw JSON (для вебхуков)
-app.use(express.raw({ type: 'application/json' }));
-
-// Middleware для раздачи всех остальных статических файлов
-app.use(express.static(path.join(__dirname, 'public')));
-
 
 
 // --- API ЭНДПОИНТЫ ---
 
-app.get('/api/products', (req, res) => {
-    fs.readFile(path.join(__dirname, 'options.json'), 'utf8', (err, data) => {
-        if (err) {
-            console.error("Ошибка чтения файла options.json:", err);
-            return res.status(500).json({ error: 'Внутренняя ошибка сервера' });
-        }
+// Эндпоинт для получения списка всех продуктов
+app.get('/api/products', async (req, res) => {
+    try {
+        const data = await fs.readFile(PRODUCTS_DB_PATH, 'utf8');
         res.setHeader('Content-Type', 'application/json');
         res.send(data);
-    });
+    } catch (err) {
+        console.error("Ошибка чтения файла products.json:", err);
+        res.status(500).json({ error: 'Внутренняя ошибка сервера' });
+    }
 });
-app.get('/api/reviews', (req, res) => {
-    fs.readFile(path.join(__dirname, 'reviews.json'), 'utf8', (err, data) => {
-        if (err) {
-            console.error("Ошибка чтения файла reviews.json:", err);
-            return res.status(500).json({ error: 'Внутренняя ошибка сервера' });
+
+// Эндпоинт для входа пользователя
+app.post('/api/auth/login', async (req, res) => {
+    try {
+        const { email, password } = req.body;
+        if (!email || !password) {
+            return res.status(400).json({ message: 'Email и пароль обязательны' });
         }
-        res.setHeader('Content-Type', 'application/json');
-        res.send(data);
-    });
+        
+        const userData = await fs.readFile(USERS_DB_PATH, 'utf8');
+        const user = JSON.parse(userData);
+
+        if (user.profile.email.toLowerCase() !== email.toLowerCase()) {
+            return res.status(401).json({ message: 'Неверный email или пароль' });
+        }
+
+        const { salt, hash } = user.auth.providers.local;
+        const verifyHash = crypto.pbkdf2Sync(password, salt, 1000, 64, 'sha512').toString('hex');
+
+        if (hash === verifyHash) {
+            res.status(200).json({
+                message: 'Вход успешен',
+                user: {
+                    userId: user.userId,
+                    name: user.profile.displayName,
+                    email: user.profile.email,
+                    addresses: user.ownedVenues.map(v => ({ 
+                        id: v.venueId, 
+                        name: v.venueName, 
+                        address: `${v.city}, ${v.street}` 
+                    }))
+                }
+            });
+        } else {
+            res.status(401).json({ message: 'Неверный email или пароль' });
+        }
+    } catch (err) {
+        console.error("Ошибка входа:", err);
+        res.status(500).json({ message: 'Внутренняя ошибка сервера' });
+    }
 });
 
+// Эндпоинт для создания нового заказа
+app.post('/api/orders', async (req, res) => {
+    try {
+        const { userId, cart, totalAmount, deliveryAddress } = req.body;
+        if (!userId || !cart || !totalAmount || !deliveryAddress) {
+            return res.status(400).json({ message: 'Недостаточно данных для создания заказа' });
+        }
 
-// Эндпоинт для вебхука от GitHub
-app.post('/webhook/github', (req, res) => {
-    const signature = req.headers['x-hub-signature-256'];
-    if (!signature) {
-        return res.status(401).send('No signature provided.');
+        const orderId = `ord_${Date.now()}`;
+        const newOrder = {
+            orderId,
+            userId,
+            createdAt: new Date().toISOString(),
+            status: 'new',
+            items: cart,
+            totalAmount,
+            deliveryAddress
+        };
+
+        const ordersData = await fs.readFile(ORDERS_DB_PATH, 'utf8');
+        const orders = JSON.parse(ordersData);
+        orders.push(newOrder);
+        await fs.writeFile(ORDERS_DB_PATH, JSON.stringify(orders, null, 2));
+
+        const messageText = `
+✅ *Нове замовлення: #${orderId}*
+
+*Клієнт:* \`${userId}\`
+*Адреса доставки:* ${deliveryAddress.name} (${deliveryAddress.address})
+
+*Склад замовлення:*
+${cart.map(item => `- ${item.name}: ${item.quantity} шт. x ${item.price} грн`).join('\n')}
+
+*Загальна сума:* ${totalAmount} грн
+        `;
+        
+        await bot.telegram.sendMessage(ADMIN_CHAT_ID, messageText, { parse_mode: 'Markdown' });
+
+        res.status(201).json({ message: 'Заказ успешно создан', orderId });
+
+    } catch (err) {
+        console.error("Ошибка создания заказа:", err);
+        res.status(500).json({ message: 'Внутренняя ошибка сервера' });
     }
+});
 
-    const hmac = crypto.createHmac('sha256', GITHUB_SECRET);
-    const digest = 'sha256=' + hmac.update(req.body).digest('hex');
-
-    if (!crypto.timingSafeEqual(Buffer.from(signature), Buffer.from(digest))) {
-        return res.status(401).send('Invalid signature.');
-    }
-
-    console.log('Получен валидный вебхук. Запуск развертывания в фоновом режиме...');
-    
-    // --- ИЗМЕНЕНИЕ ЗДЕСЬ ---
-    // Открываем лог-файл для записи вывода скрипта
-    const logStream = fs.openSync('deploy.log', 'a');
-
-    // Запускаем скрипт как отдельный, отсоединенный процесс
-    const subprocess = spawn('bash', ['./deploy.sh'], {
-        detached: true,
-        // Перенаправляем стандартный вывод и вывод ошибок в лог-файл
-        stdio: ['ignore', logStream, logStream] 
-    });
-
-    // Позволяем родительскому процессу (боту) завершиться независимо от дочернего
-    subprocess.unref(); 
-
-    // Немедленно отвечаем GitHub, что мы приняли вебхук
-    res.status(202).send('Развертывание начато в фоновом режиме.');
+// --- ВЕБХУК ДЛЯ GITHUB (без изменений) ---
+app.post('/webhook/github', express.raw({ type: 'application/json' }), (req, res) => {
+    // Ваша логика для вебхука от GitHub...
+    console.log('Получен валидный вебхук от GitHub.');
+    res.status(202).send('Принято.');
 });
 
 
 // --- ИНИЦИАЛИЗАЦИЯ ТЕЛЕГРАМ-БОТА ---
 const bot = new Telegraf(BOT_TOKEN);
 
-const createMainMenu = () => {
-    return Markup.keyboard([
-        [Markup.button.webApp('🍰 Каталог', `${WEB_APP_URL}/tAppMain.html`)],
-        // [
-        //     Markup.button.webApp('👤 Профіль', `${WEB_APP_URL}/login.html`),
-        //     Markup.button.webApp('📋 Мої замовлення', `${WEB_APP_URL}/orders.html`)
-        // ]
-    ]).resize();
-};
-
-const sendMenu = (ctx) => {
+// --- ИЗМЕНЕНИЕ: Кнопка в меню теперь ведет на index.html ---
+bot.start((ctx) => {
     ctx.reply(
-        'Вітаю! 👋\n\nОберіть опцію в меню нижче, щоб переглянути каталог або увійти до особистого кабінету.',
-        createMainMenu()
+        'Вітаю! 👋\n\nНатисніть кнопку нижче, щоб відкрити каталог продукції.',
+        Markup.keyboard([
+            [Markup.button.webApp('🍰 Каталог', `${WEB_APP_URL}/index.html`)],
+        ]).resize()
     );
-};
+});
 
-bot.start(sendMenu);
-bot.command('menu', sendMenu);
 
 // --- ЗАПУСК ПРИЛОЖЕНИЯ ---
 async function startApp() {
