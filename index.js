@@ -18,6 +18,12 @@ if (!BOT_TOKEN || !WEB_APP_URL || !GITHUB_SECRET || !ADMIN_CHAT_ID) {
     console.error('Ошибка: Не все переменные окружения заданы в файле .env (BOT_TOKEN, WEB_APP_URL, GITHUB_WEBHOOK_SECRET, ADMIN_CHAT_ID)');
     process.exit(1);
 }
+const ADMIN_PANEL_URL = process.env.ADMIN_PANEL_URL; // Загружаем секретный URL
+
+if (!ADMIN_PANEL_URL) {
+    console.error('Ошибка: ADMIN_PANEL_URL не задан в файле .env');
+    process.exit(1);
+}
 
 // --- ПУТИ К ФАЙЛАМ ДАННЫХ ---
 const USERS_DB_PATH = path.join(__dirname, 'users.json');
@@ -33,6 +39,10 @@ app.use(express.static(path.join(__dirname, 'public'))); // Раздача ст�
 // Этот обработчик будет отдавать index.html при заходе на корневой URL
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
+
+app.get(`/${ADMIN_PANEL_URL}`, (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'admin.html'));
 });
 
 
