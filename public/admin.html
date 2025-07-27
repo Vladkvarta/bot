@@ -1,0 +1,3085 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Админ панель - Управление сайтом</title>
+    <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: { primary: "#3b82f6", secondary: "#8b5cf6" },
+            borderRadius: {
+              none: "0px",
+              sm: "4px",
+              DEFAULT: "8px",
+              md: "12px",
+              lg: "16px",
+              xl: "20px",
+              "2xl": "24px",
+              "3xl": "32px",
+              full: "9999px",
+              button: "8px",
+            },
+          },
+        },
+      };
+    </script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css"
+    />
+    <style>
+      :where([class^="ri-"])::before { content: "\f3c2"; }
+    </style>
+  </head>
+  <body class="bg-gray-50 min-h-screen">
+    <div class="flex h-screen">
+      <!-- Боковое меню -->
+      <div class="w-64 bg-white shadow-lg">
+        <div class="p-6 border-b border-gray-200">
+          <h1 class="text-xl font-bold text-gray-900">Админ панель</h1>
+        </div>
+        <nav class="mt-6">
+          <div class="px-4 space-y-2">
+            <button
+              class="nav-item w-full flex items-center px-4 py-3 text-left text-gray-700 hover:bg-gray-100 rounded-lg transition-colors active"
+              data-section="users"
+            >
+              <div class="w-5 h-5 flex items-center justify-center mr-3">
+                <i class="ri-user-line"></i>
+              </div>
+              <span>Пользователи</span>
+            </button>
+            <button
+              class="nav-item w-full flex items-center px-4 py-3 text-left text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
+              data-section="orders"
+            >
+              <div class="w-5 h-5 flex items-center justify-center mr-3">
+                <i class="ri-shopping-cart-line"></i>
+              </div>
+              <span>Заказы</span>
+            </button>
+            <button
+              class="nav-item w-full flex items-center px-4 py-3 text-left text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
+              data-section="products"
+            >
+              <div class="w-5 h-5 flex items-center justify-center mr-3">
+                <i class="ri-store-2-line"></i>
+              </div>
+              <span>Каталог товаров</span>
+            </button>
+          </div>
+        </nav>
+      </div>
+      <!-- Основная область контента -->
+      <div class="flex-1 flex flex-col overflow-hidden">
+        <!-- Шапка -->
+        <header class="bg-white shadow-sm border-b border-gray-200 px-6 py-4">
+          <div class="flex items-center justify-between">
+            <div>
+              <h2
+                id="section-title"
+                class="text-2xl font-semibold text-gray-900"
+              >
+                Управление пользователями
+              </h2>
+              <p id="section-description" class="text-gray-600 mt-1">
+                Просмотр и редактирование данных пользователей
+              </p>
+            </div>
+            <button
+              id="add-product-button"
+              class="bg-primary text-white px-4 py-2 rounded-button hover:bg-blue-600 transition-colors flex items-center whitespace-nowrap !rounded-button"
+            >
+              <div class="w-4 h-4 flex items-center justify-center mr-2">
+                <i class="ri-add-line"></i>
+              </div>
+              Добавить товар
+            </button>
+          </div>
+        </header>
+        <!-- Контент -->
+        <main class="flex-1 overflow-y-auto p-6">
+          <!-- Раздел пользователей -->
+          <div id="users-section" class="section active">
+            <div class="bg-white rounded-lg shadow-sm">
+              <!-- Поиск и фильтры -->
+              <div class="p-6 border-b border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                  <div class="flex items-center space-x-4">
+                    <div class="relative">
+                      <div
+                        class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"
+                      >
+                        <div
+                          class="w-4 h-4 flex items-center justify-center text-gray-400"
+                        >
+                          <i class="ri-search-line"></i>
+                        </div>
+                      </div>
+                      <input
+                        type="text"
+                        placeholder="Поиск пользователей..."
+                        class="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-sm"
+                      />
+                    </div>
+                    <select
+                      class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-sm pr-8"
+                    >
+                      <option>Все статусы</option>
+                      <option>Активный</option>
+                      <option>Заблокирован</option>
+                      <option>Неактивный</option>
+                    </select>
+                  </div>
+                  <div class="flex items-center space-x-2">
+                    <button
+                      class="px-4 py-2 border border-gray-300 rounded-button hover:bg-gray-50 transition-colors text-sm whitespace-nowrap !rounded-button"
+                    >
+                      <div
+                        class="w-4 h-4 flex items-center justify-center mr-2 inline-block"
+                      >
+                        <i class="ri-download-line"></i>
+                      </div>
+                      Экспорт
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <!-- Таблица пользователей -->
+              <div class="overflow-x-auto">
+                <table class="w-full">
+                  <thead class="bg-gray-50">
+                    <tr>
+                      <th
+                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                      >
+                        ID
+                      </th>
+                      <th
+                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                      >
+                        Имя пользователя
+                      </th>
+                      <th
+                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                      >
+                        Email
+                      </th>
+                      <th
+                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                      >
+                        Дата регистрации
+                      </th>
+                      <th
+                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                      >
+                        Статус
+                      </th>
+                      <th
+                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                      >
+                        Действия
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody class="bg-white divide-y divide-gray-200">
+                    <tr>
+                      <td
+                        class="px-6 py-4 whitespace-nowrap text-sm text-gray-900"
+                      >
+                        #12345
+                      </td>
+                      <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="flex items-center">
+                          <div
+                            class="w-8 h-8 bg-primary rounded-full flex items-center justify-center text-white text-sm font-medium mr-3"
+                          >
+                            А
+                          </div>
+                          <div>
+                            <div class="text-sm font-medium text-gray-900">
+                              Александр Петров
+                            </div>
+                            <div class="text-sm text-gray-500">
+                              +7 (999) 123-45-67
+                            </div>
+                          </div>
+                        </div>
+                      </td>
+                      <td
+                        class="px-6 py-4 whitespace-nowrap text-sm text-gray-900"
+                      >
+                        alex.petrov@email.com
+                      </td>
+                      <td
+                        class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"
+                      >
+                        15.03.2024
+                      </td>
+                      <td class="px-6 py-4 whitespace-nowrap">
+                        <span
+                          class="px-2 py-1 text-xs font-medium bg-green-100 text-green-800 rounded-full"
+                          >Активный</span
+                        >
+                      </td>
+                      <td
+                        class="px-6 py-4 whitespace-nowrap text-sm font-medium"
+                      >
+                        <div class="flex items-center space-x-2">
+                          <button
+                            class="text-primary hover:text-blue-600 p-1 edit-user-btn"
+                          >
+                            <div
+                              class="w-4 h-4 flex items-center justify-center"
+                            >
+                              <i class="ri-edit-line"></i>
+                            </div>
+                          </button>
+                          <button class="text-red-600 hover:text-red-800 p-1">
+                            <div
+                              class="w-4 h-4 flex items-center justify-center"
+                            >
+                              <i class="ri-delete-bin-line"></i>
+                            </div>
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td
+                        class="px-6 py-4 whitespace-nowrap text-sm text-gray-900"
+                      >
+                        #12346
+                      </td>
+                      <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="flex items-center">
+                          <div
+                            class="w-8 h-8 bg-secondary rounded-full flex items-center justify-center text-white text-sm font-medium mr-3"
+                          >
+                            М
+                          </div>
+                          <div>
+                            <div class="text-sm font-medium text-gray-900">
+                              Мария Иванова
+                            </div>
+                            <div class="text-sm text-gray-500">
+                              +7 (999) 234-56-78
+                            </div>
+                          </div>
+                        </div>
+                      </td>
+                      <td
+                        class="px-6 py-4 whitespace-nowrap text-sm text-gray-900"
+                      >
+                        maria.ivanova@email.com
+                      </td>
+                      <td
+                        class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"
+                      >
+                        12.03.2024
+                      </td>
+                      <td class="px-6 py-4 whitespace-nowrap">
+                        <span
+                          class="px-2 py-1 text-xs font-medium bg-green-100 text-green-800 rounded-full"
+                          >Активный</span
+                        >
+                      </td>
+                      <td
+                        class="px-6 py-4 whitespace-nowrap text-sm font-medium"
+                      >
+                        <div class="flex items-center space-x-2">
+                          <button
+                            class="text-primary hover:text-blue-600 p-1 edit-user-btn"
+                          >
+                            <div
+                              class="w-4 h-4 flex items-center justify-center"
+                            >
+                              <i class="ri-edit-line"></i>
+                            </div>
+                          </button>
+                          <button class="text-red-600 hover:text-red-800 p-1">
+                            <div
+                              class="w-4 h-4 flex items-center justify-center"
+                            >
+                              <i class="ri-delete-bin-line"></i>
+                            </div>
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td
+                        class="px-6 py-4 whitespace-nowrap text-sm text-gray-900"
+                      >
+                        #12347
+                      </td>
+                      <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="flex items-center">
+                          <div
+                            class="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center text-white text-sm font-medium mr-3"
+                          >
+                            Д
+                          </div>
+                          <div>
+                            <div class="text-sm font-medium text-gray-900">
+                              Дмитрий Сидоров
+                            </div>
+                            <div class="text-sm text-gray-500">
+                              +7 (999) 345-67-89
+                            </div>
+                          </div>
+                        </div>
+                      </td>
+                      <td
+                        class="px-6 py-4 whitespace-nowrap text-sm text-gray-900"
+                      >
+                        dmitry.sidorov@email.com
+                      </td>
+                      <td
+                        class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"
+                      >
+                        10.03.2024
+                      </td>
+                      <td class="px-6 py-4 whitespace-nowrap">
+                        <span
+                          class="px-2 py-1 text-xs font-medium bg-red-100 text-red-800 rounded-full"
+                          >Заблокирован</span
+                        >
+                      </td>
+                      <td
+                        class="px-6 py-4 whitespace-nowrap text-sm font-medium"
+                      >
+                        <div class="flex items-center space-x-2">
+                          <button
+                            class="text-primary hover:text-blue-600 p-1 edit-user-btn"
+                          >
+                            <div
+                              class="w-4 h-4 flex items-center justify-center"
+                            >
+                              <i class="ri-edit-line"></i>
+                            </div>
+                          </button>
+                          <button class="text-red-600 hover:text-red-800 p-1">
+                            <div
+                              class="w-4 h-4 flex items-center justify-center"
+                            >
+                              <i class="ri-delete-bin-line"></i>
+                            </div>
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <!-- Пагинация -->
+              <div class="px-6 py-4 border-t border-gray-200">
+                <div class="flex items-center justify-between">
+                  <div class="text-sm text-gray-700">
+                    Показано <span class="font-medium">1</span> -
+                    <span class="font-medium">10</span> из
+                    <span class="font-medium">97</span> результатов
+                  </div>
+                  <div class="flex items-center space-x-2">
+                    <button
+                      class="px-3 py-2 border border-gray-300 rounded-button hover:bg-gray-50 transition-colors text-sm whitespace-nowrap !rounded-button"
+                    >
+                      Предыдущая
+                    </button>
+                    <button
+                      class="px-3 py-2 bg-primary text-white rounded-button hover:bg-blue-600 transition-colors text-sm whitespace-nowrap !rounded-button"
+                    >
+                      1
+                    </button>
+                    <button
+                      class="px-3 py-2 border border-gray-300 rounded-button hover:bg-gray-50 transition-colors text-sm whitespace-nowrap !rounded-button"
+                    >
+                      2
+                    </button>
+                    <button
+                      class="px-3 py-2 border border-gray-300 rounded-button hover:bg-gray-50 transition-colors text-sm whitespace-nowrap !rounded-button"
+                    >
+                      3
+                    </button>
+                    <button
+                      class="px-3 py-2 border border-gray-300 rounded-button hover:bg-gray-50 transition-colors text-sm whitespace-nowrap !rounded-button"
+                    >
+                      Следующая
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Раздел заказов -->
+          <div id="orders-section" class="section hidden">
+            <div class="bg-white rounded-lg shadow-sm">
+              <!-- Поиск и фильтры -->
+              <div class="p-6 border-b border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                  <div class="flex items-center space-x-4">
+                    <div class="relative">
+                      <div
+                        class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"
+                      >
+                        <div
+                          class="w-4 h-4 flex items-center justify-center text-gray-400"
+                        >
+                          <i class="ri-search-line"></i>
+                        </div>
+                      </div>
+                      <input
+                        type="text"
+                        placeholder="Поиск заказов..."
+                        class="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-sm"
+                      />
+                    </div>
+                    <select
+                      class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-sm pr-8"
+                    >
+                      <option>Все статусы</option>
+                      <option>Новый</option>
+                      <option>В обработке</option>
+                      <option>Доставляется</option>
+                      <option>Выполнен</option>
+                      <option>Отменен</option>
+                    </select>
+                    <input
+                      type="date"
+                      class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-sm"
+                    />
+                  </div>
+                </div>
+              </div>
+              <!-- Таблица заказов -->
+              <div class="overflow-x-auto">
+                <table class="w-full">
+                  <thead class="bg-gray-50">
+                    <tr>
+                      <th
+                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                      >
+                        Номер заказа
+                      </th>
+                      <th
+                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                      >
+                        Дата заказа
+                      </th>
+                      <th
+                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                      >
+                        Клиент
+                      </th>
+                      <th
+                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                      >
+                        Адрес доставки
+                      </th>
+                      <th
+                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                      >
+                        Оплата
+                      </th>
+                      <th
+                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                      >
+                        Сумма заказа
+                      </th>
+                      <th
+                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                      >
+                        Статус
+                      </th>
+                      <th
+                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                      >
+                        Действия
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody class="bg-white divide-y divide-gray-200">
+                    <tr>
+                      <td
+                        class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900"
+                      >
+                        #ORD-2024-001
+                      </td>
+                      <td
+                        class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"
+                      >
+                        26.07.2024 14:30
+                      </td>
+                      <td
+                        class="px-6 py-4 whitespace-nowrap text-sm text-gray-900"
+                      >
+                        Александр Петров
+                      </td>
+                      <td
+                        class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"
+                      >
+                        ул. Пушкина, д. 10, кв. 25, Москва
+                      </td>
+                      <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="flex items-center">
+                          <div
+                            class="w-4 h-4 flex items-center justify-center mr-2"
+                          >
+                            <i class="ri-bank-card-fill text-green-600"></i>
+                          </div>
+                          <span class="text-sm text-gray-900"
+                            >Банковская карта</span
+                          >
+                        </div>
+                      </td>
+                      <td
+                        class="px-6 py-4 whitespace-nowrap text-sm text-gray-900"
+                      >
+                        15 240 ₽
+                      </td>
+                      <td class="px-6 py-4 whitespace-nowrap">
+                        <span
+                          class="px-2 py-1 text-xs font-medium bg-blue-100 text-blue-800 rounded-full"
+                          >В обработке</span
+                        >
+                      </td>
+                      <td
+                        class="px-6 py-4 whitespace-nowrap text-sm font-medium"
+                      >
+                        <div class="flex items-center space-x-2">
+                          <button class="text-primary hover:text-blue-600 p-1">
+                            <div
+                              class="w-4 h-4 flex items-center justify-center"
+                            >
+                              <i class="ri-eye-line"></i>
+                            </div>
+                          </button>
+                          <a
+                            href="https://readdy.ai/home/cb9458f8-9101-4315-a4f7-32608dd27b3b/2e49f6bf-f2a0-466b-915e-3f8b9d5ebfca"
+                            data-readdy="true"
+                            class="text-primary hover:text-blue-600 p-1"
+                          >
+                            <div
+                              class="w-4 h-4 flex items-center justify-center"
+                            >
+                              <i class="ri-edit-line"></i>
+                            </div>
+                          </a>
+                          <button class="text-red-600 hover:text-red-800 p-1">
+                            <div
+                              class="w-4 h-4 flex items-center justify-center"
+                            >
+                              <i class="ri-delete-bin-line"></i>
+                            </div>
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td
+                        class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900"
+                      >
+                        #ORD-2024-002
+                      </td>
+                      <td
+                        class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"
+                      >
+                        26.07.2024 12:15
+                      </td>
+                      <td
+                        class="px-6 py-4 whitespace-nowrap text-sm text-gray-900"
+                      >
+                        Мария Иванова
+                      </td>
+                      <td
+                        class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"
+                      >
+                        ул. Ленина, д. 15, кв. 42, Санкт-Петербург
+                      </td>
+                      <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="flex items-center">
+                          <div
+                            class="w-4 h-4 flex items-center justify-center mr-2"
+                          >
+                            <i class="ri-alipay-fill text-blue-600"></i>
+                          </div>
+                          <span class="text-sm text-gray-900">СБП</span>
+                        </div>
+                      </td>
+                      <td
+                        class="px-6 py-4 whitespace-nowrap text-sm text-gray-900"
+                      >
+                        8 750 ₽
+                      </td>
+                      <td class="px-6 py-4 whitespace-nowrap">
+                        <span
+                          class="px-2 py-1 text-xs font-medium bg-yellow-100 text-yellow-800 rounded-full"
+                          >Доставляется</span
+                        >
+                      </td>
+                      <td
+                        class="px-6 py-4 whitespace-nowrap text-sm font-medium"
+                      >
+                        <div class="flex items-center space-x-2">
+                          <button class="text-primary hover:text-blue-600 p-1">
+                            <div
+                              class="w-4 h-4 flex items-center justify-center"
+                            >
+                              <i class="ri-eye-line"></i>
+                            </div>
+                          </button>
+                          <a
+                            href="https://readdy.ai/home/cb9458f8-9101-4315-a4f7-32608dd27b3b/2e49f6bf-f2a0-466b-915e-3f8b9d5ebfca"
+                            data-readdy="true"
+                            class="text-primary hover:text-blue-600 p-1"
+                          >
+                            <div
+                              class="w-4 h-4 flex items-center justify-center"
+                            >
+                              <i class="ri-edit-line"></i>
+                            </div>
+                          </a>
+                          <button class="text-red-600 hover:text-red-800 p-1">
+                            <div
+                              class="w-4 h-4 flex items-center justify-center"
+                            >
+                              <i class="ri-delete-bin-line"></i>
+                            </div>
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td
+                        class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900"
+                      >
+                        #ORD-2024-003
+                      </td>
+                      <td
+                        class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"
+                      >
+                        25.07.2024 16:45
+                      </td>
+                      <td
+                        class="px-6 py-4 whitespace-nowrap text-sm text-gray-900"
+                      >
+                        Дмитрий Сидоров
+                      </td>
+                      <td
+                        class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"
+                      >
+                        пр. Гагарина, д. 28, кв. 15, Новосибирск
+                      </td>
+                      <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="flex items-center">
+                          <div
+                            class="w-4 h-4 flex items-center justify-center mr-2"
+                          >
+                            <i
+                              class="ri-money-dollar-circle-fill text-yellow-600"
+                            ></i>
+                          </div>
+                          <span class="text-sm text-gray-900">Наличные</span>
+                        </div>
+                      </td>
+                      <td
+                        class="px-6 py-4 whitespace-nowrap text-sm text-gray-900"
+                      >
+                        22 100 ₽
+                      </td>
+                      <td class="px-6 py-4 whitespace-nowrap">
+                        <span
+                          class="px-2 py-1 text-xs font-medium bg-green-100 text-green-800 rounded-full"
+                          >Выполнен</span
+                        >
+                      </td>
+                      <td
+                        class="px-6 py-4 whitespace-nowrap text-sm font-medium"
+                      >
+                        <div class="flex items-center space-x-2">
+                          <button class="text-primary hover:text-blue-600 p-1">
+                            <div
+                              class="w-4 h-4 flex items-center justify-center"
+                            >
+                              <i class="ri-eye-line"></i>
+                            </div>
+                          </button>
+                          <a
+                            href="https://readdy.ai/home/cb9458f8-9101-4315-a4f7-32608dd27b3b/2e49f6bf-f2a0-466b-915e-3f8b9d5ebfca"
+                            data-readdy="true"
+                            class="text-primary hover:text-blue-600 p-1"
+                          >
+                            <div
+                              class="w-4 h-4 flex items-center justify-center"
+                            >
+                              <i class="ri-edit-line"></i>
+                            </div>
+                          </a>
+                          <button class="text-red-600 hover:text-red-800 p-1">
+                            <div
+                              class="w-4 h-4 flex items-center justify-center"
+                            >
+                              <i class="ri-delete-bin-line"></i>
+                            </div>
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <!-- Пагинация -->
+              <div class="px-6 py-4 border-t border-gray-200">
+                <div class="flex items-center justify-between">
+                  <div class="text-sm text-gray-700">
+                    Показано <span class="font-medium">1</span> -
+                    <span class="font-medium">10</span> из
+                    <span class="font-medium">156</span> результатов
+                  </div>
+                  <div class="flex items-center space-x-2">
+                    <button
+                      class="px-3 py-2 border border-gray-300 rounded-button hover:bg-gray-50 transition-colors text-sm whitespace-nowrap !rounded-button"
+                    >
+                      Предыдущая
+                    </button>
+                    <button
+                      class="px-3 py-2 bg-primary text-white rounded-button hover:bg-blue-600 transition-colors text-sm whitespace-nowrap !rounded-button"
+                    >
+                      1
+                    </button>
+                    <button
+                      class="px-3 py-2 border border-gray-300 rounded-button hover:bg-gray-50 transition-colors text-sm whitespace-nowrap !rounded-button"
+                    >
+                      2
+                    </button>
+                    <button
+                      class="px-3 py-2 border border-gray-300 rounded-button hover:bg-gray-50 transition-colors text-sm whitespace-nowrap !rounded-button"
+                    >
+                      3
+                    </button>
+                    <button
+                      class="px-3 py-2 border border-gray-300 rounded-button hover:bg-gray-50 transition-colors text-sm whitespace-nowrap !rounded-button"
+                    >
+                      Следующая
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Раздел товаров -->
+          <div id="products-section" class="section hidden">
+            <div class="bg-white rounded-lg shadow-sm">
+              <!-- Поиск и фильтры -->
+              <div class="p-6 border-b border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                  <div class="flex items-center space-x-4">
+                    <div class="relative">
+                      <div
+                        class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"
+                      >
+                        <div
+                          class="w-4 h-4 flex items-center justify-center text-gray-400"
+                        >
+                          <i class="ri-search-line"></i>
+                        </div>
+                      </div>
+                      <input
+                        type="text"
+                        placeholder="Поиск товаров..."
+                        class="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-sm"
+                      />
+                    </div>
+                    <select
+                      class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-sm pr-8"
+                    >
+                      <option>Все категории</option>
+                      <option>Электроника</option>
+                      <option>Одежда</option>
+                      <option>Дом и сад</option>
+                      <option>Спорт</option>
+                    </select>
+                  </div>
+                  <div class="flex items-center space-x-2">
+                    <button
+                      class="px-4 py-2 border border-gray-300 rounded-button hover:bg-gray-50 transition-colors text-sm whitespace-nowrap !rounded-button"
+                    >
+                      <div
+                        class="w-4 h-4 flex items-center justify-center mr-2 inline-block"
+                      >
+                        <i class="ri-download-line"></i>
+                      </div>
+                      Экспорт
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <!-- Таблица товаров -->
+              <div class="overflow-x-auto">
+                <table class="w-full">
+                  <thead class="bg-gray-50">
+                    <tr>
+                      <th
+                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                      >
+                        Название товара
+                      </th>
+                      <th
+                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                      >
+                        Артикул
+                      </th>
+                      <th
+                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                      >
+                        Цена
+                      </th>
+                      <th
+                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                      >
+                        Количество в продаже
+                      </th>
+                      <th
+                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                      >
+                        Доступное количество
+                      </th>
+                      <th
+                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                      >
+                        Действия
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody class="bg-white divide-y divide-gray-200">
+                    <tr>
+                      <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="flex items-center">
+                          <div
+                            class="w-10 h-10 bg-gray-200 rounded-lg flex items-center justify-center mr-3"
+                          >
+                            <div
+                              class="w-5 h-5 flex items-center justify-center text-gray-400"
+                            >
+                              <i class="ri-smartphone-line"></i>
+                            </div>
+                          </div>
+                          <div>
+                            <div class="text-sm font-medium text-gray-900">
+                              iPhone 15 Pro Max
+                            </div>
+                            <div class="text-sm text-gray-500">
+                              Смартфон Apple
+                            </div>
+                          </div>
+                        </div>
+                      </td>
+                      <td
+                        class="px-6 py-4 whitespace-nowrap text-sm text-gray-900"
+                      >
+                        APL-IP15PM-256
+                      </td>
+                      <td
+                        class="px-6 py-4 whitespace-nowrap text-sm text-gray-900"
+                      >
+                        119 990 ₽
+                      </td>
+                      <td class="px-6 py-4 whitespace-nowrap">
+                        <input
+                          type="number"
+                          value="50"
+                          class="w-20 px-2 py-1 border border-gray-300 rounded text-sm focus:ring-2 focus:ring-primary focus:border-transparent"
+                        />
+                      </td>
+                      <td class="px-6 py-4 whitespace-nowrap">
+                        <span class="text-sm text-gray-900">47</span>
+                        <span class="text-xs text-gray-500 ml-1"
+                          >(3 заказано)</span
+                        >
+                      </td>
+                      <td
+                        class="px-6 py-4 whitespace-nowrap text-sm font-medium"
+                      >
+                        <div class="flex items-center space-x-2">
+                          <button
+                            class="text-primary hover:text-blue-600 p-1 edit-user-btn"
+                          >
+                            <div
+                              class="w-4 h-4 flex items-center justify-center"
+                            >
+                              <i class="ri-edit-line"></i>
+                            </div>
+                          </button>
+                          <button class="text-red-600 hover:text-red-800 p-1">
+                            <div
+                              class="w-4 h-4 flex items-center justify-center"
+                            >
+                              <i class="ri-delete-bin-line"></i>
+                            </div>
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="flex items-center">
+                          <div
+                            class="w-10 h-10 bg-gray-200 rounded-lg flex items-center justify-center mr-3"
+                          >
+                            <div
+                              class="w-5 h-5 flex items-center justify-center text-gray-400"
+                            >
+                              <i class="ri-macbook-line"></i>
+                            </div>
+                          </div>
+                          <div>
+                            <div class="text-sm font-medium text-gray-900">
+                              MacBook Pro 14"
+                            </div>
+                            <div class="text-sm text-gray-500">
+                              Ноутбук Apple
+                            </div>
+                          </div>
+                        </div>
+                      </td>
+                      <td
+                        class="px-6 py-4 whitespace-nowrap text-sm text-gray-900"
+                      >
+                        APL-MBP14-M3
+                      </td>
+                      <td
+                        class="px-6 py-4 whitespace-nowrap text-sm text-gray-900"
+                      >
+                        199 990 ₽
+                      </td>
+                      <td class="px-6 py-4 whitespace-nowrap">
+                        <input
+                          type="number"
+                          value="25"
+                          class="w-20 px-2 py-1 border border-gray-300 rounded text-sm focus:ring-2 focus:ring-primary focus:border-transparent"
+                        />
+                      </td>
+                      <td class="px-6 py-4 whitespace-nowrap">
+                        <span class="text-sm text-gray-900">23</span>
+                        <span class="text-xs text-gray-500 ml-1"
+                          >(2 заказано)</span
+                        >
+                      </td>
+                      <td
+                        class="px-6 py-4 whitespace-nowrap text-sm font-medium"
+                      >
+                        <div class="flex items-center space-x-2">
+                          <button
+                            class="text-primary hover:text-blue-600 p-1 edit-user-btn"
+                          >
+                            <div
+                              class="w-4 h-4 flex items-center justify-center"
+                            >
+                              <i class="ri-edit-line"></i>
+                            </div>
+                          </button>
+                          <button class="text-red-600 hover:text-red-800 p-1">
+                            <div
+                              class="w-4 h-4 flex items-center justify-center"
+                            >
+                              <i class="ri-delete-bin-line"></i>
+                            </div>
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr class="bg-red-50">
+                      <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="flex items-center">
+                          <div
+                            class="w-10 h-10 bg-gray-200 rounded-lg flex items-center justify-center mr-3"
+                          >
+                            <div
+                              class="w-5 h-5 flex items-center justify-center text-gray-400"
+                            >
+                              <i class="ri-headphone-line"></i>
+                            </div>
+                          </div>
+                          <div>
+                            <div class="text-sm font-medium text-gray-900">
+                              AirPods Pro 2
+                            </div>
+                            <div class="text-sm text-gray-500">
+                              Наушники Apple
+                            </div>
+                          </div>
+                        </div>
+                      </td>
+                      <td
+                        class="px-6 py-4 whitespace-nowrap text-sm text-gray-900"
+                      >
+                        APL-APP2-USB
+                      </td>
+                      <td
+                        class="px-6 py-4 whitespace-nowrap text-sm text-gray-900"
+                      >
+                        24 990 ₽
+                      </td>
+                      <td class="px-6 py-4 whitespace-nowrap">
+                        <input
+                          type="number"
+                          value="5"
+                          class="w-20 px-2 py-1 border border-red-300 rounded text-sm focus:ring-2 focus:ring-red-500 focus:border-transparent bg-red-50"
+                        />
+                      </td>
+                      <td class="px-6 py-4 whitespace-nowrap">
+                        <span class="text-sm text-red-600 font-medium">2</span>
+                        <span class="text-xs text-red-500 ml-1"
+                          >(3 заказано)</span
+                        >
+                      </td>
+                      <td
+                        class="px-6 py-4 whitespace-nowrap text-sm font-medium"
+                      >
+                        <div class="flex items-center space-x-2">
+                          <button
+                            class="text-primary hover:text-blue-600 p-1 edit-user-btn"
+                          >
+                            <div
+                              class="w-4 h-4 flex items-center justify-center"
+                            >
+                              <i class="ri-edit-line"></i>
+                            </div>
+                          </button>
+                          <button class="text-red-600 hover:text-red-800 p-1">
+                            <div
+                              class="w-4 h-4 flex items-center justify-center"
+                            >
+                              <i class="ri-delete-bin-line"></i>
+                            </div>
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <!-- Пагинация -->
+              <div class="px-6 py-4 border-t border-gray-200">
+                <div class="flex items-center justify-between">
+                  <div class="text-sm text-gray-700">
+                    Показано <span class="font-medium">1</span> -
+                    <span class="font-medium">10</span> из
+                    <span class="font-medium">234</span> результатов
+                  </div>
+                  <div class="flex items-center space-x-2">
+                    <button
+                      class="px-3 py-2 border border-gray-300 rounded-button hover:bg-gray-50 transition-colors text-sm whitespace-nowrap !rounded-button"
+                    >
+                      Предыдущая
+                    </button>
+                    <button
+                      class="px-3 py-2 bg-primary text-white rounded-button hover:bg-blue-600 transition-colors text-sm whitespace-nowrap !rounded-button"
+                    >
+                      1
+                    </button>
+                    <button
+                      class="px-3 py-2 border border-gray-300 rounded-button hover:bg-gray-50 transition-colors text-sm whitespace-nowrap !rounded-button"
+                    >
+                      2
+                    </button>
+                    <button
+                      class="px-3 py-2 border border-gray-300 rounded-button hover:bg-gray-50 transition-colors text-sm whitespace-nowrap !rounded-button"
+                    >
+                      3
+                    </button>
+                    <button
+                      class="px-3 py-2 border border-gray-300 rounded-button hover:bg-gray-50 transition-colors text-sm whitespace-nowrap !rounded-button"
+                    >
+                      Следующая
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
+    <script id="navigation-handler">
+      document.addEventListener("DOMContentLoaded", function () {
+        const navItems = document.querySelectorAll(".nav-item");
+        const sections = document.querySelectorAll(".section");
+        const sectionTitle = document.getElementById("section-title");
+        const sectionDescription = document.getElementById("section-description");
+        const addProductButton = document.getElementById("add-product-button");
+        const sectionConfig = {
+          users: {
+            title: "Управление пользователями",
+            description: "Просмотр и редактирование данных пользователей",
+            buttonText: "Добавить пользователя",
+          },
+          orders: {
+            title: "Управление заказами",
+            description:
+              "Просмотр и редактирование заказов в хронологическом порядке",
+            buttonText: "Создать заказ",
+          },
+          products: {
+            title: "Управление товарами",
+            description: "Просмотр и редактирование товаров и их количества",
+            buttonText: "Добавить товар",
+          },
+        };
+        function switchSection(sectionName) {
+          navItems.forEach((item) => item.classList.remove("active"));
+          sections.forEach((section) => section.classList.add("hidden"));
+          const activeNavItem = document.querySelector(
+            `[data-section="${sectionName}"]`,
+          );
+          const activeSection = document.getElementById(`${sectionName}-section`);
+          if (activeNavItem && activeSection) {
+            activeNavItem.classList.add("active");
+            activeSection.classList.remove("hidden");
+            const config = sectionConfig[sectionName];
+            if (config) {
+              sectionTitle.textContent = config.title;
+              sectionDescription.textContent = config.description;
+              if (addProductButton) {
+                addProductButton.innerHTML = `
+      <div class="w-4 h-4 flex items-center justify-center mr-2">
+      <i class="ri-add-line"></i>
+      </div>
+      ${config.buttonText}
+      `;
+              }
+            }
+          }
+        }
+        navItems.forEach((item) => {
+          item.addEventListener("click", function () {
+            const sectionName = this.dataset.section;
+            switchSection(sectionName);
+          });
+        });
+        const activeNavItem = document.querySelector(".nav-item.active");
+        if (activeNavItem) {
+          switchSection(activeNavItem.dataset.section);
+        }
+      });
+    </script>
+    <script id="table-interactions">
+      document.addEventListener("DOMContentLoaded", function () {
+        const quantityInputs = document.querySelectorAll('input[type="number"]');
+        quantityInputs.forEach((input) => {
+          input.addEventListener("change", function () {
+            const row = this.closest("tr");
+            const availableCell = row.querySelector("td:nth-child(5) span");
+            const newQuantity = parseInt(this.value);
+            const ordered = 3;
+            const available = newQuantity - ordered;
+            if (availableCell) {
+              availableCell.textContent = available;
+              if (available <= 5) {
+                row.classList.add("bg-red-50");
+                this.classList.add("border-red-300", "bg-red-50");
+                availableCell.classList.add("text-red-600", "font-medium");
+              } else {
+                row.classList.remove("bg-red-50");
+                this.classList.remove("border-red-300", "bg-red-50");
+                availableCell.classList.remove("text-red-600", "font-medium");
+              }
+            }
+          });
+        });
+      });
+    </script>
+    <style>
+      .nav-item.active {
+      background-color: #eff6ff;
+      color: #3b82f6;
+      }
+      .section {
+      display: block;
+      }
+      .section.hidden {
+      display: none;
+      }
+      input[type="number"]::-webkit-outer-spin-button,
+      input[type="number"]::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+      }
+      input[type="number"] {
+      -moz-appearance: textfield;
+      }
+    </style>
+    <div
+      id="addProductModal"
+      class="fixed inset-0 bg-gray-500 bg-opacity-75 hidden items-center justify-center"
+    >
+      <div class="bg-white rounded-lg w-[800px] max-h-[90vh] overflow-y-auto">
+        <div class="p-6 border-b border-gray-200">
+          <div class="flex items-center justify-between">
+            <h3 class="text-lg font-semibold text-gray-900">
+              Добавление товара
+            </h3>
+            <button
+              class="close-modal text-gray-400 hover:text-gray-500"
+              onclick="document.getElementById('addProductModal').classList.add('hidden')"
+            >
+              <div class="w-5 h-5 flex items-center justify-center">
+                <i class="ri-close-line"></i>
+              </div>
+            </button>
+          </div>
+        </div>
+        <form id="addProductForm" class="p-6">
+          <div class="space-y-6">
+            <div class="grid grid-cols-2 gap-4">
+              <input type="hidden" name="productId" value="" />
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1"
+                  >Артикул (SKU)</label
+                >
+                <input
+                  type="text"
+                  name="sku"
+                  class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                />
+              </div>
+              <div class="flex items-center space-x-4">
+                <div class="flex items-center">
+                  <input
+                    type="checkbox"
+                    id="isVisible"
+                    name="isVisible"
+                    class="text-primary focus:ring-primary"
+                  />
+                  <label for="isVisible" class="ml-2 text-sm text-gray-700"
+                    >Отображать на сайте</label
+                  >
+                </div>
+                <div class="flex items-center">
+                  <input
+                    type="checkbox"
+                    id="isNew"
+                    name="isNew"
+                    class="text-primary focus:ring-primary"
+                  />
+                  <label for="isNew" class="ml-2 text-sm text-gray-700"
+                    >Новинка</label
+                  >
+                </div>
+              </div>
+            </div>
+            <div class="space-y-4">
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1"
+                  >Название товара</label
+                >
+                <input
+                  type="text"
+                  name="name"
+                  class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                />
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1"
+                  >Описание</label
+                >
+                <textarea
+                  name="description"
+                  rows="3"
+                  class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                ></textarea>
+              </div>
+            </div>
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1"
+                  >Категория</label
+                >
+                <select
+                  name="category"
+                  class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent pr-8"
+                >
+                  <option value="">Выберите категорию</option>
+                  <option value="electronics">Электроника</option>
+                  <option value="clothing">Одежда</option>
+                  <option value="home">Дом и сад</option>
+                  <option value="sport">Спорт</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1"
+                  >Ингредиенты</label
+                >
+                <textarea
+                  name="ingredients"
+                  rows="3"
+                  maxlength="300"
+                  class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent resize-none"
+                ></textarea>
+                <div class="mt-1 text-sm text-gray-500 flex justify-end">
+                  <span class="ingredients-counter">0</span>/300
+                </div>
+              </div>
+            </div>
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1"
+                  >Цена</label
+                >
+                <input
+                  type="number"
+                  name="price"
+                  class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                />
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1"
+                  >Единица измерения</label
+                >
+                <div class="relative">
+                  <select
+                    name="unit"
+                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent appearance-none pr-8"
+                  >
+                    <option value="kg">кг</option>
+                    <option value="pcs">шт</option>
+                  </select>
+                  <div
+                    class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none text-gray-500"
+                  >
+                    <div class="w-4 h-4 flex items-center justify-center">
+                      <i class="ri-arrow-down-s-line"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="border-t border-gray-200 pt-4">
+              <h4 class="text-sm font-medium text-gray-900 mb-4">
+                Характеристики
+              </h4>
+              <div class="grid grid-cols-3 gap-4">
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-1"
+                    >Вес</label
+                  >
+                  <input
+                    type="text"
+                    name="specifications.weight"
+                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                  />
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-1"
+                    >Срок годности</label
+                  >
+                  <input
+                    type="text"
+                    name="specifications.shelfLife"
+                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                  />
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-1"
+                    >Условия хранения</label
+                  >
+                  <input
+                    type="text"
+                    name="specifications.storageConditions"
+                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                  />
+                </div>
+              </div>
+            </div>
+            <div class="border-t border-gray-200 pt-4">
+              <h4 class="text-sm font-medium text-gray-900 mb-4">
+                Доставка и наличие
+              </h4>
+              <div class="grid grid-cols-2 gap-4">
+                <div class="flex items-center">
+                  <input
+                    type="checkbox"
+                    id="isShippableByMail"
+                    name="shipping.isShippableByMail"
+                    class="text-primary focus:ring-primary"
+                  />
+                  <label
+                    for="isShippableByMail"
+                    class="ml-2 text-sm text-gray-700"
+                    >Доступна почтовая доставка</label
+                  >
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-1"
+                    >Статус наличия</label
+                  >
+                  <select
+                    name="stock.status"
+                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent pr-8"
+                  >
+                    <option value="in_stock">В наличии</option>
+                    <option value="out_of_stock">Нет в наличии</option>
+                    <option value="low_stock">Заканчивается</option>
+                  </select>
+                </div>
+              </div>
+              <div class="grid grid-cols-3 gap-4 mt-4">
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-1"
+                    >Начальное количество</label
+                  >
+                  <input
+                    type="number"
+                    name="stock.initialQuantity"
+                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                  />
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-1"
+                    >Заказано</label
+                  >
+                  <input
+                    type="number"
+                    name="stock.orderedQuantity"
+                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-gray-50 cursor-not-allowed"
+                    readonly
+                    disabled
+                  />
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-1"
+                    >Доступно</label
+                  >
+                  <input
+                    type="number"
+                    name="stock.availableQuantity"
+                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-gray-50 cursor-not-allowed"
+                    readonly
+                    disabled
+                  />
+                </div>
+              </div>
+            </div>
+            <div class="border-t border-gray-200 pt-4">
+              <h4 class="text-sm font-medium text-gray-900 mb-4">
+                Изображения
+              </h4>
+              <div class="space-y-4">
+                <div class="grid grid-cols-3 gap-4">
+                  <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1"
+                      >ID изображения</label
+                    >
+                    <input
+                      type="text"
+                      name="images.imageId"
+                      class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                      readonly
+                    />
+                  </div>
+                  <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1"
+                      >URL изображения</label
+                    >
+                    <input
+                      type="text"
+                      name="images.url"
+                      class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                    />
+                  </div>
+                  <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1"
+                      >Alt текст</label
+                    >
+                    <input
+                      type="text"
+                      name="images.alt"
+                      class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="border-t border-gray-200 pt-4">
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1"
+                  >ID связанных товаров</label
+                >
+                <input
+                  type="text"
+                  name="relatedProductIds"
+                  class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                  placeholder="Введите ID через запятую"
+                />
+              </div>
+            </div>
+            <div class="border-t border-gray-200 pt-4">
+              <h4 class="text-sm font-medium text-gray-900 mb-4">
+                Временные метки
+              </h4>
+              <div class="grid grid-cols-2 gap-4">
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-1"
+                    >Дата создания</label
+                  >
+                  <input
+                    type="text"
+                    name="timestamps.createdAt"
+                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                    readonly
+                  />
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-1"
+                    >Дата обновления</label
+                  >
+                  <input
+                    type="text"
+                    name="timestamps.updatedAt"
+                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                    readonly
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="mt-6 flex justify-end space-x-3">
+            <button
+              type="button"
+              class="close-modal px-4 py-2 border border-gray-300 rounded-button hover:bg-gray-50 transition-colors text-sm whitespace-nowrap !rounded-button"
+            >
+              Отмена
+            </button>
+            <button
+              type="submit"
+              class="px-4 py-2 bg-primary text-white rounded-button hover:bg-blue-600 transition-colors text-sm whitespace-nowrap !rounded-button"
+            >
+              Добавить товар
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div
+      id="editUserModal"
+      class="fixed inset-0 bg-gray-500 bg-opacity-75 hidden items-center justify-center"
+    >
+      <div class="bg-white rounded-lg w-[800px] max-h-[90vh] overflow-y-auto">
+        <div class="p-6 border-b border-gray-200">
+          <div class="flex items-center justify-between">
+            <h3 class="text-lg font-semibold text-gray-900">
+              Редактирование пользователя
+            </h3>
+            <button class="close-modal text-gray-400 hover:text-gray-500">
+              <div class="w-5 h-5 flex items-center justify-center">
+                <i class="ri-close-line"></i>
+              </div>
+            </button>
+          </div>
+        </div>
+        <form id="editUserForm" class="p-6">
+          <div class="space-y-8">
+            <div class="border-b-2 border-gray-200 pb-6 mb-6">
+              <h4 class="text-sm font-medium text-gray-900 mb-4">
+                Основная информация
+              </h4>
+              <div class="grid grid-cols-2 gap-4">
+                <input type="hidden" name="userId" value="12345" />
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-1"
+                    >Имя</label
+                  >
+                  <input
+                    type="text"
+                    name="profile.firstName"
+                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                    value="Александр"
+                  />
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-1"
+                    >Фамилия</label
+                  >
+                  <input
+                    type="text"
+                    name="profile.lastName"
+                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                    value="Петров"
+                  />
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-1"
+                    >Отображаемое имя</label
+                  >
+                  <input
+                    type="text"
+                    name="profile.displayName"
+                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                    value="Александр П."
+                  />
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-1"
+                    >Телефон</label
+                  >
+                  <input
+                    type="tel"
+                    name="profile.phone"
+                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                    value="+7 (999) 123-45-67"
+                  />
+                </div>
+              </div>
+            </div>
+            <div class="border-b-2 border-gray-200 pb-6 mb-6">
+              <h4 class="text-sm font-medium text-gray-900 mb-4">Аватар</h4>
+              <div class="grid grid-cols-2 gap-4">
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-1"
+                    >ID в хранилище</label
+                  >
+                  <input
+                    type="text"
+                    name="profile.avatar.driveId"
+                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                    value="drive_123456"
+                    readonly
+                  />
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-1"
+                    >Ссылка на аватар</label
+                  >
+                  <input
+                    type="text"
+                    name="profile.avatar.link"
+                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                    value="https://storage.example.com/avatars/123456.jpg"
+                    readonly
+                  />
+                </div>
+              </div>
+            </div>
+            <div class="border-b-2 border-gray-200 pb-6 mb-6">
+              <h4 class="text-sm font-medium text-gray-900 mb-4">Аккаунт</h4>
+              <div class="grid grid-cols-2 gap-4">
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-1"
+                    >Статус</label
+                  >
+                  <select
+                    name="account.status"
+                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent pr-8"
+                  >
+                    <option value="active" selected>Активный</option>
+                    <option value="blocked">Заблокирован</option>
+                    <option value="inactive">Неактивный</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-1"
+                    >Персональная скидка (%)</label
+                  >
+                  <input
+                    type="number"
+                    name="account.personalDiscount"
+                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                    value="5"
+                    min="0"
+                    max="100"
+                  />
+                </div>
+                <div class="col-span-2">
+                  <label class="block text-sm font-medium text-gray-700 mb-1"
+                    >Единоразовая скидка</label
+                  >
+                  <div class="flex space-x-4">
+                    <div class="flex-1">
+                      <div class="flex items-center space-x-2 mb-2">
+                        <input
+                          type="radio"
+                          id="discountTypePercent"
+                          name="oneTimeDiscount.type"
+                          value="percent"
+                          class="text-primary focus:ring-primary"
+                        />
+                        <label
+                          for="discountTypePercent"
+                          class="text-sm text-gray-700"
+                          >Процент (%)</label
+                        >
+                      </div>
+                      <input
+                        type="number"
+                        name="oneTimeDiscount.percentValue"
+                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                        min="0"
+                        max="100"
+                        placeholder="0-100"
+                      />
+                    </div>
+                    <div class="flex-1">
+                      <div class="flex items-center space-x-2 mb-2">
+                        <input
+                          type="radio"
+                          id="discountTypeFixed"
+                          name="oneTimeDiscount.type"
+                          value="fixed"
+                          class="text-primary focus:ring-primary"
+                        />
+                        <label
+                          for="discountTypeFixed"
+                          class="text-sm text-gray-700"
+                          >Фиксированная сумма (₽)</label
+                        >
+                      </div>
+                      <input
+                        type="number"
+                        name="oneTimeDiscount.fixedValue"
+                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                        min="0"
+                        placeholder="Сумма в рублях"
+                      />
+                    </div>
+                  </div>
+                  <div class="mt-2">
+                    <div class="flex items-center space-x-2">
+                      <input
+                        type="checkbox"
+                        id="oneTimeDiscountActive"
+                        name="oneTimeDiscount.active"
+                        class="text-primary focus:ring-primary"
+                      />
+                      <label
+                        for="oneTimeDiscountActive"
+                        class="text-sm text-gray-700"
+                        >Активировать единоразовую скидку</label
+                      >
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="border-b-2 border-gray-200 pb-6 mb-6">
+              <h4 class="text-sm font-medium text-gray-900 mb-4">
+                Авторизация
+              </h4>
+              <div class="grid grid-cols-2 gap-4">
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-1"
+                    >Google ID</label
+                  >
+                  <input
+                    type="text"
+                    name="auth.providers.google.providerId"
+                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                    value="google_123456"
+                    readonly
+                  />
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-1"
+                    >Apple ID</label
+                  >
+                  <input
+                    type="text"
+                    name="auth.providers.apple.providerId"
+                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                    value="apple_123456"
+                    readonly
+                  />
+                </div>
+              </div>
+            </div>
+            <div>
+              <h4 class="text-sm font-medium text-gray-900 mb-4">
+                Временные метки
+              </h4>
+              <div class="grid grid-cols-2 gap-4">
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-1"
+                    >Дата регистрации</label
+                  >
+                  <input
+                    type="text"
+                    name="timestamps.createdAt"
+                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                    value="2024-03-15 14:30:00"
+                    readonly
+                  />
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-1"
+                    >Последний вход</label
+                  >
+                  <input
+                    type="text"
+                    name="timestamps.lastLoginAt"
+                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                    value="2024-07-27 09:15:00"
+                    readonly
+                  />
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-1"
+                    >Последнее обновление</label
+                  >
+                  <input
+                    type="text"
+                    name="timestamps.updatedAt"
+                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                    value="2024-07-26 18:45:00"
+                    readonly
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="border-b-2 border-gray-200 pb-6 mb-6">
+            <h4 class="text-sm font-medium text-gray-900 mb-4">
+              Доверенные лица
+            </h4>
+            <div class="space-y-4">
+              <div
+                class="grid grid-cols-4 gap-4 p-4 border border-gray-200 rounded-lg"
+              >
+                <input
+                  type="hidden"
+                  name="trustedPersons[0].trustedPersonId"
+                  value="tp_123"
+                />
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-1"
+                    >Имя</label
+                  >
+                  <input
+                    type="text"
+                    name="trustedPersons[0].name"
+                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                    value="Иван Смирнов"
+                  />
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-1"
+                    >Телефон</label
+                  >
+                  <input
+                    type="tel"
+                    name="trustedPersons[0].phone"
+                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                    value="+7 (999) 888-77-66"
+                  />
+                </div>
+                <div class="col-span-2">
+                  <label class="block text-sm font-medium text-gray-700 mb-1"
+                    >Примечания</label
+                  >
+                  <input
+                    type="text"
+                    name="trustedPersons[0].notes"
+                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                    value="Менеджер по продажам"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="border-b-2 border-gray-200 pb-6 mb-6">
+            <div class="flex items-center justify-between mb-4">
+              <h4 class="text-sm font-medium text-gray-900">Заведения</h4>
+              <button
+                type="button"
+                id="addOwnedVenueButton"
+                class="px-3 py-1.5 bg-primary text-white rounded-button hover:bg-blue-600 transition-colors text-sm flex items-center whitespace-nowrap !rounded-button"
+              >
+                <div class="w-4 h-4 flex items-center justify-center mr-1">
+                  <i class="ri-add-line"></i>
+                </div>
+                Добавить заведение
+              </button>
+            </div>
+            <div id="ownedVenuesContainer" class="space-y-4">
+              <div class="p-4 border border-gray-200 rounded-lg">
+                <input
+                  type="hidden"
+                  name="ownedVenues[0].venueId"
+                  value="venue_123"
+                />
+                <div class="grid grid-cols-2 gap-4 mb-4">
+                  <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1"
+                      >Название</label
+                    >
+                    <input
+                      type="text"
+                      name="ownedVenues[0].venueName"
+                      class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                      value="Кафе Центральное"
+                    />
+                  </div>
+                  <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1"
+                      >Город</label
+                    >
+                    <input
+                      type="text"
+                      name="ownedVenues[0].city"
+                      class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                      value="Москва"
+                    />
+                  </div>
+                </div>
+                <div class="grid grid-cols-3 gap-4 mb-4">
+                  <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1"
+                      >Улица</label
+                    >
+                    <input
+                      type="text"
+                      name="ownedVenues[0].street"
+                      class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                      value="Тверская"
+                    />
+                  </div>
+                  <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1"
+                      >Дом</label
+                    >
+                    <input
+                      type="text"
+                      name="ownedVenues[0].building"
+                      class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                      value="25"
+                    />
+                  </div>
+                  <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1"
+                      >Помещение</label
+                    >
+                    <input
+                      type="text"
+                      name="ownedVenues[0].department"
+                      class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                      value="2"
+                    />
+                  </div>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                  <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1"
+                      >Статус</label
+                    >
+                    <select
+                      name="ownedVenues[0].status"
+                      class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent pr-8"
+                    >
+                      <option value="active" selected>Активно</option>
+                      <option value="closed">Закрыто</option>
+                      <option value="temporary_closed">Временно закрыто</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1"
+                      >Привязанный ФОП</label
+                    >
+                    <div class="relative">
+                      <select
+                        name="ownedVenues[0].linkedFopId"
+                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent appearance-none pr-8"
+                      >
+                        <option value="fop_123">
+                          Петров Александр Иванович (ИНН: 1234567890)
+                        </option>
+                      </select>
+                      <div
+                        class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none text-gray-500"
+                      >
+                        <div class="w-4 h-4 flex items-center justify-center">
+                          <i class="ri-arrow-down-s-line"></i>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="border-b-2 border-gray-200 pb-6 mb-6">
+            <div class="flex items-center justify-between mb-4">
+              <h4 class="text-sm font-medium text-gray-900">ФОП</h4>
+              <button
+                type="button"
+                id="addFopButton"
+                class="px-3 py-1.5 bg-primary text-white rounded-button hover:bg-blue-600 transition-colors text-sm flex items-center whitespace-nowrap !rounded-button"
+              >
+                <div class="w-4 h-4 flex items-center justify-center mr-1">
+                  <i class="ri-add-line"></i>
+                </div>
+                Добавить ФОП
+              </button>
+            </div>
+            <div id="fopsContainer" class="space-y-2">
+              <div class="border border-gray-200 rounded-lg">
+                <div
+                  class="flex items-center justify-between p-4 cursor-pointer fop-header"
+                >
+                  <div class="flex items-center space-x-4">
+                    <div
+                      class="w-4 h-4 flex items-center justify-center transition-transform"
+                    >
+                      <i class="ri-arrow-right-s-line"></i>
+                    </div>
+                    <div>
+                      <span class="text-sm font-medium text-gray-900"
+                        >Петров Александр Иванович</span
+                      >
+                      <span class="text-sm text-gray-500 ml-2"
+                        >ИНН: 1234567890</span
+                      >
+                    </div>
+                  </div>
+                  <div class="flex items-center space-x-2">
+                    <button
+                      type="button"
+                      class="remove-fop text-gray-400 hover:text-red-600 transition-colors p-1"
+                    >
+                      <div class="w-4 h-4 flex items-center justify-center">
+                        <i class="ri-delete-bin-line"></i>
+                      </div>
+                    </button>
+                  </div>
+                </div>
+                <div class="fop-content hidden px-4 pb-4">
+                  <input type="hidden" name="fops[0].fopId" value="fop_123" />
+                  <div class="grid grid-cols-2 gap-4 mb-4">
+                    <div>
+                      <label
+                        class="block text-sm font-medium text-gray-700 mb-1"
+                        >Имя плательщика</label
+                      >
+                      <input
+                        type="text"
+                        name="fops[0].payerName"
+                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                        value="Петров Александр Иванович"
+                      />
+                    </div>
+                    <div>
+                      <label
+                        class="block text-sm font-medium text-gray-700 mb-1"
+                        >ИНН</label
+                      >
+                      <input
+                        type="text"
+                        name="fops[0].inn"
+                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                        value="1234567890"
+                      />
+                    </div>
+                  </div>
+                  <div class="grid grid-cols-3 gap-4">
+                    <div>
+                      <label
+                        class="block text-sm font-medium text-gray-700 mb-1"
+                        >Банк</label
+                      >
+                      <input
+                        type="text"
+                        name="fops[0].bank"
+                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                        value="Сбербанк"
+                      />
+                    </div>
+                    <div>
+                      <label
+                        class="block text-sm font-medium text-gray-700 mb-1"
+                        >МФО</label
+                      >
+                      <input
+                        type="text"
+                        name="fops[0].mfo"
+                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                        value="044525225"
+                      />
+                    </div>
+                    <div>
+                      <label
+                        class="block text-sm font-medium text-gray-700 mb-1"
+                        >IBAN</label
+                      >
+                      <input
+                        type="text"
+                        name="fops[0].iban"
+                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                        value="UA213223130000026007233566001"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="border-b-2 border-gray-200 pb-6 mb-6">
+            <h4 class="text-sm font-medium text-gray-900 mb-4">Заказы</h4>
+            <div class="space-y-2">
+              <div
+                class="border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
+              >
+                <div
+                  class="flex items-center justify-between p-4 cursor-pointer order-header"
+                  onclick="toggleOrderContent(this)"
+                >
+                  <div class="flex items-center space-x-4">
+                    <div
+                      class="w-4 h-4 flex items-center justify-center transition-transform"
+                    >
+                      <i class="ri-arrow-right-s-line"></i>
+                    </div>
+                    <div class="flex items-center space-x-3">
+                      <span class="text-sm font-medium text-gray-900"
+                        >Заказ #ORD-2024-001</span
+                      >
+                      <span class="text-sm text-gray-500"
+                        >26.07.2024 14:30</span
+                      >
+                      <span
+                        class="px-2 py-1 text-xs font-medium bg-blue-100 text-blue-800 rounded-full"
+                        >В обработке</span
+                      >
+                      <span class="text-sm text-gray-500">2 товара</span>
+                    </div>
+                  </div>
+                  <div class="flex items-center space-x-6">
+                    <div class="text-sm text-gray-500">Александр Петров</div>
+                    <div class="text-sm font-medium text-gray-900">
+                      15 240 ₽
+                    </div>
+                  </div>
+                </div>
+                <div class="order-content hidden">
+                  <div class="px-4 pb-4">
+                    <div class="bg-gray-50 rounded-lg p-4 mb-4">
+                      <div class="grid grid-cols-2 gap-4">
+                        <div>
+                          <div class="text-sm text-gray-500 mb-1">
+                            Получатель
+                          </div>
+                          <div class="text-sm">Александр Петров</div>
+                          <div class="text-sm text-gray-500">
+                            +7 (999) 123-45-67
+                          </div>
+                        </div>
+                        <div>
+                          <div class="text-sm text-gray-500 mb-1">
+                            Адрес доставки
+                          </div>
+                          <div class="text-sm">ул. Пушкина, д. 10, кв. 25</div>
+                          <div class="text-sm text-gray-500">
+                            Москва, 123456
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="space-y-4">
+                      <div class="border-t border-gray-200 pt-4">
+                        <div
+                          class="grid grid-cols-7 gap-4 text-sm font-medium text-gray-500 mb-2"
+                        >
+                          <div class="col-span-3">Товар</div>
+                          <div>Количество</div>
+                          <div>Цена</div>
+                          <div>Скидка</div>
+                          <div>Сумма</div>
+                        </div>
+                        <div class="space-y-3">
+                          <div
+                            class="grid grid-cols-7 gap-4 text-sm items-center py-2 hover:bg-gray-50 rounded-lg transition-colors"
+                          >
+                            <div class="col-span-3 flex items-center">
+                              <div
+                                class="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center mr-3"
+                              >
+                                <div
+                                  class="w-5 h-5 flex items-center justify-center text-gray-400"
+                                >
+                                  <i class="ri-smartphone-line"></i>
+                                </div>
+                              </div>
+                              <div>
+                                <div class="font-medium">
+                                  iPhone 15 Pro Max 256GB
+                                </div>
+                                <div class="text-gray-500">Титановый серый</div>
+                              </div>
+                            </div>
+                            <div>1 шт</div>
+                            <div>119 990 ₽</div>
+                            <div class="text-red-600">-12 000 ₽</div>
+                            <div class="font-medium">107 990 ₽</div>
+                          </div>
+                          <div
+                            class="grid grid-cols-7 gap-4 text-sm items-center py-2 hover:bg-gray-50 rounded-lg transition-colors"
+                          >
+                            <div class="col-span-3 flex items-center">
+                              <div
+                                class="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center mr-3"
+                              >
+                                <div
+                                  class="w-5 h-5 flex items-center justify-center text-gray-400"
+                                >
+                                  <i class="ri-smartphone-line"></i>
+                                </div>
+                              </div>
+                              <div>
+                                <div class="font-medium">
+                                  Чехол Silicon Case
+                                </div>
+                                <div class="text-gray-500">Черный</div>
+                              </div>
+                            </div>
+                            <div>1 шт</div>
+                            <div>3 990 ₽</div>
+                            <div class="text-red-600">-400 ₽</div>
+                            <div class="font-medium">3 590 ₽</div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="border-t border-gray-200 pt-4">
+                        <div class="space-y-2 max-w-sm ml-auto">
+                          <div class="flex justify-between text-sm">
+                            <span class="text-gray-500">Подытог:</span>
+                            <span class="font-medium">111 580 ₽</span>
+                          </div>
+                          <div class="flex justify-between text-sm">
+                            <span class="text-gray-500">Доставка:</span>
+                            <span class="font-medium">490 ₽</span>
+                          </div>
+                          <div class="flex justify-between text-sm">
+                            <span class="text-gray-500"
+                              >Скидка по промокоду:</span
+                            >
+                            <span class="font-medium text-red-600"
+                              >-1 500 ₽</span
+                            >
+                          </div>
+                          <div
+                            class="flex justify-between text-sm font-medium pt-2 border-t border-gray-200"
+                          >
+                            <span>Итого:</span>
+                            <span>15 240 ₽</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
+              >
+                <div
+                  class="flex items-center justify-between p-4 cursor-pointer order-header"
+                >
+                  <div class="flex items-center space-x-4">
+                    <div
+                      class="w-4 h-4 flex items-center justify-center transition-transform"
+                    >
+                      <i class="ri-arrow-right-s-line"></i>
+                    </div>
+                    <div class="flex items-center space-x-3">
+                      <span class="text-sm font-medium text-gray-900"
+                        >Заказ #ORD-2024-002</span
+                      >
+                      <span class="text-sm text-gray-500"
+                        >26.07.2024 12:15</span
+                      >
+                      <span
+                        class="px-2 py-1 text-xs font-medium bg-yellow-100 text-yellow-800 rounded-full"
+                        >Доставляется</span
+                      >
+                      <span class="text-sm text-gray-500">1 товар</span>
+                    </div>
+                  </div>
+                  <div class="flex items-center space-x-6">
+                    <div class="text-sm text-gray-500">Мария Иванова</div>
+                    <div class="text-sm font-medium text-gray-900">8 750 ₽</div>
+                  </div>
+                </div>
+                <div class="order-content hidden">
+                  <div class="px-4 pb-4">
+                    <div class="bg-gray-50 rounded-lg p-4 mb-4">
+                      <div class="grid grid-cols-2 gap-4">
+                        <div>
+                          <div class="text-sm text-gray-500 mb-1">
+                            Получатель
+                          </div>
+                          <div class="text-sm">Мария Иванова</div>
+                          <div class="text-sm text-gray-500">
+                            +7 (999) 234-56-78
+                          </div>
+                        </div>
+                        <div>
+                          <div class="text-sm text-gray-500 mb-1">
+                            Адрес доставки
+                          </div>
+                          <div class="text-sm">ул. Ленина, д. 15, кв. 42</div>
+                          <div class="text-sm text-gray-500">
+                            Санкт-Петербург, 198555
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="space-y-4">
+                      <div class="border-t border-gray-200 pt-4">
+                        <div
+                          class="grid grid-cols-7 gap-4 text-sm font-medium text-gray-500 mb-2"
+                        >
+                          <div class="col-span-3">Товар</div>
+                          <div>Количество</div>
+                          <div>Цена</div>
+                          <div>Скидка</div>
+                          <div>Сумма</div>
+                        </div>
+                        <div class="space-y-3">
+                          <div
+                            class="grid grid-cols-7 gap-4 text-sm items-center py-2 hover:bg-gray-50 rounded-lg transition-colors"
+                          >
+                            <div class="col-span-3 flex items-center">
+                              <div
+                                class="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center mr-3"
+                              >
+                                <div
+                                  class="w-5 h-5 flex items-center justify-center text-gray-400"
+                                >
+                                  <i class="ri-headphone-line"></i>
+                                </div>
+                              </div>
+                              <div>
+                                <div class="font-medium">AirPods Pro 2</div>
+                                <div class="text-gray-500">Белый</div>
+                              </div>
+                            </div>
+                            <div>1 шт</div>
+                            <div>24 990 ₽</div>
+                            <div class="text-red-600">-2 500 ₽</div>
+                            <div class="font-medium">22 490 ₽</div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="border-t border-gray-200 pt-4">
+                        <div class="space-y-2 max-w-sm ml-auto">
+                          <div class="flex justify-between text-sm">
+                            <span class="text-gray-500">Подытог:</span>
+                            <span class="font-medium">22 490 ₽</span>
+                          </div>
+                          <div class="flex justify-between text-sm">
+                            <span class="text-gray-500">Доставка:</span>
+                            <span class="font-medium">390 ₽</span>
+                          </div>
+                          <div class="flex justify-between text-sm">
+                            <span class="text-gray-500"
+                              >Персональная скидка 5%:</span
+                            >
+                            <span class="font-medium text-red-600"
+                              >-1 130 ₽</span
+                            >
+                          </div>
+                          <div
+                            class="flex justify-between text-sm font-medium pt-2 border-t border-gray-200"
+                          >
+                            <span>Итого:</span>
+                            <span>8 750 ₽</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="border-b-2 border-gray-200 pb-6 mb-6">
+            <div class="flex items-center justify-between mb-4">
+              <h4 class="text-sm font-medium text-gray-900">
+                Доступные заведения
+              </h4>
+            </div>
+            <div id="venuesContainer" class="space-y-2">
+              <div class="border border-gray-200 rounded-lg">
+                <div
+                  class="flex items-center justify-between p-4 cursor-pointer venue-header"
+                >
+                  <div class="flex items-center space-x-4">
+                    <div
+                      class="w-4 h-4 flex items-center justify-center transition-transform"
+                    >
+                      <i class="ri-arrow-right-s-line"></i>
+                    </div>
+                    <div>
+                      <span class="text-sm font-medium text-gray-900"
+                        >Кафе Центральное</span
+                      >
+                      <span class="text-sm text-gray-500 ml-2"
+                        >Тверская, 25, Москва</span
+                      >
+                    </div>
+                  </div>
+                  <div class="flex items-center space-x-2">
+                    <span
+                      class="px-2 py-1 text-xs font-medium bg-green-100 text-green-800 rounded-full"
+                      >Активно</span
+                    >
+                  </div>
+                </div>
+                <div class="venue-content hidden px-4 pb-4">
+                  <input
+                    type="hidden"
+                    name="ownedVenues[0].venueId"
+                    value="venue_123"
+                  />
+                  <div class="grid grid-cols-2 gap-4 mb-4">
+                    <div>
+                      <label
+                        class="block text-sm font-medium text-gray-700 mb-1"
+                        >Название</label
+                      >
+                      <input
+                        type="text"
+                        name="ownedVenues[0].venueName"
+                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                        value="Кафе Центральное"
+                      />
+                    </div>
+                    <div>
+                      <label
+                        class="block text-sm font-medium text-gray-700 mb-1"
+                        >Город</label
+                      >
+                      <input
+                        type="text"
+                        name="ownedVenues[0].city"
+                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                        value="Москва"
+                      />
+                    </div>
+                  </div>
+                  <div class="grid grid-cols-3 gap-4 mb-4">
+                    <div>
+                      <label
+                        class="block text-sm font-medium text-gray-700 mb-1"
+                        >Улица</label
+                      >
+                      <input
+                        type="text"
+                        name="ownedVenues[0].street"
+                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                        value="Тверская"
+                      />
+                    </div>
+                    <div>
+                      <label
+                        class="block text-sm font-medium text-gray-700 mb-1"
+                        >Дом</label
+                      >
+                      <input
+                        type="text"
+                        name="ownedVenues[0].building"
+                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                        value="25"
+                      />
+                    </div>
+                    <div>
+                      <label
+                        class="block text-sm font-medium text-gray-700 mb-1"
+                        >Помещение</label
+                      >
+                      <input
+                        type="text"
+                        name="ownedVenues[0].department"
+                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                        value="2"
+                      />
+                    </div>
+                  </div>
+                  <div class="grid grid-cols-2 gap-4">
+                    <div>
+                      <label
+                        class="block text-sm font-medium text-gray-700 mb-1"
+                        >Статус</label
+                      >
+                      <select
+                        name="ownedVenues[0].status"
+                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent pr-8"
+                      >
+                        <option value="active" selected="">Активно</option>
+                        <option value="closed">Закрыто</option>
+                        <option value="temporary_closed">
+                          Временно закрыто
+                        </option>
+                      </select>
+                    </div>
+                    <div>
+                      <label
+                        class="block text-sm font-medium text-gray-700 mb-1"
+                        >Привязанный ФОП</label
+                      >
+                      <div class="relative">
+                        <select
+                          name="ownedVenues[0].linkedFopId"
+                          class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent appearance-none pr-8"
+                        >
+                          <option value="fop_123">
+                            Петров Александр Иванович (ИНН: 1234567890)
+                          </option>
+                        </select>
+                        <div
+                          class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none text-gray-500"
+                        >
+                          <div class="w-4 h-4 flex items-center justify-center">
+                            <i class="ri-arrow-down-s-line"></i>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="border border-gray-200 rounded-lg">
+                <div
+                  class="flex items-center justify-between p-4 cursor-pointer venue-header"
+                >
+                  <div class="flex items-center space-x-4">
+                    <div
+                      class="w-4 h-4 flex items-center justify-center transition-transform"
+                    >
+                      <i class="ri-arrow-right-s-line"></i>
+                    </div>
+                    <div>
+                      <span class="text-sm font-medium text-gray-900"
+                        >Кафе Солнечное</span
+                      >
+                      <span class="text-sm text-gray-500 ml-2"
+                        >пр. Мира, 78, Москва</span
+                      >
+                    </div>
+                  </div>
+                </div>
+                <div class="venue-content hidden px-4 pb-4">
+                  <input
+                    type="hidden"
+                    name="accessibleVenues[1].venueId"
+                    value="venue_457"
+                  />
+                  <div class="grid grid-cols-2 gap-4 mb-4">
+                    <div>
+                      <label
+                        class="block text-sm font-medium text-gray-700 mb-1"
+                        >Название заведения</label
+                      >
+                      <input
+                        type="text"
+                        name="accessibleVenues[1].venueName"
+                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                        value="Кафе Солнечное"
+                      />
+                    </div>
+                    <div>
+                      <label
+                        class="block text-sm font-medium text-gray-700 mb-1"
+                        >ID владельца</label
+                      >
+                      <input
+                        type="text"
+                        name="accessibleVenues[1].ownerId"
+                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                        value="user_790"
+                        readonly
+                      />
+                    </div>
+                  </div>
+                  <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-1"
+                      >Адрес</label
+                    >
+                    <input
+                      type="text"
+                      name="accessibleVenues[1].address"
+                      class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                      value="пр. Мира, 78, Москва"
+                    />
+                  </div>
+                  <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1"
+                      >ID заказов</label
+                    >
+                    <input
+                      type="text"
+                      name="accessibleVenues[1].orderIds"
+                      class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                      value="ord_004, ord_005"
+                      readonly
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="mt-6 flex justify-end space-x-3">
+            <button
+              type="button"
+              class="close-modal px-4 py-2 border border-gray-300 rounded-button hover:bg-gray-50 transition-colors text-sm whitespace-nowrap !rounded-button"
+            >
+              Отмена
+            </button>
+            <button
+              type="submit"
+              class="px-4 py-2 bg-primary text-white rounded-button hover:bg-blue-600 transition-colors text-sm whitespace-nowrap !rounded-button"
+            >
+              Сохранить
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <script id="venue-handler">
+      document.addEventListener("DOMContentLoaded", function () {
+        const addVenueButton = document.getElementById("addVenueButton");
+        const venuesContainer = document.getElementById("venuesContainer");
+        let venueCounter = document.querySelectorAll(".venue-header").length;
+        function getFopOptions() {
+          const fops = document.querySelectorAll('[name^="fops["]');
+          const fopMap = new Map();
+          for (let fop of fops) {
+            if (fop.name.includes("payerName")) {
+              const index = fop.name.match(/\[(\d+)\]/)[1];
+              const innInput = document.querySelector(`[name="fops[${index}].inn"]`);
+              const fopIdInput = document.querySelector(
+                `[name="fops[${index}].fopId"]`,
+              );
+              if (fop.value && innInput && fopIdInput) {
+                fopMap.set(fopIdInput.value, `${fop.value} (ИНН: ${innInput.value})`);
+              }
+            }
+          }
+          return fopMap;
+        }
+        function createVenueTemplate(index) {
+          const fopOptions = getFopOptions();
+          let fopOptionsHtml = "";
+          for (const [fopId, fopName] of fopOptions) {
+            fopOptionsHtml += `<option value="${fopId}">${fopName}</option>`;
+          }
+          return `
+      <div class="border border-gray-200 rounded-lg">
+      <div class="flex items-center justify-between p-4 cursor-pointer venue-header">
+      <div class="flex items-center space-x-4">
+      <div class="w-4 h-4 flex items-center justify-center transition-transform">
+      <i class="ri-arrow-right-s-line"></i>
+      </div>
+      <div>
+      <span class="text-sm font-medium text-gray-900">Новое заведение</span>
+      <span class="text-sm text-gray-500 ml-2">Адрес не указан</span>
+      </div>
+      </div>
+      </div>
+      <div class="venue-content px-4 pb-4 hidden">
+      <input type="hidden" name="accessibleVenues[${index}].venueId" value="venue_${Date.now()}">
+      <div class="grid grid-cols-2 gap-4 mb-4">
+      <div>
+      <label class="block text-sm font-medium text-gray-700 mb-1">Название заведения</label>
+      <input type="text" name="accessibleVenues[${index}].venueName" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+      </div>
+      <div>
+      <label class="block text-sm font-medium text-gray-700 mb-1">ID владельца</label>
+      <input type="text" name="accessibleVenues[${index}].ownerId" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent" readonly>
+      </div>
+      </div>
+      <div class="mb-4">
+      <label class="block text-sm font-medium text-gray-700 mb-1">Привязанный ФОП</label>
+      <div class="relative">
+      <select name="accessibleVenues[${index}].linkedFopId" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent appearance-none pr-8">
+      ${fopOptionsHtml}
+      </select>
+      <div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none text-gray-500">
+      <div class="w-4 h-4 flex items-center justify-center">
+      <i class="ri-arrow-down-s-line"></i>
+      </div>
+      </div>
+      </div>
+      </div>
+      <div class="mb-4">
+      <label class="block text-sm font-medium text-gray-700 mb-1">Адрес</label>
+      <input type="text" name="accessibleVenues[${index}].address" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+      </div>
+      <div>
+      <label class="block text-sm font-medium text-gray-700 mb-1">ID заказов</label>
+      <input type="text" name="accessibleVenues[${index}].orderIds" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent" readonly>
+      </div>
+      </div>
+      </div>
+      `;
+        }
+        function updateVenueIndexes() {
+          const venues = venuesContainer.children;
+          Array.from(venues).forEach((venue, index) => {
+            venue.querySelectorAll('[name^="accessibleVenues["]').forEach((input) => {
+              const fieldName = input.name.match(/\].(.+)$/)[1];
+              input.name = `accessibleVenues[${index}].${fieldName}`;
+            });
+          });
+        }
+        document.addEventListener("input", function (e) {
+          if (
+            e.target.name &&
+            e.target.name.includes("accessibleVenues[") &&
+            e.target.name.includes("venueName")
+          ) {
+            const venueElement = e.target.closest(".border.border-gray-200");
+            const nameDisplay = venueElement.querySelector(
+              ".venue-header .text-gray-900",
+            );
+            nameDisplay.textContent = e.target.value || "Новое заведение";
+          }
+          if (
+            e.target.name &&
+            e.target.name.includes("accessibleVenues[") &&
+            e.target.name.includes("address")
+          ) {
+            const venueElement = e.target.closest(".border.border-gray-200");
+            const addressDisplay = venueElement.querySelector(
+              ".venue-header .text-gray-500",
+            );
+            addressDisplay.textContent = e.target.value || "Адрес не указан";
+          }
+        });
+      });
+    </script>
+    <script id="ingredients-counter">
+      document.addEventListener("DOMContentLoaded", function () {
+        const ingredientsTextarea = document.querySelector(
+          'textarea[name="ingredients"]',
+        );
+        const ingredientsCounter = document.querySelector(".ingredients-counter");
+        if (ingredientsTextarea && ingredientsCounter) {
+          ingredientsTextarea.addEventListener("input", function () {
+            ingredientsCounter.textContent = this.value.length;
+          });
+        }
+      });
+    </script>
+    <script id="modal-handler">
+      document.addEventListener("DOMContentLoaded", function () {
+        const modal = document.getElementById("editUserModal");
+        const addProductButton = document.getElementById("add-product-button");
+        const addProductModal = document.getElementById("addProductModal");
+        function openAddProductModal() {
+          addProductModal.classList.remove("hidden");
+          addProductModal.classList.add("flex");
+          // Set current timestamp
+          const now = new Date().toISOString().slice(0, 19).replace("T", " ");
+          document.querySelector('[name="timestamps.createdAt"]').value = now;
+          document.querySelector('[name="timestamps.updatedAt"]').value = now;
+          // Generate unique product ID
+          document.querySelector('[name="productId"]').value = "prod_" + Date.now();
+          document.querySelector('[name="images.imageId"]').value =
+            "img_" + Date.now();
+        }
+        function closeAddProductModal() {
+          addProductModal.classList.add("hidden");
+          addProductModal.classList.remove("flex");
+        }
+        addProductButton.addEventListener("click", openAddProductModal);
+        addProductModal.addEventListener("click", function (e) {
+          if (e.target === addProductModal) {
+            closeAddProductModal();
+          }
+        });
+        // Handle add product form submission
+        const addProductForm = document.getElementById("addProductForm");
+        if (addProductForm) {
+          const initialQuantityInput = addProductForm.querySelector(
+            '[name="stock.initialQuantity"]',
+          );
+          const orderedQuantityInput = addProductForm.querySelector(
+            '[name="stock.orderedQuantity"]',
+          );
+          const availableQuantityInput = addProductForm.querySelector(
+            '[name="stock.availableQuantity"]',
+          );
+          initialQuantityInput.addEventListener("input", function () {
+            const ordered = parseInt(orderedQuantityInput.value) || 0;
+            const initial = parseInt(this.value) || 0;
+            availableQuantityInput.value = initial - ordered;
+          });
+          addProductForm.addEventListener("submit", function (e) {
+            e.preventDefault();
+            const formData = new FormData(addProductForm);
+            const data = Object.fromEntries(formData);
+            console.log("Form data:", data);
+            closeAddProductModal();
+          });
+        }
+        const editButtons = document.querySelectorAll(".edit-user-btn");
+        const closeButtons = document.querySelectorAll(".close-modal");
+        const editForm = document.getElementById("editUserForm");
+        const addFopButton = document.getElementById("addFopButton");
+        const addOwnedVenueButton = document.getElementById("addOwnedVenueButton");
+        const fopsContainer = document.getElementById("fopsContainer");
+        const ownedVenuesContainer = document.getElementById("ownedVenuesContainer");
+        let fopCounter = document.querySelectorAll(".fop-header").length;
+        let ownedVenueCounter = ownedVenuesContainer.children.length;
+        function createOwnedVenueTemplate(index) {
+          const fopOptions = getFopOptions();
+          let fopOptionsHtml = "";
+          for (const [fopId, fopName] of fopOptions) {
+            fopOptionsHtml += `<option value="${fopId}">${fopName}</option>`;
+          }
+          return `
+      <div class="p-4 border border-gray-200 rounded-lg">
+      <input type="hidden" name="ownedVenues[${index}].venueId" value="venue_${Date.now()}">
+      <div class="grid grid-cols-2 gap-4 mb-4">
+      <div>
+      <label class="block text-sm font-medium text-gray-700 mb-1">Название</label>
+      <input type="text" name="ownedVenues[${index}].venueName" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+      </div>
+      <div>
+      <label class="block text-sm font-medium text-gray-700 mb-1">Город</label>
+      <input type="text" name="ownedVenues[${index}].city" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+      </div>
+      </div>
+      <div class="grid grid-cols-3 gap-4 mb-4">
+      <div>
+      <label class="block text-sm font-medium text-gray-700 mb-1">Улица</label>
+      <input type="text" name="ownedVenues[${index}].street" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+      </div>
+      <div>
+      <label class="block text-sm font-medium text-gray-700 mb-1">Дом</label>
+      <input type="text" name="ownedVenues[${index}].building" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+      </div>
+      <div>
+      <label class="block text-sm font-medium text-gray-700 mb-1">Помещение</label>
+      <input type="text" name="ownedVenues[${index}].department" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+      </div>
+      </div>
+      <div class="grid grid-cols-2 gap-4">
+      <div>
+      <label class="block text-sm font-medium text-gray-700 mb-1">Статус</label>
+      <select name="ownedVenues[${index}].status" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent pr-8">
+      <option value="active">Активно</option>
+      <option value="closed">Закрыто</option>
+      <option value="temporary_closed">Временно закрыто</option>
+      </select>
+      </div>
+      <div>
+      <label class="block text-sm font-medium text-gray-700 mb-1">Привязанный ФОП</label>
+      <div class="relative">
+      <select name="ownedVenues[${index}].linkedFopId" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent appearance-none pr-8">
+      ${fopOptionsHtml}
+      </select>
+      <div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none text-gray-500">
+      <div class="w-4 h-4 flex items-center justify-center">
+      <i class="ri-arrow-down-s-line"></i>
+      </div>
+      </div>
+      </div>
+      </div>
+      </div>
+      </div>
+      `;
+        }
+        function updateOwnedVenueIndexes() {
+          const venues = ownedVenuesContainer.children;
+          Array.from(venues).forEach((venue, index) => {
+            venue.querySelectorAll('[name^="ownedVenues["]').forEach((input) => {
+              const fieldName = input.name.match(/\].(.+)$/)[1];
+              input.name = `ownedVenues[${index}].${fieldName}`;
+            });
+          });
+        }
+        addOwnedVenueButton.addEventListener("click", function () {
+          const newVenueElement = document.createElement("div");
+          newVenueElement.innerHTML = createOwnedVenueTemplate(ownedVenueCounter++);
+          ownedVenuesContainer.appendChild(newVenueElement.firstElementChild);
+          updateOwnedVenueIndexes();
+        });
+        document.addEventListener("click", function (e) {
+          if (e.target.closest(".order-header")) {
+            const header = e.target.closest(".order-header");
+            const content = header.nextElementSibling;
+            const arrow = header.querySelector(".ri-arrow-right-s-line");
+            content.classList.toggle("hidden");
+            arrow.style.transform = content.classList.contains("hidden")
+              ? ""
+              : "rotate(90deg)";
+          }
+        });
+        document.addEventListener("click", function (e) {
+          if (
+            e.target.closest(".venue-header") ||
+            e.target.closest(".order-header")
+          ) {
+            const header =
+              e.target.closest(".venue-header") || e.target.closest(".order-header");
+            const content = header.nextElementSibling;
+            const arrow = header.querySelector(".ri-arrow-right-s-line");
+            content.classList.toggle("hidden");
+            arrow.style.transform = content.classList.contains("hidden")
+              ? ""
+              : "rotate(90deg)";
+          }
+        });
+        function openModal() {
+          modal.classList.remove("hidden");
+          modal.classList.add("flex");
+        }
+        function closeModal() {
+          modal.classList.add("hidden");
+          modal.classList.remove("flex");
+        }
+        function createFopTemplate(index) {
+          return `
+      <div class="border border-gray-200 rounded-lg">
+      <div class="flex items-center justify-between p-4 cursor-pointer fop-header">
+      <div class="flex items-center space-x-4">
+      <div class="w-4 h-4 flex items-center justify-center transition-transform">
+      <i class="ri-arrow-right-s-line"></i>
+      </div>
+      <div>
+      <span class="text-sm font-medium text-gray-900">Новый ФОП</span>
+      <span class="text-sm text-gray-500 ml-2">ИНН: -</span>
+      </div>
+      </div>
+      <div class="flex items-center space-x-2">
+      <button type="button" class="remove-fop text-gray-400 hover:text-red-600 transition-colors p-1">
+      <div class="w-4 h-4 flex items-center justify-center">
+      <i class="ri-delete-bin-line"></i>
+      </div>
+      </button>
+      </div>
+      </div>
+      <div class="fop-content hidden px-4 pb-4">
+      <input type="hidden" name="fops[${index}].fopId" value="fop_${Date.now()}">
+      <div class="grid grid-cols-2 gap-4 mb-4">
+      <div>
+      <label class="block text-sm font-medium text-gray-700 mb-1">Имя плательщика</label>
+      <input type="text" name="fops[${index}].payerName" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+      </div>
+      <div>
+      <label class="block text-sm font-medium text-gray-700 mb-1">ИНН</label>
+      <input type="text" name="fops[${index}].inn" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+      </div>
+      </div>
+      <div class="grid grid-cols-3 gap-4">
+      <div>
+      <label class="block text-sm font-medium text-gray-700 mb-1">Банк</label>
+      <input type="text" name="fops[${index}].bank" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+      </div>
+      <div>
+      <label class="block text-sm font-medium text-gray-700 mb-1">МФО</label>
+      <input type="text" name="fops[${index}].mfo" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+      </div>
+      <div>
+      <label class="block text-sm font-medium text-gray-700 mb-1">IBAN</label>
+      <input type="text" name="fops[${index}].iban" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+      </div>
+      </div>
+      </div>
+      </div>
+      `;
+        }
+        function addNewFop() {
+          const newFopElement = document.createElement("div");
+          newFopElement.innerHTML = createFopTemplate(fopCounter++);
+          fopsContainer.appendChild(newFopElement);
+          updateFopIndexes();
+        }
+        function removeFop(button) {
+          const fopElement = button.closest(".border.border-gray-200");
+          if (fopsContainer.children.length > 1) {
+            fopElement.remove();
+            updateFopIndexes();
+          }
+        }
+        function updateFopIndexes() {
+          const fops = fopsContainer.children;
+          Array.from(fops).forEach((fop, index) => {
+            fop.querySelectorAll('[name^="fops["]').forEach((input) => {
+              const fieldName = input.name.match(/\].(.+)$/)[1];
+              input.name = `fops[${index}].${fieldName}`;
+            });
+          });
+        }
+        addFopButton.addEventListener("click", addNewFop);
+        fopsContainer.addEventListener("click", function (e) {
+          if (e.target.closest(".remove-fop")) {
+            removeFop(e.target.closest(".remove-fop"));
+          } else if (e.target.closest(".fop-header")) {
+            const header = e.target.closest(".fop-header");
+            const content = header.nextElementSibling;
+            const arrow = header.querySelector(".ri-arrow-right-s-line");
+            content.classList.toggle("hidden");
+            arrow.style.transform = content.classList.contains("hidden")
+              ? ""
+              : "rotate(90deg)";
+          }
+        });
+        document.addEventListener("input", function (e) {
+          if (
+            e.target.name &&
+            e.target.name.includes("fops[") &&
+            (e.target.name.includes("payerName") || e.target.name.includes("inn"))
+          ) {
+            const fopElement = e.target.closest(".border.border-gray-200");
+            const nameDisplay = fopElement.querySelector(
+              ".fop-header .text-gray-900",
+            );
+            const innDisplay = fopElement.querySelector(".fop-header .text-gray-500");
+            const payerNameInput = fopElement.querySelector('[name$="payerName"]');
+            const innInput = fopElement.querySelector('[name$="inn"]');
+            if (payerNameInput && innInput) {
+              nameDisplay.textContent = payerNameInput.value || "Новый ФОП";
+              innDisplay.textContent = `ИНН: ${innInput.value || "-"}`;
+              // Update all venue FOP selects
+              const venueSelects = document.querySelectorAll('[name$="linkedFopId"]');
+              const fopOptions = getFopOptions();
+              venueSelects.forEach((select) => {
+                const selectedValue = select.value;
+                select.innerHTML = "";
+                for (const [fopId, fopName] of fopOptions) {
+                  const option = document.createElement("option");
+                  option.value = fopId;
+                  option.textContent = fopName;
+                  select.appendChild(option);
+                }
+                if (Array.from(fopOptions.keys()).includes(selectedValue)) {
+                  select.value = selectedValue;
+                }
+              });
+            }
+          }
+        });
+        editButtons.forEach((button) => {
+          button.addEventListener("click", openModal);
+        });
+        closeButtons.forEach((button) => {
+          button.addEventListener("click", closeModal);
+        });
+        modal.addEventListener("click", function (e) {
+          if (e.target === modal) {
+            closeModal();
+          }
+        });
+        editForm.addEventListener("submit", function (e) {
+          e.preventDefault();
+          const formData = new FormData(editForm);
+          const data = Object.fromEntries(formData);
+          console.log("Form data:", data);
+          closeModal();
+        });
+      });
+    </script>
+  </body>
+</html>
