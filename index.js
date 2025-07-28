@@ -154,26 +154,24 @@ ${cart.map(item => `- ${item.name}: ${item.quantity} шт. x ${item.price} гр�
 // Добавить новый товар
 app.post('/api/admin/products', async (req, res) => {
     try {
-        const { name, price, description, category, imageUrl, stock, isNew } = req.body;
+        const productData = req.body;
         
-        // Создаем объект нового товара, основываясь на вашей структуре
         const newProduct = {
+            ...productData,
             productId: `prod_${Date.now()}`,
-            sku: `SKU_${Date.now()}`,
-            isVisible: true,
-            isNew,
-            name,
-            description,
-            category,
-            ingredients: [], // Ингредиенты можно будет добавить позже
-            price,
-            unit: "шт",
-            specifications: { weight: "", shelfLife: "", storageConditions: "" },
-            shipping: { isShippableByMail: false },
-            stock,
-            images: [{ imageId: `img_${Date.now()}`, url: imageUrl, alt: name }],
-            relatedProductIds: [],
-            timestamps: { createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() }
+            stock: {
+                ...productData.stock,
+                orderedQuantity: 0,
+                availableQuantity: productData.stock.initialQuantity || 0,
+            },
+            images: [{ 
+                imageId: `img_${Date.now()}`,
+                ...productData.images[0]
+            }],
+            timestamps: { 
+                createdAt: new Date().toISOString(),
+                updatedAt: new Date().toISOString()
+            }
         };
 
         const productsData = await fs.readFile(PRODUCTS_DB_PATH, 'utf8');
@@ -201,18 +199,19 @@ app.put('/api/admin/products/:id', async (req, res) => {
             return res.status(404).json({ message: 'Товар не найден' });
         }
         
-        // Аккуратно обновляем данные, сохраняя поля, которых нет в форме
         const oldProduct = products[productIndex];
+        
         products[productIndex] = {
-            ...oldProduct,
-            name: updatedData.name,
-            price: updatedData.price,
-            description: updatedData.description,
-            category: updatedData.category,
-            isNew: updatedData.isNew,
-            stock: updatedData.stock,
-            images: [{ ...oldProduct.images[0], url: updatedData.imageUrl, alt: updatedData.name }],
-            timestamps: { ...oldProduct.timestamps, updatedAt: new Date().toISOString() }
+            ...updatedData,
+            stock: {
+                ...updatedData.stock,
+                orderedQuantity: oldProduct.stock.orderedQuantity || 0,
+                availableQuantity: (updatedData.stock.initialQuantity || 0) - (oldProduct.stock.orderedQuantity || 0),
+            },
+            timestamps: {
+                ...updatedData.timestamps,
+                updatedAt: new Date().toISOString()
+            }
         };
 
         await fs.writeFile(PRODUCTS_DB_PATH, JSON.stringify(products, null, 2));

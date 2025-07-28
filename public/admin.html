@@ -1200,226 +1200,131 @@
         }
     </style>
     <div id="addProductModal" class="fixed inset-0 bg-gray-500 bg-opacity-75 hidden items-center justify-center">
-        <div class="bg-white rounded-lg w-[800px] max-h-[90vh] overflow-y-auto">
-            <div class="p-6 border-b border-gray-200">
-                <div class="flex items-center justify-between">
-                    <h3 class="text-lg font-semibold text-gray-900">
-                        Добавление товара
-                    </h3>
-                    <button class="close-modal text-gray-400 hover:text-gray-500"
-                        onclick="document.getElementById('addProductModal').classList.add('hidden')">
-                        <div class="w-5 h-5 flex items-center justify-center">
-                            <i class="ri-close-line"></i>
-                        </div>
-                    </button>
+        <!-- ЗАМЕНИТЕ НА ЭТОТ БЛОК -->
+<div id="product-modal" class="fixed inset-0 bg-gray-500 bg-opacity-75 hidden items-center justify-center z-50 p-4">
+    <div class="bg-white rounded-lg shadow-xl w-full max-w-6xl max-h-full flex flex-col">
+      <header class="p-4 border-b border-gray-200 flex items-center justify-between flex-shrink-0">
+          <h1 id="product-modal-title" class="text-lg font-semibold text-gray-900">Редактирование товара</h1>
+          <button class="close-modal text-gray-400 hover:text-gray-600"><i class="ri-close-line text-2xl"></i></button>
+      </header>
+      <main class="flex-1 overflow-y-auto">
+        <form id="product-form" class="p-6 space-y-8">
+          <!-- Скрытые поля для ID и дат -->
+          <input type="hidden" name="productId"/>
+          <input type="hidden" name="timestamps.createdAt"/>
+  
+          <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div class="lg:col-span-2 space-y-8">
+              <!-- Основная информация -->
+              <div class="bg-gray-50 rounded-lg p-6">
+                <h2 class="text-lg font-semibold text-gray-900 mb-4">Основная информация</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Артикул <span class="text-red-500">*</span></label>
+                    <input type="text" name="sku" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm" required/>
+                  </div>
+                  <div class="md:col-span-2">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Название товара <span class="text-red-500">*</span></label>
+                    <input type="text" name="name" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm" required/>
+                  </div>
+                  <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Категория <span class="text-red-500">*</span></label>
+                    <input type="text" name="category" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm" required/>
+                  </div>
+                  <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Единица измерения</label>
+                    <input type="text" name="unit" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm" />
+                  </div>
                 </div>
+                <div class="flex items-center space-x-6 mt-4">
+                  <div class="flex items-center">
+                      <input type="checkbox" id="isVisible" name="isVisible" class="h-4 w-4 text-primary rounded border-gray-300"/>
+                      <label for="isVisible" class="ml-2 block text-sm text-gray-900">Отображать на сайте</label>
+                  </div>
+                  <div class="flex items-center">
+                      <input type="checkbox" id="isNew" name="isNew" class="h-4 w-4 text-primary rounded border-gray-300"/>
+                      <label for="isNew" class="ml-2 block text-sm text-gray-900">Новинка</label>
+                  </div>
+                </div>
+              </div>
+              <!-- Описание и состав -->
+              <div class="bg-gray-50 rounded-lg p-6">
+                <h2 class="text-lg font-semibold text-gray-900 mb-4">Описание и состав</h2>
+                <div class="space-y-4">
+                  <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Описание</label>
+                    <textarea name="description" rows="4" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm"></textarea>
+                  </div>
+                  <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Состав/Комплектация (каждый с новой строки)</label>
+                    <textarea name="ingredients" rows="3" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm"></textarea>
+                  </div>
+                </div>
+              </div>
+              <!-- Характеристики -->
+              <div class="bg-gray-50 rounded-lg p-6">
+                <h2 class="text-lg font-semibold text-gray-900 mb-4">Характеристики товара</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Вес</label>
+                    <input type="text" name="specifications.weight" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm"/>
+                  </div>
+                  <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Срок годности</label>
+                    <input type="text" name="specifications.shelfLife" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm"/>
+                  </div>
+                  <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Условия хранения</label>
+                    <input type="text" name="specifications.storageConditions" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm"/>
+                  </div>
+                </div>
+              </div>
             </div>
-            <form id="addProductForm" class="p-6">
-                <div class="space-y-6">
-                    <div class="grid grid-cols-2 gap-4">
-                        <input type="hidden" name="productId" value="" />
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Артикул (SKU)</label>
-                            <input type="text" name="sku"
-                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent" />
-                        </div>
-                        <div class="flex items-center space-x-4">
-                            <div class="flex items-center">
-                                <input type="checkbox" id="isVisible" name="isVisible"
-                                    class="text-primary focus:ring-primary" />
-                                <label for="isVisible" class="ml-2 text-sm text-gray-700">Отображать на сайте</label>
-                            </div>
-                            <div class="flex items-center">
-                                <input type="checkbox" id="isNew" name="isNew"
-                                    class="text-primary focus:ring-primary" />
-                                <label for="isNew" class="ml-2 text-sm text-gray-700">Новинка</label>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="space-y-4">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Название товара</label>
-                            <input type="text" name="name"
-                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent" />
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Описание</label>
-                            <textarea name="description" rows="3"
-                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"></textarea>
-                        </div>
-                    </div>
-                    <div class="grid grid-cols-2 gap-4">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Категория</label>
-                            <select name="category"
-                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent pr-8">
-                                <option value="">Выберите категорию</option>
-                                <option value="electronics">Электроника</option>
-                                <option value="clothing">Одежда</option>
-                                <option value="home">Дом и сад</option>
-                                <option value="sport">Спорт</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Ингредиенты</label>
-                            <textarea name="ingredients" rows="3" maxlength="300"
-                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent resize-none"></textarea>
-                            <div class="mt-1 text-sm text-gray-500 flex justify-end">
-                                <span class="ingredients-counter">0</span>/300
-                            </div>
-                        </div>
-                    </div>
-                    <div class="grid grid-cols-2 gap-4">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Цена</label>
-                            <input type="number" name="price"
-                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent" />
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Единица измерения</label>
-                            <div class="relative">
-                                <select name="unit"
-                                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent appearance-none pr-8">
-                                    <option value="kg">кг</option>
-                                    <option value="pcs">шт</option>
-                                </select>
-                                <div
-                                    class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none text-gray-500">
-                                    <div class="w-4 h-4 flex items-center justify-center">
-                                        <i class="ri-arrow-down-s-line"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="border-t border-gray-200 pt-4">
-                        <h4 class="text-sm font-medium text-gray-900 mb-4">
-                            Характеристики
-                        </h4>
-                        <div class="grid grid-cols-3 gap-4">
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-1">Вес</label>
-                                <input type="text" name="specifications.weight"
-                                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent" />
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-1">Срок годности</label>
-                                <input type="text" name="specifications.shelfLife"
-                                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent" />
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-1">Условия хранения</label>
-                                <input type="text" name="specifications.storageConditions"
-                                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent" />
-                            </div>
-                        </div>
-                    </div>
-                    <div class="border-t border-gray-200 pt-4">
-                        <h4 class="text-sm font-medium text-gray-900 mb-4">
-                            Доставка и наличие
-                        </h4>
-                        <div class="grid grid-cols-2 gap-4">
-                            <div class="flex items-center">
-                                <input type="checkbox" id="isShippableByMail" name="shipping.isShippableByMail"
-                                    class="text-primary focus:ring-primary" />
-                                <label for="isShippableByMail" class="ml-2 text-sm text-gray-700">Доступна почтовая
-                                    доставка</label>
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-1">Статус наличия</label>
-                                <select name="stock.status"
-                                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent pr-8">
-                                    <option value="in_stock">В наличии</option>
-                                    <option value="out_of_stock">Нет в наличии</option>
-                                    <option value="low_stock">Заканчивается</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="grid grid-cols-3 gap-4 mt-4">
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-1">Начальное количество</label>
-                                <input type="number" name="stock.initialQuantity"
-                                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent" />
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-1">Заказано</label>
-                                <input type="number" name="stock.orderedQuantity"
-                                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-gray-50 cursor-not-allowed"
-                                    readonly disabled />
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-1">Доступно</label>
-                                <input type="number" name="stock.availableQuantity"
-                                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-gray-50 cursor-not-allowed"
-                                    readonly disabled />
-                            </div>
-                        </div>
-                    </div>
-                    <div class="border-t border-gray-200 pt-4">
-                        <h4 class="text-sm font-medium text-gray-900 mb-4">
-                            Изображения
-                        </h4>
-                        <div class="space-y-4">
-                            <div class="grid grid-cols-3 gap-4">
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-1">ID изображения</label>
-                                    <input type="text" name="images.imageId"
-                                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
-                                        readonly />
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-1">URL изображения</label>
-                                    <input type="text" name="images.url"
-                                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent" />
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-1">Alt текст</label>
-                                    <input type="text" name="images.alt"
-                                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent" />
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="border-t border-gray-200 pt-4">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">ID связанных товаров</label>
-                            <input type="text" name="relatedProductIds"
-                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
-                                placeholder="Введите ID через запятую" />
-                        </div>
-                    </div>
-                    <div class="border-t border-gray-200 pt-4">
-                        <h4 class="text-sm font-medium text-gray-900 mb-4">
-                            Временные метки
-                        </h4>
-                        <div class="grid grid-cols-2 gap-4">
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-1">Дата создания</label>
-                                <input type="text" name="timestamps.createdAt"
-                                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
-                                    readonly />
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-1">Дата обновления</label>
-                                <input type="text" name="timestamps.updatedAt"
-                                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
-                                    readonly />
-                            </div>
-                        </div>
-                    </div>
+            <!-- Правая колонка -->
+            <div class="space-y-6">
+              <!-- Цена и наличие -->
+              <div class="bg-gray-50 rounded-lg p-6">
+                <h2 class="text-lg font-semibold text-gray-900 mb-4">Цена и наличие</h2>
+                <div class="space-y-4">
+                  <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Цена <span class="text-red-500">*</span></label>
+                    <input type="number" name="price" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm" required/>
+                  </div>
+                  <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Начальное количество</label>
+                    <input type="number" name="stock.initialQuantity" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm" />
+                  </div>
+                  <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Статус склада</label>
+                    <select name="stock.status" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm">
+                      <option value="in_stock">В наличии</option>
+                      <option value="out_of_stock">Нет в наличии</option>
+                    </select>
+                  </div>
+                  <div class="flex items-center">
+                      <input type="checkbox" id="isShippableByMail" name="shipping.isShippableByMail" class="h-4 w-4 text-primary rounded border-gray-300"/>
+                      <label for="isShippableByMail" class="ml-2 block text-sm text-gray-900">Доступна почтовая доставка</label>
+                  </div>
                 </div>
-                <div class="mt-6 flex justify-end space-x-3">
-                    <button type="button"
-                        class="close-modal px-4 py-2 border border-gray-300 rounded-button hover:bg-gray-50 transition-colors text-sm whitespace-nowrap !rounded-button">
-                        Отмена
-                    </button>
-                    <button type="submit"
-                        class="px-4 py-2 bg-primary text-white rounded-button hover:bg-blue-600 transition-colors text-sm whitespace-nowrap !rounded-button">
-                        Добавить товар
-                    </button>
-                </div>
-            </form>
-        </div>
+              </div>
+              <!-- Изображения -->
+              <div class="bg-gray-50 rounded-lg p-6">
+                <h2 class="text-lg font-semibold text-gray-900 mb-4">Изображение</h2>
+                 <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">URL изображения</label>
+                    <input type="url" name="images.0.url" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm" />
+                  </div>
+              </div>
+            </div>
+          </div>
+          <div class="flex items-center justify-end space-x-4 pt-6 border-t border-gray-200 p-6 flex-shrink-0">
+            <button type="button" class="close-modal px-6 py-2 border border-gray-300 rounded-button hover:bg-gray-50 text-sm">Отмена</button>
+            <button type="submit" class="px-6 py-2 bg-primary text-white rounded-button hover:bg-blue-600 text-sm">Сохранить изменения</button>
+          </div>
+        </form>
+      </main>
+    </div>
+  </div>
     </div>
     <div id="editUserModal" class="fixed inset-0 bg-gray-500 bg-opacity-75 hidden items-center justify-center">
         <div class="bg-white rounded-lg w-[800px] max-h-[90vh] overflow-y-auto">
@@ -2277,316 +2182,152 @@
         });
     </script>
     <script id="modal-handler">
-        document.addEventListener("DOMContentLoaded", function () {
-            const modal = document.getElementById("editUserModal");
-            const addProductButton = document.getElementById("add-product-button");
-            const addProductModal = document.getElementById("addProductModal");
-            function openAddProductModal() {
-                addProductModal.classList.remove("hidden");
-                addProductModal.classList.add("flex");
-                // Set current timestamp
-                const now = new Date().toISOString().slice(0, 19).replace("T", " ");
-                document.querySelector('[name="timestamps.createdAt"]').value = now;
-                document.querySelector('[name="timestamps.updatedAt"]').value = now;
-                // Generate unique product ID
-                document.querySelector('[name="productId"]').value = "prod_" + Date.now();
-                document.querySelector('[name="images.imageId"]').value =
-                    "img_" + Date.now();
-            }
-            function closeAddProductModal() {
-                addProductModal.classList.add("hidden");
-                addProductModal.classList.remove("flex");
-            }
-            addProductButton.addEventListener("click", openAddProductModal);
-            addProductModal.addEventListener("click", function (e) {
-                if (e.target === addProductModal) {
-                    closeAddProductModal();
-                }
-            });
-            // Handle add product form submission
-            const addProductForm = document.getElementById("addProductForm");
-            if (addProductForm) {
-                const initialQuantityInput = addProductForm.querySelector(
-                    '[name="stock.initialQuantity"]',
-                );
-                const orderedQuantityInput = addProductForm.querySelector(
-                    '[name="stock.orderedQuantity"]',
-                );
-                const availableQuantityInput = addProductForm.querySelector(
-                    '[name="stock.availableQuantity"]',
-                );
-                initialQuantityInput.addEventListener("input", function () {
-                    const ordered = parseInt(orderedQuantityInput.value) || 0;
-                    const initial = parseInt(this.value) || 0;
-                    availableQuantityInput.value = initial - ordered;
-                });
-                addProductForm.addEventListener("submit", function (e) {
-                    e.preventDefault();
-                    const formData = new FormData(addProductForm);
-                    const data = Object.fromEntries(formData);
-                    console.log("Form data:", data);
-                    closeAddProductModal();
-                });
-            }
-            const editButtons = document.querySelectorAll(".edit-user-btn");
-            const closeButtons = document.querySelectorAll(".close-modal");
-            const editForm = document.getElementById("editUserForm");
-            const addFopButton = document.getElementById("addFopButton");
-            const addOwnedVenueButton = document.getElementById("addOwnedVenueButton");
-            const fopsContainer = document.getElementById("fopsContainer");
-            const ownedVenuesContainer = document.getElementById("ownedVenuesContainer");
-            let fopCounter = document.querySelectorAll(".fop-header").length;
-            let ownedVenueCounter = ownedVenuesContainer.children.length;
-            function createOwnedVenueTemplate(index) {
-                const fopOptions = getFopOptions();
-                let fopOptionsHtml = "";
-                for (const [fopId, fopName] of fopOptions) {
-                    fopOptionsHtml += `<option value="${fopId}">${fopName}</option>`;
-                }
-                return `
-      <div class="p-4 border border-gray-200 rounded-lg">
-      <input type="hidden" name="ownedVenues[${index}].venueId" value="venue_${Date.now()}">
-      <div class="grid grid-cols-2 gap-4 mb-4">
-      <div>
-      <label class="block text-sm font-medium text-gray-700 mb-1">Название</label>
-      <input type="text" name="ownedVenues[${index}].venueName" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
-      </div>
-      <div>
-      <label class="block text-sm font-medium text-gray-700 mb-1">Город</label>
-      <input type="text" name="ownedVenues[${index}].city" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
-      </div>
-      </div>
-      <div class="grid grid-cols-3 gap-4 mb-4">
-      <div>
-      <label class="block text-sm font-medium text-gray-700 mb-1">Улица</label>
-      <input type="text" name="ownedVenues[${index}].street" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
-      </div>
-      <div>
-      <label class="block text-sm font-medium text-gray-700 mb-1">Дом</label>
-      <input type="text" name="ownedVenues[${index}].building" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
-      </div>
-      <div>
-      <label class="block text-sm font-medium text-gray-700 mb-1">Помещение</label>
-      <input type="text" name="ownedVenues[${index}].department" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
-      </div>
-      </div>
-      <div class="grid grid-cols-2 gap-4">
-      <div>
-      <label class="block text-sm font-medium text-gray-700 mb-1">Статус</label>
-      <select name="ownedVenues[${index}].status" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent pr-8">
-      <option value="active">Активно</option>
-      <option value="closed">Закрыто</option>
-      <option value="temporary_closed">Временно закрыто</option>
-      </select>
-      </div>
-      <div>
-      <label class="block text-sm font-medium text-gray-700 mb-1">Привязанный ФОП</label>
-      <div class="relative">
-      <select name="ownedVenues[${index}].linkedFopId" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent appearance-none pr-8">
-      ${fopOptionsHtml}
-      </select>
-      <div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none text-gray-500">
-      <div class="w-4 h-4 flex items-center justify-center">
-      <i class="ri-arrow-down-s-line"></i>
-      </div>
-      </div>
-      </div>
-      </div>
-      </div>
-      </div>
-      `;
-            }
-            function updateOwnedVenueIndexes() {
-                const venues = ownedVenuesContainer.children;
-                Array.from(venues).forEach((venue, index) => {
-                    venue.querySelectorAll('[name^="ownedVenues["]').forEach((input) => {
-                        const fieldName = input.name.match(/\].(.+)$/)[1];
-                        input.name = `ownedVenues[${index}].${fieldName}`;
-                    });
-                });
-            }
-            addOwnedVenueButton.addEventListener("click", function () {
-                const newVenueElement = document.createElement("div");
-                newVenueElement.innerHTML = createOwnedVenueTemplate(ownedVenueCounter++);
-                ownedVenuesContainer.appendChild(newVenueElement.firstElementChild);
-                updateOwnedVenueIndexes();
-            });
-            document.addEventListener("click", function (e) {
-                if (e.target.closest(".order-header")) {
-                    const header = e.target.closest(".order-header");
-                    const content = header.nextElementSibling;
-                    const arrow = header.querySelector(".ri-arrow-right-s-line");
-                    content.classList.toggle("hidden");
-                    arrow.style.transform = content.classList.contains("hidden")
-                        ? ""
-                        : "rotate(90deg)";
-                }
-            });
-            document.addEventListener("click", function (e) {
-                if (
-                    e.target.closest(".venue-header") ||
-                    e.target.closest(".order-header")
-                ) {
-                    const header =
-                        e.target.closest(".venue-header") || e.target.closest(".order-header");
-                    const content = header.nextElementSibling;
-                    const arrow = header.querySelector(".ri-arrow-right-s-line");
-                    content.classList.toggle("hidden");
-                    arrow.style.transform = content.classList.contains("hidden")
-                        ? ""
-                        : "rotate(90deg)";
-                }
-            });
-            function openModal() {
-                modal.classList.remove("hidden");
-                modal.classList.add("flex");
-            }
-            function closeModal() {
-                modal.classList.add("hidden");
-                modal.classList.remove("flex");
-            }
-            function createFopTemplate(index) {
-                return `
-      <div class="border border-gray-200 rounded-lg">
-      <div class="flex items-center justify-between p-4 cursor-pointer fop-header">
-      <div class="flex items-center space-x-4">
-      <div class="w-4 h-4 flex items-center justify-center transition-transform">
-      <i class="ri-arrow-right-s-line"></i>
-      </div>
-      <div>
-      <span class="text-sm font-medium text-gray-900">Новый ФОП</span>
-      <span class="text-sm text-gray-500 ml-2">ИНН: -</span>
-      </div>
-      </div>
-      <div class="flex items-center space-x-2">
-      <button type="button" class="remove-fop text-gray-400 hover:text-red-600 transition-colors p-1">
-      <div class="w-4 h-4 flex items-center justify-center">
-      <i class="ri-delete-bin-line"></i>
-      </div>
-      </button>
-      </div>
-      </div>
-      <div class="fop-content hidden px-4 pb-4">
-      <input type="hidden" name="fops[${index}].fopId" value="fop_${Date.now()}">
-      <div class="grid grid-cols-2 gap-4 mb-4">
-      <div>
-      <label class="block text-sm font-medium text-gray-700 mb-1">Имя плательщика</label>
-      <input type="text" name="fops[${index}].payerName" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
-      </div>
-      <div>
-      <label class="block text-sm font-medium text-gray-700 mb-1">ИНН</label>
-      <input type="text" name="fops[${index}].inn" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
-      </div>
-      </div>
-      <div class="grid grid-cols-3 gap-4">
-      <div>
-      <label class="block text-sm font-medium text-gray-700 mb-1">Банк</label>
-      <input type="text" name="fops[${index}].bank" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
-      </div>
-      <div>
-      <label class="block text-sm font-medium text-gray-700 mb-1">МФО</label>
-      <input type="text" name="fops[${index}].mfo" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
-      </div>
-      <div>
-      <label class="block text-sm font-medium text-gray-700 mb-1">IBAN</label>
-      <input type="text" name="fops[${index}].iban" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
-      </div>
-      </div>
-      </div>
-      </div>
-      `;
-            }
-            function addNewFop() {
-                const newFopElement = document.createElement("div");
-                newFopElement.innerHTML = createFopTemplate(fopCounter++);
-                fopsContainer.appendChild(newFopElement);
-                updateFopIndexes();
-            }
-            function removeFop(button) {
-                const fopElement = button.closest(".border.border-gray-200");
-                if (fopsContainer.children.length > 1) {
-                    fopElement.remove();
-                    updateFopIndexes();
-                }
-            }
-            function updateFopIndexes() {
-                const fops = fopsContainer.children;
-                Array.from(fops).forEach((fop, index) => {
-                    fop.querySelectorAll('[name^="fops["]').forEach((input) => {
-                        const fieldName = input.name.match(/\].(.+)$/)[1];
-                        input.name = `fops[${index}].${fieldName}`;
-                    });
-                });
-            }
-            addFopButton.addEventListener("click", addNewFop);
-            fopsContainer.addEventListener("click", function (e) {
-                if (e.target.closest(".remove-fop")) {
-                    removeFop(e.target.closest(".remove-fop"));
-                } else if (e.target.closest(".fop-header")) {
-                    const header = e.target.closest(".fop-header");
-                    const content = header.nextElementSibling;
-                    const arrow = header.querySelector(".ri-arrow-right-s-line");
-                    content.classList.toggle("hidden");
-                    arrow.style.transform = content.classList.contains("hidden")
-                        ? ""
-                        : "rotate(90deg)";
-                }
-            });
-            document.addEventListener("input", function (e) {
-                if (
-                    e.target.name &&
-                    e.target.name.includes("fops[") &&
-                    (e.target.name.includes("payerName") || e.target.name.includes("inn"))
-                ) {
-                    const fopElement = e.target.closest(".border.border-gray-200");
-                    const nameDisplay = fopElement.querySelector(
-                        ".fop-header .text-gray-900",
-                    );
-                    const innDisplay = fopElement.querySelector(".fop-header .text-gray-500");
-                    const payerNameInput = fopElement.querySelector('[name$="payerName"]');
-                    const innInput = fopElement.querySelector('[name$="inn"]');
-                    if (payerNameInput && innInput) {
-                        nameDisplay.textContent = payerNameInput.value || "Новый ФОП";
-                        innDisplay.textContent = `ИНН: ${innInput.value || "-"}`;
-                        // Update all venue FOP selects
-                        const venueSelects = document.querySelectorAll('[name$="linkedFopId"]');
-                        const fopOptions = getFopOptions();
-                        venueSelects.forEach((select) => {
-                            const selectedValue = select.value;
-                            select.innerHTML = "";
-                            for (const [fopId, fopName] of fopOptions) {
-                                const option = document.createElement("option");
-                                option.value = fopId;
-                                option.textContent = fopName;
-                                select.appendChild(option);
-                            }
-                            if (Array.from(fopOptions.keys()).includes(selectedValue)) {
-                                select.value = selectedValue;
-                            }
-                        });
-                    }
-                }
-            });
-            editButtons.forEach((button) => {
-                button.addEventListener("click", openModal);
-            });
-            closeButtons.forEach((button) => {
-                button.addEventListener("click", closeModal);
-            });
-            modal.addEventListener("click", function (e) {
-                if (e.target === modal) {
-                    closeModal();
-                }
-            });
-            editForm.addEventListener("submit", function (e) {
-                e.preventDefault();
-                const formData = new FormData(editForm);
-                const data = Object.fromEntries(formData);
-                console.log("Form data:", data);
-                closeModal();
-            });
-        });
-    </script>
+        // Этот скрипт будет работать после того, как основной скрипт загрузит данные
+        document.addEventListener('productsLoaded', function () {
+          // --- DOM ЭЛЕМЕНТЫ ---
+          const addItemButton = document.getElementById("add-item-button");
+          const productsTableBody = document.getElementById('products-table-body');
+          
+          // Элементы модального окна товара
+          const productModal = document.getElementById('product-modal');
+          const productModalTitle = document.getElementById('product-modal-title');
+          const productForm = document.getElementById('product-form');
+      
+          // --- ФУНКЦИИ МОДАЛЬНОГО ОКНА ---
+          function openProductModal(product = null) {
+              productForm.reset(); // Сбрасываем форму
+              if (product) {
+                  // --- РЕЖИМ РЕДАКТИРОВАНИЯ ---
+                  window.isEditMode = true;
+                  productModalTitle.textContent = 'Редактирование товара';
+                  
+                  // Заполняем все поля формы данными из объекта product
+                  productForm.productId.value = product.productId;
+                  productForm['timestamps.createdAt'].value = product.timestamps.createdAt;
+                  productForm.sku.value = product.sku;
+                  productForm.name.value = product.name;
+                  productForm.category.value = product.category;
+                  productForm.unit.value = product.unit;
+                  productForm.isVisible.checked = product.isVisible;
+                  productForm.isNew.checked = product.isNew;
+                  productForm.description.value = product.description;
+                  // Преобразуем массив в строку с переносами
+                  productForm.ingredients.value = (product.ingredients || []).join('\n');
+                  productForm['specifications.weight'].value = product.specifications.weight;
+                  productForm['specifications.shelfLife'].value = product.specifications.shelfLife;
+                  productForm['specifications.storageConditions'].value = product.specifications.storageConditions;
+                  productForm.price.value = product.price;
+                  productForm['stock.initialQuantity'].value = product.stock.initialQuantity;
+                  productForm['stock.status'].value = product.stock.status;
+                  productForm['shipping.isShippableByMail'].checked = product.shipping.isShippableByMail;
+                  productForm['images.0.url'].value = product.images[0]?.url || '';
+              } else {
+                  // --- РЕЖИМ ДОБАВЛЕНИЯ ---
+                  window.isEditMode = false;
+                  productModalTitle.textContent = 'Добавление товара';
+              }
+              productModal.classList.remove('hidden');
+              productModal.classList.add('flex');
+          }
+      
+          function closeProductModal() {
+              productModal.classList.add('hidden');
+              productModal.classList.remove('flex');
+          }
+      
+          // --- ОБРАБОТЧИКИ СОБЫТИЙ ---
+          // Кнопка "Добавить товар" в шапке
+          addItemButton.addEventListener('click', () => {
+              const activeSection = document.querySelector('.nav-item.active').dataset.section;
+              if (activeSection === 'products') {
+                  openProductModal();
+              }
+          });
+      
+          // Кнопки "Редактировать" и "Удалить" в таблице (используем делегирование)
+          productsTableBody.addEventListener('click', (e) => {
+              const editBtn = e.target.closest('.edit-product-btn');
+              const deleteBtn = e.target.closest('.delete-product-btn');
+      
+              if (editBtn) {
+                  const id = editBtn.dataset.id;
+                  // window.allProducts должен быть доступен из другого скрипта
+                  const productToEdit = window.allProducts.find(p => p.productId === id);
+                  openProductModal(productToEdit);
+              }
+      
+              if (deleteBtn) {
+                  const id = deleteBtn.dataset.id;
+                  if (confirm('Вы уверены, что хотите удалить этот товар?')) {
+                      // window.api.deleteProduct должен быть доступен
+                      window.api.deleteProduct(id).then(() => {
+                          // Сообщаем основному скрипту, что нужно обновить таблицу
+                          document.dispatchEvent(new Event('dataChanged'));
+                      });
+                  }
+              }
+          });
+      
+          // Закрытие модального окна
+          productModal.addEventListener('click', (e) => {
+              if (e.target.closest('.close-modal')) {
+                  closeProductModal();
+              }
+          });
+      
+          // Отправка формы
+          productForm.addEventListener('submit', async (e) => {
+              e.preventDefault();
+              const formData = new FormData(productForm);
+              // Собираем все данные из формы в объект
+              const data = {
+                  productId: formData.get('productId'),
+                  sku: formData.get('sku'),
+                  name: formData.get('name'),
+                  description: formData.get('description'),
+                  category: formData.get('category'),
+                  price: parseFloat(formData.get('price')),
+                  unit: formData.get('unit'),
+                  ingredients: formData.get('ingredients').split('\n').filter(i => i.trim() !== ''),
+                  isVisible: formData.get('isVisible') === 'on',
+                  isNew: formData.get('isNew') === 'on',
+                  specifications: {
+                      weight: formData.get('specifications.weight'),
+                      shelfLife: formData.get('specifications.shelfLife'),
+                      storageConditions: formData.get('specifications.storageConditions'),
+                  },
+                  shipping: {
+                      isShippableByMail: formData.get('shipping.isShippableByMail') === 'on',
+                  },
+                  stock: {
+                      initialQuantity: parseInt(formData.get('stock.initialQuantity')) || 0,
+                      status: formData.get('stock.status'),
+                  },
+                  images: [{
+                      url: formData.get('images.0.url'),
+                      alt: formData.get('name')
+                  }],
+                  timestamps: {
+                      createdAt: formData.get('timestamps.createdAt')
+                  }
+              };
+      
+              try {
+                  if (window.isEditMode) {
+                      await window.api.updateProduct(data.productId, data);
+                  } else {
+                      await window.api.addProduct(data);
+                  }
+                  closeProductModal();
+                  // Сообщаем, что данные изменились
+                  document.dispatchEvent(new Event('dataChanged'));
+              } catch (error) {
+                  console.error('Ошибка сохранения:', error);
+                  alert('Не удалось сохранить товар.');
+              }
+          });
+      });
+      </script>
 </body>
 
 </html>

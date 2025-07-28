@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Редактирование товара - iPhone 15 Pro Max</title>
+    <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: { primary: "#3b82f6", secondary: "#8b5cf6" },
+            borderRadius: {
+              none: "0px",
+              sm: "4px",
+              DEFAULT: "8px",
+              md: "12px",
+              lg: "16px",
+              xl: "20px",
+              "2xl": "24px",
+              "3xl": "32px",
+              full: "9999px",
+              button: "8px",
+            },
+          },
+        },
+      };
+    </script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css"
+    />
+    <style>
+      :where([class^="ri-"])::before { content: "\f3c2"; }
+    </style>
+  </head>
+  <body class="bg-gray-50 min-h-screen">
+    <div class="min-h-screen">
+      <header class="bg-white shadow-sm border-b border-gray-200 px-6 py-4">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center space-x-4">
+            <a
+              href="https://readdy.ai/home/cb9458f8-9101-4315-a4f7-32608dd27b3b/d28fa445-1240-493c-a708-465a8aa4de71"
+              data-readdy="true"
+              class="flex items-center text-gray-600 hover:text-primary transition-colors"
+            >
+              <div class="w-5 h-5 flex items-center justify-center mr-2">
+                <i class="ri-arrow-left-line"></i>
+              </div>
+              <span class="text-sm">Назад к списку товаров</span>
+            </a>
+          </div>
+          <h1 class="text-2xl font-semibold text-gray-900">
+            Редактирование товара
+          </h1>
+          <div class="w-32"></div>
+        </div>
+      </header>
+
+      <main class="max-w-6xl mx-auto p-6">
+        <div class="bg-white rounded-lg shadow-sm">
+          <form class="p-6 space-y-8">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+              <div class="lg:col-span-2 space-y-8">
+                <div class="bg-gray-50 rounded-lg p-6">
+                  <h2 class="text-lg font-semibold text-gray-900 mb-4">
+                    Основная информация
+                  </h2>
+                  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label
+                        class="block text-sm font-medium text-gray-700 mb-2"
+                        >ID товара</label
+                      >
+                      <input
+                        type="text"
+                        value="PROD-2024-001"
+                        class="w-full px-3 py-2 bg-gray-100 border border-gray-300 rounded-lg text-sm text-gray-500"
+                        readonly
+                      />
+                    </div>
+                    <div>
+                      <label
+                        class="block text-sm font-medium text-gray-700 mb-2"
+                        >Артикул <span class="text-red-500">*</span></label
+                      >
+                      <input
+                        type="text"
+                        value="APL-IP15PM-256"
+                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-sm"
+                      />
+                    </div>
+                    <div class="md:col-span-2">
+                      <label
+                        class="block text-sm font-medium text-gray-700 mb-2"
+                        >Название товара
+                        <span class="text-red-500">*</span></label
+                      >
+                      <input
+                        type="text"
+                        value="iPhone 15 Pro Max"
+                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-sm"
+                      />
+                    </div>
+                    <div>
+                      <label
+                        class="block text-sm font-medium text-gray-700 mb-2"
+                        >Категория <span class="text-red-500">*</span></label
+                      >
+                      <div class="relative">
+                        <button
+                          type="button"
+                          class="category-select w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-sm text-left bg-white flex items-center justify-between"
+                        >
+                          <span>Электроника</span>
+                          <div class="w-4 h-4 flex items-center justify-center">
+                            <i class="ri-arrow-down-s-line"></i>
+                          </div>
+                        </button>
+                        <div
+                          class="category-dropdown absolute top-full left-0 w-full bg-white border border-gray-300 rounded-lg shadow-lg z-10 hidden"
+                        >
+                          <div class="py-1">
+                            <button
+                              type="button"
+                              class="category-option w-full px-3 py-2 text-left text-sm hover:bg-gray-50"
+                              data-value="electronics"
+                            >
+                              Электроника
+                            </button>
+                            <button
+                              type="button"
+                              class="category-option w-full px-3 py-2 text-left text-sm hover:bg-gray-50"
+                              data-value="clothing"
+                            >
+                              Одежда
+                            </button>
+                            <button
+                              type="button"
+                              class="category-option w-full px-3 py-2 text-left text-sm hover:bg-gray-50"
+                              data-value="home"
+                            >
+                              Дом и сад
+                            </button>
+                            <button
+                              type="button"
+                              class="category-option w-full px-3 py-2 text-left text-sm hover:bg-gray-50"
+                              data-value="sports"
+                            >
+                              Спорт
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div>
+                      <label
+                        class="block text-sm font-medium text-gray-700 mb-2"
+                        >Единица измерения</label
+                      >
+                      <div class="relative">
+                        <button
+                          type="button"
+                          class="unit-select w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-sm text-left bg-white flex items-center justify-between"
+                        >
+                          <span>шт</span>
+                          <div class="w-4 h-4 flex items-center justify-center">
+                            <i class="ri-arrow-down-s-line"></i>
+                          </div>
+                        </button>
+                        <div
+                          class="unit-dropdown absolute top-full left-0 w-full bg-white border border-gray-300 rounded-lg shadow-lg z-10 hidden"
+                        >
+                          <div class="py-1">
+                            <button
+                              type="button"
+                              class="unit-option w-full px-3 py-2 text-left text-sm hover:bg-gray-50"
+                              data-value="pcs"
+                            >
+                              шт
+                            </button>
+                            <button
+                              type="button"
+                              class="unit-option w-full px-3 py-2 text-left text-sm hover:bg-gray-50"
+                              data-value="kg"
+                            >
+                              кг
+                            </button>
+                            <button
+                              type="button"
+                              class="unit-option w-full px-3 py-2 text-left text-sm hover:bg-gray-50"
+                              data-value="l"
+                            >
+                              л
+                            </button>
+                            <button
+                              type="button"
+                              class="unit-option w-full px-3 py-2 text-left text-sm hover:bg-gray-50"
+                              data-value="m"
+                            >
+                              м
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="flex items-center space-x-6">
+                    <div class="flex items-center">
+                      <label
+                        class="block text-sm font-medium text-gray-700 mr-3"
+                        >Видимость товара</label
+                      >
+                      <div class="toggle-switch" data-field="visibility">
+                        <input
+                          type="checkbox"
+                          id="visibility"
+                          checked
+                          class="sr-only"
+                        />
+                        <div
+                          class="toggle-bg bg-primary w-12 h-6 rounded-full relative cursor-pointer"
+                        >
+                          <div
+                            class="toggle-dot absolute top-0.5 left-0.5 bg-white w-5 h-5 rounded-full transition-transform transform translate-x-6"
+                          ></div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="flex items-center">
+                      <label
+                        class="block text-sm font-medium text-gray-700 mr-3"
+                        >Новинка</label
+                      >
+                      <div class="toggle-switch" data-field="new">
+                        <input type="checkbox" id="new" class="sr-only" />
+                        <div
+                          class="toggle-bg bg-gray-300 w-12 h-6 rounded-full relative cursor-pointer"
+                        >
+                          <div
+                            class="toggle-dot absolute top-0.5 left-0.5 bg-white w-5 h-5 rounded-full transition-transform"
+                          ></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="bg-gray-50 rounded-lg p-6">
+                  <h2 class="text-lg font-semibold text-gray-900 mb-4">
+                    Описание и состав
+                  </h2>
+                  <div class="space-y-4">
+                    <div>
+                      <label
+                        class="block text-sm font-medium text-gray-700 mb-2"
+                        >Описание товара</label
+                      >
+                      <textarea
+                        rows="4"
+                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-sm"
+                        placeholder="Введите описание товара..."
+                      >
+Флагманский смартфон Apple с 6.7-дюймовым дисплеем Super Retina XDR, процессором A17 Pro, системой камер Pro и поддержкой 5G. Доступен в различных цветах и объемах памяти.</textarea
+                      >
+                    </div>
+                    <div>
+                      <label
+                        class="block text-sm font-medium text-gray-700 mb-2"
+                        >Состав/Комплектация</label
+                      >
+                      <textarea
+                        rows="3"
+                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-sm"
+                        placeholder="Введите состав или комплектацию..."
+                      >
+iPhone 15 Pro Max, кабель USB-C для зарядки, документация</textarea
+                      >
+                    </div>
+                  </div>
+                </div>
+
+                <div class="bg-gray-50 rounded-lg p-6">
+                  <h2 class="text-lg font-semibold text-gray-900 mb-4">
+                    Цена и наличие
+                  </h2>
+                  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label
+                        class="block text-sm font-medium text-gray-700 mb-2"
+                        >Цена <span class="text-red-500">*</span></label
+                      >
+                      <div class="relative">
+                        <input
+                          type="number"
+                          value="119990"
+                          class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-sm pr-8"
+                        />
+                        <span
+                          class="absolute right-3 top-2 text-sm text-gray-500"
+                          >₽</span
+                        >
+                      </div>
+                    </div>
+                    <div>
+                      <label
+                        class="block text-sm font-medium text-gray-700 mb-2"
+                        >Начальное количество</label
+                      >
+                      <input
+                        type="number"
+                        value="50"
+                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-sm"
+                      />
+                    </div>
+                    <div>
+                      <label
+                        class="block text-sm font-medium text-gray-700 mb-2"
+                        >Заказано</label
+                      >
+                      <input
+                        type="number"
+                        value="3"
+                        class="w-full px-3 py-2 bg-gray-100 border border-gray-300 rounded-lg text-sm text-gray-500"
+                        readonly
+                      />
+                    </div>
+                    <div>
+                      <label
+                        class="block text-sm font-medium text-gray-700 mb-2"
+                        >Доступно</label
+                      >
+                      <input
+                        type="number"
+                        value="47"
+                        class="w-full px-3 py-2 bg-gray-100 border border-gray-300 rounded-lg text-sm text-gray-500"
+                        readonly
+                      />
+                    </div>
+                    <div>
+                      <label
+                        class="block text-sm font-medium text-gray-700 mb-2"
+                        >Статус склада</label
+                      >
+                      <div class="relative">
+                        <button
+                          type="button"
+                          class="status-select w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-sm text-left bg-white flex items-center justify-between"
+                        >
+                          <span>В наличии</span>
+                          <div class="w-4 h-4 flex items-center justify-center">
+                            <i class="ri-arrow-down-s-line"></i>
+                          </div>
+                        </button>
+                        <div
+                          class="status-dropdown absolute top-full left-0 w-full bg-white border border-gray-300 rounded-lg shadow-lg z-10 hidden"
+                        >
+                          <div class="py-1">
+                            <button
+                              type="button"
+                              class="status-option w-full px-3 py-2 text-left text-sm hover:bg-gray-50"
+                              data-value="available"
+                            >
+                              В наличии
+                            </button>
+                            <button
+                              type="button"
+                              class="status-option w-full px-3 py-2 text-left text-sm hover:bg-gray-50"
+                              data-value="low"
+                            >
+                              Мало
+                            </button>
+                            <button
+                              type="button"
+                              class="status-option w-full px-3 py-2 text-left text-sm hover:bg-gray-50"
+                              data-value="out"
+                            >
+                              Нет в наличии
+                            </button>
+                            <button
+                              type="button"
+                              class="status-option w-full px-3 py-2 text-left text-sm hover:bg-gray-50"
+                              data-value="discontinued"
+                            >
+                              Снят с производства
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="flex items-center">
+                      <label
+                        class="block text-sm font-medium text-gray-700 mr-3"
+                        >Почтовая доставка</label
+                      >
+                      <div class="toggle-switch" data-field="shipping">
+                        <input
+                          type="checkbox"
+                          id="shipping"
+                          checked
+                          class="sr-only"
+                        />
+                        <div
+                          class="toggle-bg bg-primary w-12 h-6 rounded-full relative cursor-pointer"
+                        >
+                          <div
+                            class="toggle-dot absolute top-0.5 left-0.5 bg-white w-5 h-5 rounded-full transition-transform transform translate-x-6"
+                          ></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="bg-gray-50 rounded-lg p-6">
+                  <h2 class="text-lg font-semibold text-gray-900 mb-4">
+                    Характеристики товара
+                  </h2>
+                  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label
+                        class="block text-sm font-medium text-gray-700 mb-2"
+                        >Вес (г)</label
+                      >
+                      <input
+                        type="number"
+                        value="221"
+                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-sm"
+                      />
+                    </div>
+                    <div>
+                      <label
+                        class="block text-sm font-medium text-gray-700 mb-2"
+                        >Срок годности</label
+                      >
+                      <input
+                        type="text"
+                        value="Не ограничен"
+                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-sm"
+                      />
+                    </div>
+                    <div class="md:col-span-2">
+                      <label
+                        class="block text-sm font-medium text-gray-700 mb-2"
+                        >Условия хранения</label
+                      >
+                      <input
+                        type="text"
+                        value="Хранить в сухом месте при температуре от -20°C до +45°C"
+                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-sm"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <div class="bg-gray-50 rounded-lg p-6">
+                  <h2 class="text-lg font-semibold text-gray-900 mb-4">
+                    Связанные товары
+                  </h2>
+                  <div class="space-y-3">
+                    <div
+                      class="flex items-center justify-between p-3 bg-white rounded-lg border border-gray-200"
+                    >
+                      <div class="flex items-center">
+                        <div
+                          class="w-8 h-8 bg-gray-200 rounded flex items-center justify-center mr-3"
+                        >
+                          <div
+                            class="w-4 h-4 flex items-center justify-center text-gray-400"
+                          >
+                            <i class="ri-macbook-line"></i>
+                          </div>
+                        </div>
+                        <div>
+                          <div class="text-sm font-medium text-gray-900">
+                            MacBook Pro 14"
+                          </div>
+                          <div class="text-xs text-gray-500">APL-MBP14-M3</div>
+                        </div>
+                      </div>
+                      <button
+                        type="button"
+                        class="text-red-600 hover:text-red-800 p-1"
+                      >
+                        <div class="w-4 h-4 flex items-center justify-center">
+                          <i class="ri-close-line"></i>
+                        </div>
+                      </button>
+                    </div>
+                    <div
+                      class="flex items-center justify-between p-3 bg-white rounded-lg border border-gray-200"
+                    >
+                      <div class="flex items-center">
+                        <div
+                          class="w-8 h-8 bg-gray-200 rounded flex items-center justify-center mr-3"
+                        >
+                          <div
+                            class="w-4 h-4 flex items-center justify-center text-gray-400"
+                          >
+                            <i class="ri-headphone-line"></i>
+                          </div>
+                        </div>
+                        <div>
+                          <div class="text-sm font-medium text-gray-900">
+                            AirPods Pro 2
+                          </div>
+                          <div class="text-xs text-gray-500">APL-APP2-USB</div>
+                        </div>
+                      </div>
+                      <button
+                        type="button"
+                        class="text-red-600 hover:text-red-800 p-1"
+                      >
+                        <div class="w-4 h-4 flex items-center justify-center">
+                          <i class="ri-close-line"></i>
+                        </div>
+                      </button>
+                    </div>
+                    <button
+                      type="button"
+                      class="w-full p-3 border-2 border-dashed border-gray-300 rounded-lg text-gray-500 hover:border-primary hover:text-primary transition-colors"
+                    >
+                      <div
+                        class="w-5 h-5 flex items-center justify-center mx-auto mb-1"
+                      >
+                        <i class="ri-add-line"></i>
+                      </div>
+                      <span class="text-sm">Добавить связанный товар</span>
+                    </button>
+                  </div>
+                </div>
+
+                <div class="bg-gray-50 rounded-lg p-6">
+                  <h2 class="text-lg font-semibold text-gray-900 mb-4">
+                    Информация о времени
+                  </h2>
+                  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label
+                        class="block text-sm font-medium text-gray-700 mb-2"
+                        >Время создания</label
+                      >
+                      <input
+                        type="text"
+                        value="15.03.2024 14:30:25"
+                        class="w-full px-3 py-2 bg-gray-100 border border-gray-300 rounded-lg text-sm text-gray-500"
+                        readonly
+                      />
+                    </div>
+                    <div>
+                      <label
+                        class="block text-sm font-medium text-gray-700 mb-2"
+                        >Время обновления</label
+                      >
+                      <input
+                        type="text"
+                        value="26.07.2024 16:45:12"
+                        class="w-full px-3 py-2 bg-gray-100 border border-gray-300 rounded-lg text-sm text-gray-500"
+                        readonly
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="space-y-6">
+                <div class="bg-gray-50 rounded-lg p-6">
+                  <h2 class="text-lg font-semibold text-gray-900 mb-4">
+                    Изображения товара
+                  </h2>
+                  <div class="grid grid-cols-2 gap-4 mb-4">
+                    <div class="relative group">
+                      <img
+                        src="https://readdy.ai/api/search-image?query=iPhone%2015%20Pro%20Max%20smartphone%20product%20photography%20on%20white%20background%2C%20professional%20studio%20lighting%2C%20high%20quality%20commercial%20product%20shot%2C%20modern%20sleek%20design&width=300&height=300&seq=1&orientation=squarish"
+                        alt="iPhone 15 Pro Max"
+                        class="w-full h-32 object-cover rounded-lg border border-gray-200"
+                      />
+                      <div
+                        class="absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity rounded-lg flex items-center justify-center"
+                      >
+                        <div class="flex space-x-2">
+                          <button
+                            type="button"
+                            class="p-2 bg-white rounded-full text-gray-700 hover:text-primary"
+                          >
+                            <div
+                              class="w-4 h-4 flex items-center justify-center"
+                            >
+                              <i class="ri-eye-line"></i>
+                            </div>
+                          </button>
+                          <button
+                            type="button"
+                            class="p-2 bg-white rounded-full text-gray-700 hover:text-red-600"
+                          >
+                            <div
+                              class="w-4 h-4 flex items-center justify-center"
+                            >
+                              <i class="ri-delete-bin-line"></i>
+                            </div>
+                          </button>
+                        </div>
+                      </div>
+                      <div class="mt-2">
+                        <input
+                          type="text"
+                          value="iPhone 15 Pro Max основное изображение"
+                          class="w-full px-2 py-1 border border-gray-300 rounded text-xs focus:ring-1 focus:ring-primary focus:border-transparent"
+                          placeholder="Alt-текст"
+                        />
+                        <div class="text-xs text-gray-500 mt-1">
+                          ID: IMG-2024-001
+                        </div>
+                      </div>
+                    </div>
+                    <div class="relative group">
+                      <img
+                        src="https://readdy.ai/api/search-image?query=iPhone%2015%20Pro%20Max%20back%20view%20product%20photography%20on%20white%20background%2C%20professional%20studio%20lighting%2C%20high%20quality%20commercial%20product%20shot%2C%20showing%20camera%20system&width=300&height=300&seq=2&orientation=squarish"
+                        alt="iPhone 15 Pro Max задняя панель"
+                        class="w-full h-32 object-cover rounded-lg border border-gray-200"
+                      />
+                      <div
+                        class="absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity rounded-lg flex items-center justify-center"
+                      >
+                        <div class="flex space-x-2">
+                          <button
+                            type="button"
+                            class="p-2 bg-white rounded-full text-gray-700 hover:text-primary"
+                          >
+                            <div
+                              class="w-4 h-4 flex items-center justify-center"
+                            >
+                              <i class="ri-eye-line"></i>
+                            </div>
+                          </button>
+                          <button
+                            type="button"
+                            class="p-2 bg-white rounded-full text-gray-700 hover:text-red-600"
+                          >
+                            <div
+                              class="w-4 h-4 flex items-center justify-center"
+                            >
+                              <i class="ri-delete-bin-line"></i>
+                            </div>
+                          </button>
+                        </div>
+                      </div>
+                      <div class="mt-2">
+                        <input
+                          type="text"
+                          value="iPhone 15 Pro Max задняя панель"
+                          class="w-full px-2 py-1 border border-gray-300 rounded text-xs focus:ring-1 focus:ring-primary focus:border-transparent"
+                          placeholder="Alt-текст"
+                        />
+                        <div class="text-xs text-gray-500 mt-1">
+                          ID: IMG-2024-002
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <button
+                    type="button"
+                    class="w-full p-4 border-2 border-dashed border-gray-300 rounded-lg text-gray-500 hover:border-primary hover:text-primary transition-colors"
+                  >
+                    <div
+                      class="w-6 h-6 flex items-center justify-center mx-auto mb-2"
+                    >
+                      <i class="ri-image-add-line"></i>
+                    </div>
+                    <span class="text-sm">Добавить изображение</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div
+              class="flex items-center justify-end space-x-4 pt-6 border-t border-gray-200"
+            >
+              <a
+                href="https://readdy.ai/home/cb9458f8-9101-4315-a4f7-32608dd27b3b/d28fa445-1240-493c-a708-465a8aa4de71"
+                data-readdy="true"
+              >
+                <button
+                  type="button"
+                  class="px-6 py-2 border border-gray-300 rounded-button hover:bg-gray-50 transition-colors text-sm whitespace-nowrap !rounded-button"
+                >
+                  Отмена
+                </button>
+              </a>
+              <button
+                type="submit"
+                class="px-6 py-2 bg-primary text-white rounded-button hover:bg-blue-600 transition-colors text-sm whitespace-nowrap !rounded-button"
+              >
+                Сохранить изменения
+              </button>
+            </div>
+          </form>
+        </div>
+      </main>
+    </div>
+
+    <script id="toggle-switches">
+      document.addEventListener("DOMContentLoaded", function () {
+        const toggleSwitches = document.querySelectorAll(".toggle-switch");
+        toggleSwitches.forEach((toggle) => {
+          const checkbox = toggle.querySelector('input[type="checkbox"]');
+          const toggleBg = toggle.querySelector(".toggle-bg");
+          const toggleDot = toggle.querySelector(".toggle-dot");
+          function updateToggle() {
+            if (checkbox.checked) {
+              toggleBg.classList.remove("bg-gray-300");
+              toggleBg.classList.add("bg-primary");
+              toggleDot.classList.add("translate-x-6");
+            } else {
+              toggleBg.classList.remove("bg-primary");
+              toggleBg.classList.add("bg-gray-300");
+              toggleDot.classList.remove("translate-x-6");
+            }
+          }
+          toggleBg.addEventListener("click", function () {
+            checkbox.checked = !checkbox.checked;
+            updateToggle();
+          });
+          updateToggle();
+        });
+      });
+    </script>
+
+    <script id="dropdown-handlers">
+      document.addEventListener("DOMContentLoaded", function () {
+        function setupDropdown(selectClass, dropdownClass, optionClass) {
+          const select = document.querySelector(selectClass);
+          const dropdown = document.querySelector(dropdownClass);
+          const options = document.querySelectorAll(optionClass);
+          if (!select || !dropdown) return;
+          select.addEventListener("click", function (e) {
+            e.preventDefault();
+            dropdown.classList.toggle("hidden");
+          });
+          options.forEach((option) => {
+            option.addEventListener("click", function (e) {
+              e.preventDefault();
+              const value = this.textContent;
+              select.querySelector("span").textContent = value;
+              dropdown.classList.add("hidden");
+            });
+          });
+          document.addEventListener("click", function (e) {
+            if (!select.contains(e.target) && !dropdown.contains(e.target)) {
+              dropdown.classList.add("hidden");
+            }
+          });
+        }
+        setupDropdown(".category-select", ".category-dropdown", ".category-option");
+        setupDropdown(".unit-select", ".unit-dropdown", ".unit-option");
+        setupDropdown(".status-select", ".status-dropdown", ".status-option");
+      });
+    </script>
+
+    <script id="form-validation">
+      document.addEventListener("DOMContentLoaded", function () {
+        const form = document.querySelector("form");
+        const requiredFields = form.querySelectorAll(
+          "input[required], input[value]:not([readonly])",
+        );
+        form.addEventListener("submit", function (e) {
+          e.preventDefault();
+          let isValid = true;
+          requiredFields.forEach((field) => {
+            if (!field.value.trim()) {
+              field.classList.add("border-red-500");
+              isValid = false;
+            } else {
+              field.classList.remove("border-red-500");
+            }
+          });
+          if (isValid) {
+            const notification = document.createElement("div");
+            notification.className =
+              "fixed top-4 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg z-50";
+            notification.textContent = "Изменения успешно сохранены!";
+            document.body.appendChild(notification);
+            setTimeout(() => {
+              notification.remove();
+            }, 3000);
+          }
+        });
+      });
+    </script>
+
+    <style>
+      input[type="number"]::-webkit-outer-spin-button,
+      input[type="number"]::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+      }
+      input[type="number"] {
+      -moz-appearance: textfield;
+      }
+    </style>
+  </body>
+</html>
