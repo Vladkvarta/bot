@@ -147,6 +147,101 @@ ${cart.map(item => `- ${item.name}: ${item.quantity} шт. x ${item.price} гр�
     }
 });
 
+// =======================================================
+// --- API ЭНДПОИНТЫ ДЛЯ АДМИН-ПАНЕЛИ (НОВЫЙ БЛОК) ---
+// =======================================================
+
+// Добавить новый товар
+app.post('/api/admin/products', async (req, res) => {
+    try {
+        const { name, price, description, category, imageUrl, stock, isNew } = req.body;
+        
+        // Создаем объект нового товара, основываясь на вашей структуре
+        const newProduct = {
+            productId: `prod_${Date.now()}`,
+            sku: `SKU_${Date.now()}`,
+            isVisible: true,
+            isNew,
+            name,
+            description,
+            category,
+            ingredients: [], // Ингредиенты можно будет добавить позже
+            price,
+            unit: "шт",
+            specifications: { weight: "", shelfLife: "", storageConditions: "" },
+            shipping: { isShippableByMail: false },
+            stock,
+            images: [{ imageId: `img_${Date.now()}`, url: imageUrl, alt: name }],
+            relatedProductIds: [],
+            timestamps: { createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() }
+        };
+
+        const productsData = await fs.readFile(PRODUCTS_DB_PATH, 'utf8');
+        const products = JSON.parse(productsData);
+        products.push(newProduct);
+        await fs.writeFile(PRODUCTS_DB_PATH, JSON.stringify(products, null, 2));
+        
+        res.status(201).json(newProduct);
+    } catch (error) {
+        res.status(500).json({ message: 'Ошибка при добавлении товара', error: error.message });
+    }
+});
+
+// Обновить существующий товар по ID
+app.put('/api/admin/products/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const updatedData = req.body;
+        
+        const productsData = await fs.readFile(PRODUCTS_DB_PATH, 'utf8');
+        let products = JSON.parse(productsData);
+        
+        const productIndex = products.findIndex(p => p.productId === id);
+        if (productIndex === -1) {
+            return res.status(404).json({ message: 'Товар не найден' });
+        }
+        
+        // Аккуратно обновляем данные, сохраняя поля, которых нет в форме
+        const oldProduct = products[productIndex];
+        products[productIndex] = {
+            ...oldProduct,
+            name: updatedData.name,
+            price: updatedData.price,
+            description: updatedData.description,
+            category: updatedData.category,
+            isNew: updatedData.isNew,
+            stock: updatedData.stock,
+            images: [{ ...oldProduct.images[0], url: updatedData.imageUrl, alt: updatedData.name }],
+            timestamps: { ...oldProduct.timestamps, updatedAt: new Date().toISOString() }
+        };
+
+        await fs.writeFile(PRODUCTS_DB_PATH, JSON.stringify(products, null, 2));
+        res.status(200).json(products[productIndex]);
+    } catch (error) {
+        res.status(500).json({ message: 'Ошибка при обновлении товара', error: error.message });
+    }
+});
+
+// Удалить товар по ID
+app.delete('/api/admin/products/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const productsData = await fs.readFile(PRODUCTS_DB_PATH, 'utf8');
+        let products = JSON.parse(productsData);
+        
+        const updatedProducts = products.filter(p => p.productId !== id);
+        
+        if (products.length === updatedProducts.length) {
+            return res.status(404).json({ message: 'Товар не найден' });
+        }
+
+        await fs.writeFile(PRODUCTS_DB_PATH, JSON.stringify(updatedProducts, null, 2));
+        res.status(200).json({ message: 'Товар успешно удален' });
+    } catch (error) {
+        res.status(500).json({ message: 'Ошибка при удалении товара', error: error.message });
+    }
+});
+
 // --- ВЕБХУК ДЛЯ GITHUB (без изменений) ---
 app.post('/webhook/github', express.raw({ type: 'application/json' }), (req, res) => {
     // Ваша логика для вебхука от GitHub...
