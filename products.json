@@ -29,8 +29,6 @@
       },
       "stock": {
         "initialQuantity": 200,
-        "orderedQuantity": 150,
-        "availableQuantity": 50,
         "status": "in_stock"
       },
       "images": [

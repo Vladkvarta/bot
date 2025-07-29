@@ -78,6 +78,41 @@ app.get('/api/admin/products/:id', async (req, res) => {
     }
 });
 
+app.put('/api/admin/products/:id/quantity', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { initialQuantity } = req.body;
+
+        if (typeof initialQuantity !== 'number') {
+            return res.status(400).json({ message: 'Поле initialQuantity должно быть числом' });
+        }
+
+        const productsData = await fs.readFile(PRODUCTS_DB_PATH, 'utf8');
+        let products = JSON.parse(productsData);
+
+        const productIndex = products.findIndex(p => p.productId === id);
+        if (productIndex === -1) {
+            return res.status(404).json({ message: 'Товар не найден' });
+        }
+
+        // Обновляем только нужное поле
+        products[productIndex].stock.initialQuantity = initialQuantity;
+        products[productIndex].timestamps.updatedAt = new Date().toISOString();
+        
+        // Пересчитываем доступное количество
+        const orderedQuantity = products[productIndex].stock.orderedQuantity || 0;
+        products[productIndex].stock.availableQuantity = initialQuantity - orderedQuantity;
+
+
+        await fs.writeFile(PRODUCTS_DB_PATH, JSON.stringify(products, null, 2));
+        res.status(200).json(products[productIndex]);
+
+    } catch (error) {
+        console.error("Ошибка при обновлении количества:", error);
+        res.status(500).json({ message: 'Ошибка при обновлении количества', error: error.message });
+    }
+});
+
 // Эндпоинт для входа пользователя
 app.post('/api/auth/login', async (req, res) => {
     try {
