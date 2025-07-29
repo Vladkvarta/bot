@@ -1857,16 +1857,79 @@
 
         // --- Элементы DOM ---
         const addProductButton = document.getElementById('add-product-button');
+        const navItems = document.querySelectorAll('.nav-item');
+        const sections = {
+            users: document.getElementById('users-section'),
+            orders: document.getElementById('orders-section'),
+            products: document.getElementById('products-section'),
+        };
+        const sectionTitle = document.getElementById('section-title');
+        const sectionDescription = document.getElementById('section-description');
+
+        // --- Конфигурация для разделов ---
+        const sectionConfig = {
+            users: {
+                title: "Управление пользователями",
+                description: "Просмотр и редактирование данных пользователей",
+                buttonText: "Добавить пользователя",
+            },
+            orders: {
+                title: "Управление заказами",
+                description: "Просмотр и редактирование заказов",
+                buttonText: "Создать заказ",
+            },
+            products: {
+                title: "Управление товарами",
+                description: "Просмотр и редактирование товаров и их количества",
+                buttonText: "Добавить товар",
+            },
+        };
+
+        // --- Функция переключения разделов ---
+        const switchSection = (sectionName) => {
+            const config = sectionConfig[sectionName];
+            if (config) {
+                sectionTitle.textContent = config.title;
+                sectionDescription.textContent = config.description;
+                addProductButton.innerHTML = `<div class="w-4 h-4 flex items-center justify-center mr-2"><i class="ri-add-line"></i></div> ${config.buttonText}`;
+                addProductButton.dataset.actionFor = sectionName;
+            }
+
+            navItems.forEach(item => {
+                item.classList.toggle('active', item.dataset.section === sectionName);
+            });
+
+            Object.values(sections).forEach(section => {
+                if (section) section.classList.add('hidden');
+            });
+            
+            if (sections[sectionName]) {
+                sections[sectionName].classList.remove('hidden');
+            }
+
+            if (sectionName === 'products') {
+                loadProducts();
+            }
+        };
 
         // --- Инициализация ---
-        loadProducts();
+        navItems.forEach(item => {
+            item.addEventListener('click', () => {
+                switchSection(item.dataset.section);
+            });
+        });
+        switchSection('users'); // Устанавливаем начальный раздел
 
-        // --- Обработчики событий страницы ---
+
+        // --- Обработчики событий для раздела "Товары" ---
         addProductButton.addEventListener('click', () => {
-            productForm.reset();
-            productForm.querySelector('[name="productId"]').value = '';
-            setCustomFormElements({}); // Устанавливаем значения по умолчанию для кастомных полей
-            openModal();
+            if (addProductButton.dataset.actionFor === 'products') {
+                productForm.reset();
+                productForm.querySelector('[name="productId"]').value = '';
+                setCustomFormElements({}); // Устанавливаем значения по умолчанию для кастомных полей
+                openModal();
+            }
+            // Здесь можно будет добавить логику для других кнопок, например "Добавить пользователя"
         });
 
         productModal.querySelectorAll('.cancel-button').forEach(btn => btn.addEventListener('click', closeModal));
@@ -1896,7 +1959,6 @@
                 });
             });
             
-            // Закрывать выпадающий список при клике вне его
             document.addEventListener('click', (e) => {
                 if (!container.contains(e.target)) {
                     dropdown.classList.add('hidden');
