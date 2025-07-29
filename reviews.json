@@ -1,15 +1,14 @@
 {
-    "reviewId": "rev_20250728_abcdef", 
-    "orderId": "ord_1750900000000_klmno", 
-    "status": "published", 
+  "rev_20250728_abcdef": {
+    "reviewId": "rev_20250728_abcdef",
+    "orderId": "ord_1750900000000_klmno",
+    "status": "published",
     "createdAt": "2025-07-28T10:00:00Z",
-  
-  
     "author": {
-      "userId": "uuid-1a2b3c-4d5e6f-7g8h9i", 
-      "displayName": "Сергей Сивоглаз" 
+      "userId": "uuid-1a2b3c-4d5e6f-7g8h9i",
+      "displayName": "Сергей Сивоглаз"
     },
-    "rating": 5, 
+    "rating": 5,
     "comment": "Все отлично, доставили быстро! Качество кофе, как всегда, на высоте. Спасибо!",
     "photos": [
       {
@@ -23,13 +22,10 @@
         "description": "Пачка кофе крупным планом"
       }
     ],
-  
-
     "replies": [
       {
         "replyId": "rep_20250728_ghijk",
         "author": {
-          
           "userId": "uuid-manager-xyz...",
           "displayName": "Пронкевич Д. В."
         },
@@ -39,7 +35,6 @@
       {
         "replyId": "rep_20250729_lmnop",
         "author": {
-        
           "userId": "admin_user_id",
           "displayName": "Администрация B2B Kava"
         },
@@ -48,3 +43,4 @@
       }
     ]
   }
+}

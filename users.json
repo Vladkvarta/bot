@@ -1,23 +1,25 @@
 {
-    
+  "uuid-1a2b3c-4d5e6f-7g8h9i": {
     "userId": "uuid-1a2b3c-4d5e6f-7g8h9i",
-  
-   
     "auth": {
       "providers": {
         "local": {
           "salt": "e1f5b1a3e7c8f2d4a5b6c7d8e9f0a1b2",
           "hash": "a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2"
         },
-        "google": { "providerId": "109876543210987654321" },
-        "apple": { "providerId": "001234.a1b2c3d4e5f6.0123" }
+        "google": {
+          "providerId": "109876543210987654321"
+        },
+        "apple": {
+          "providerId": "001234.a1b2c3d4e5f6.0123"
+        }
       }
     },
     "profile": {
       "displayName": "Сергей Сивоглаз",
       "firstName": "Сергей",
       "lastName": "Сивоглаз",
-      "phone": "380669061564", 
+      "phone": "380669061564",
       "avatar": {
         "hasAvatar": true,
         "driveId": "1a2b3c4d5e6f7g8h9i_drive_file_id",
@@ -28,23 +30,18 @@
       "status": "active",
       "personalDiscount": 10,
       "orderCount": 42
-
     },
     "timestamps": {
       "createdAt": "2025-07-17T12:00:00Z",
       "lastLoginAt": "2025-07-17T18:30:00Z",
       "updatedAt": "2025-07-17T19:00:00Z"
     },
-  
- 
     "reviewIds": [
       "rev_20250728_abcdef"
     ],
-  
-
     "trustedPersons": [
       {
-        "trustedPersonId": "tp_1750800000000_abcde", 
+        "trustedPersonId": "tp_1750800000000_abcde",
         "name": "Пронкевич Д. В.",
         "phone": "380501234567",
         "notes": "Основной менеджер по закупкам"
@@ -56,10 +53,7 @@
         "notes": "Менеджер выходного дня"
       }
     ],
-  
-
-  
-    "ownedVenues": [ 
+    "ownedVenues": [
       {
         "venueId": "vn_1750707940969_v2mov",
         "venueName": "Sweeter",
@@ -67,14 +61,14 @@
         "street": "Парк 1",
         "building": "",
         "department": "",
-        "status": "active", 
-        "linkedFopId": "fp_1750707940968_huq1w", 
+        "status": "active",
+        "linkedFopId": "fp_1750707940968_huq1w",
         "assignedManagers": [
           {
-            "trustedPersonId": "tp_1750800000000_abcde" 
+            "trustedPersonId": "tp_1750800000000_abcde"
           }
         ],
-        "orderIds": [ 
+        "orderIds": [
           "ord_1750900000000_klmno",
           "ord_1750900000001_pqrst"
         ]
@@ -86,37 +80,33 @@
         "street": "Парк 2",
         "building": "",
         "department": "",
-        "status": "pending_moderation", 
+        "status": "pending_moderation",
         "linkedFopId": "fp_1750707940968_huq1w",
-        "assignedManagers": [], 
+        "assignedManagers": [],
         "orderIds": []
       }
     ],
-  
-    "fops": [ 
+    "fops": [
       {
         "fopId": "fp_1750707940968_huq1w",
-        "payerName": "Пронкевич Д. В.", 
+        "payerName": "Пронкевич Д. В.",
         "inn": "",
         "bank": "",
         "mfo": "",
         "iban": ""
       }
     ],
-  
-
     "accessibleVenues": [
-
       {
-        "venueId": "vn_1750707940969_v2mov", 
-        "venueName": "Sweeter", 
+        "venueId": "vn_1750707940969_v2mov",
+        "venueName": "Sweeter",
         "address": "Харків, Парк 1",
-        "ownerId": "uuid-1a2b3c-4d5e6f-7g8h9i", 
-        "orderIds": [ 
-            "ord_1750900000000_klmno",
-            "ord_1750900000001_pqrst"
+        "ownerId": "uuid-1a2b3c-4d5e6f-7g8h9i",
+        "orderIds": [
+          "ord_1750900000000_klmno",
+          "ord_1750900000001_pqrst"
         ]
       }
     ]
   }
-  
+}
