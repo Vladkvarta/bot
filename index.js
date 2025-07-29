@@ -59,6 +59,24 @@ app.get('/api/products', async (req, res) => {
         res.status(500).json({ error: 'Внутренняя ошибка сервера' });
     }
 });
+app.get('/api/admin/products/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const productsData = await fs.readFile(PRODUCTS_DB_PATH, 'utf8');
+        const products = JSON.parse(productsData);
+        
+        const product = products.find(p => p.productId === id);
+        
+        if (product) {
+            res.status(200).json(product);
+        } else {
+            res.status(404).json({ message: 'Товар не найден' });
+        }
+    } catch (error) {
+        console.error("Ошибка получения товара по ID:", error);
+        res.status(500).json({ message: 'Внутренняя ошибка сервера', error: error.message });
+    }
+});
 
 // Эндпоинт для входа пользователя
 app.post('/api/auth/login', async (req, res) => {

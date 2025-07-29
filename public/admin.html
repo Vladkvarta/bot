@@ -844,94 +844,6 @@
             </main>
         </div>
     </div>
-    <script id="navigation-handler">
-        document.addEventListener("DOMContentLoaded", function () {
-            const navItems = document.querySelectorAll(".nav-item");
-            const sections = document.querySelectorAll(".section");
-            const sectionTitle = document.getElementById("section-title");
-            const sectionDescription = document.getElementById("section-description");
-            const addProductButton = document.getElementById("add-product-button");
-            const sectionConfig = {
-                users: {
-                    title: "Управление пользователями",
-                    description: "Просмотр и редактирование данных пользователей",
-                    buttonText: "Добавить пользователя",
-                },
-                orders: {
-                    title: "Управление заказами",
-                    description:
-                        "Просмотр и редактирование заказов в хронологическом порядке",
-                    buttonText: "Создать заказ",
-                },
-                products: {
-                    title: "Управление товарами",
-                    description: "Просмотр и редактирование товаров и их количества",
-                    buttonText: "Добавить товар",
-                },
-            };
-            function switchSection(sectionName) {
-                navItems.forEach((item) => item.classList.remove("active"));
-                sections.forEach((section) => section.classList.add("hidden"));
-                const activeNavItem = document.querySelector(
-                    `[data-section="${sectionName}"]`,
-                );
-                const activeSection = document.getElementById(`${sectionName}-section`);
-                if (activeNavItem && activeSection) {
-                    activeNavItem.classList.add("active");
-                    activeSection.classList.remove("hidden");
-                    const config = sectionConfig[sectionName];
-                    if (config) {
-                        sectionTitle.textContent = config.title;
-                        sectionDescription.textContent = config.description;
-                        if (addProductButton) {
-                            addProductButton.innerHTML = `
-      <div class="w-4 h-4 flex items-center justify-center mr-2">
-      <i class="ri-add-line"></i>
-      </div>
-      ${config.buttonText}
-      `;
-                        }
-                    }
-                }
-            }
-            navItems.forEach((item) => {
-                item.addEventListener("click", function () {
-                    const sectionName = this.dataset.section;
-                    switchSection(sectionName);
-                });
-            });
-            const activeNavItem = document.querySelector(".nav-item.active");
-            if (activeNavItem) {
-                switchSection(activeNavItem.dataset.section);
-            }
-        });
-    </script>
-    <script id="table-interactions">
-        document.addEventListener("DOMContentLoaded", function () {
-            const quantityInputs = document.querySelectorAll('input[type="number"]');
-            quantityInputs.forEach((input) => {
-                input.addEventListener("change", function () {
-                    const row = this.closest("tr");
-                    const availableCell = row.querySelector("td:nth-child(5) span");
-                    const newQuantity = parseInt(this.value);
-                    const ordered = 3;
-                    const available = newQuantity - ordered;
-                    if (availableCell) {
-                        availableCell.textContent = available;
-                        if (available <= 5) {
-                            row.classList.add("bg-red-50");
-                            this.classList.add("border-red-300", "bg-red-50");
-                            availableCell.classList.add("text-red-600", "font-medium");
-                        } else {
-                            row.classList.remove("bg-red-50");
-                            this.classList.remove("border-red-300", "bg-red-50");
-                            availableCell.classList.remove("text-red-600", "font-medium");
-                        }
-                    }
-                });
-            });
-        });
-    </script>
     <style>
         .nav-item.active {
             background-color: #eff6ff;
@@ -1997,441 +1909,249 @@
             </form>
         </div>
     </div>
-    <script id="venue-handler">
-        document.addEventListener("DOMContentLoaded", function () {
-            const addVenueButton = document.getElementById("addVenueButton");
-            const venuesContainer = document.getElementById("venuesContainer");
-            let venueCounter = document.querySelectorAll(".venue-header").length;
-            function getFopOptions() {
-                const fops = document.querySelectorAll('[name^="fops["]');
-                const fopMap = new Map();
-                for (let fop of fops) {
-                    if (fop.name.includes("payerName")) {
-                        const index = fop.name.match(/\[(\d+)\]/)[1];
-                        const innInput = document.querySelector(`[name="fops[${index}].inn"]`);
-                        const fopIdInput = document.querySelector(
-                            `[name="fops[${index}].fopId"]`,
-                        );
-                        if (fop.value && innInput && fopIdInput) {
-                            fopMap.set(fopIdInput.value, `${fop.value} (ИНН: ${innInput.value})`);
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- ОБЩИЕ ПЕРЕМЕННЫЕ ---
+            const sections = {
+                users: document.getElementById('users-section'),
+                orders: document.getElementById('orders-section'),
+                products: document.getElementById('products-section'),
+            };
+            const navItems = document.querySelectorAll('.nav-item');
+            const productModal = document.getElementById('ProductModal');
+            const productForm = productModal.querySelector('form');
+            const addProductButton = document.getElementById('add-product-button');
+    
+            // --- УПРАВЛЕНИЕ СЕКЦИЯМИ (Навигация) ---
+            function switchSection(targetSection) {
+                navItems.forEach(item => item.classList.remove('active'));
+                Object.values(sections).forEach(section => section.classList.add('hidden'));
+    
+                const activeNavItem = document.querySelector(`[data-section="${targetSection}"]`);
+                if (activeNavItem && sections[targetSection]) {
+                    activeNavItem.classList.add('active');
+                    sections[targetSection].classList.remove('hidden');
+                    // При переключении на секцию товаров - загружаем их
+                    if (targetSection === 'products') {
+                        loadProducts();
+                    }
+                }
+            }
+    
+            navItems.forEach(item => {
+                item.addEventListener('click', () => switchSection(item.dataset.section));
+            });
+    
+            // Инициализация при загрузке
+            switchSection('users'); // Начнем с пользователей по умолчанию
+    
+            // --- ЛОГИКА ДЛЯ ТОВАРОВ ---
+    
+            const productsTableBody = sections.products.querySelector('tbody');
+    
+            // 1. Загрузка и отображение товаров в таблице
+            async function loadProducts() {
+                try {
+                    const response = await fetch('/api/products');
+                    if (!response.ok) throw new Error('Ошибка сети при загрузке товаров');
+                    const products = await response.json();
+    
+                    productsTableBody.innerHTML = ''; // Очищаем таблицу перед заполнением
+    
+                    if (products.length === 0) {
+                        productsTableBody.innerHTML = `<tr><td colspan="6" class="text-center p-6 text-gray-500">Товары не найдены.</td></tr>`;
+                        return;
+                    }
+    
+                    products.forEach(product => {
+                        const row = document.createElement('tr');
+                        // Добавляем класс для подсветки, если товара мало
+                        if (product.stock.availableQuantity <= 5) {
+                            row.classList.add('bg-red-50');
+                        }
+    
+                        row.innerHTML = `
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="flex items-center">
+                                    <div class="w-10 h-10 bg-gray-200 rounded-lg flex items-center justify-center mr-3">
+                                        <div class="w-5 h-5 flex items-center justify-center text-gray-400">
+                                            <i class="ri-store-2-line"></i>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="text-sm font-medium text-gray-900">${product.name}</div>
+                                        <div class="text-sm text-gray-500">${product.description.substring(0, 30)}...</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${product.sku}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${product.price.value} ${product.price.currency}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${product.stock.initialQuantity}</td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="text-sm ${product.stock.availableQuantity <= 5 ? 'text-red-600 font-medium' : 'text-gray-900'}">${product.stock.availableQuantity}</span>
+                                <span class="text-xs text-gray-500 ml-1">(${product.stock.orderedQuantity || 0} заказано)</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                <div class="flex items-center space-x-2">
+                                    <button data-id="${product.productId}" class="edit-product-btn text-primary hover:text-blue-600 p-1">
+                                        <div class="w-4 h-4 flex items-center justify-center"><i class="ri-edit-line"></i></div>
+                                    </button>
+                                    <button data-id="${product.productId}" class="delete-product-btn text-red-600 hover:text-red-800 p-1">
+                                        <div class="w-4 h-4 flex items-center justify-center"><i class="ri-delete-bin-line"></i></div>
+                                    </button>
+                                </div>
+                            </td>
+                        `;
+                        productsTableBody.appendChild(row);
+                    });
+    
+                } catch (error) {
+                    console.error('Не удалось загрузить товары:', error);
+                    productsTableBody.innerHTML = `<tr><td colspan="6" class="text-center p-6 text-red-500">Ошибка загрузки данных.</td></tr>`;
+                }
+            }
+    
+            // 2. Открытие/закрытие модального окна
+            function openProductModal() {
+                productModal.classList.remove('hidden');
+                productModal.classList.add('flex');
+            }
+    
+            function closeProductModal() {
+                productModal.classList.add('hidden');
+                productModal.classList.remove('flex');
+                productForm.reset(); // Сбрасываем форму
+                productForm.removeAttribute('data-edit-id'); // Удаляем атрибут ID
+            }
+    
+            productModal.addEventListener('click', (e) => {
+                // Закрываем по клику на фон
+                if (e.target === productModal) {
+                    closeProductModal();
+                }
+            });
+            productForm.querySelector('[type="button"]').addEventListener('click', closeProductModal); // Закрываем по кнопке "Отмена"
+    
+            // 3. Логика для кнопки "Добавить товар"
+            addProductButton.addEventListener('click', () => {
+                // Убеждаемся, что мы в нужной секции
+                if (sections.products.classList.contains('hidden')) return;
+    
+                productForm.reset();
+                productForm.removeAttribute('data-edit-id');
+                productModal.querySelector('.text-3xl').textContent = 'Создание нового товара';
+                openProductModal();
+            });
+    
+    
+            // 4. Логика для кнопок "Редактировать" и "Удалить" в таблице
+            productsTableBody.addEventListener('click', async (e) => {
+                const editButton = e.target.closest('.edit-product-btn');
+                const deleteButton = e.target.closest('.delete-product-btn');
+    
+                if (editButton) {
+                    const productId = editButton.dataset.id;
+                    try {
+                        const response = await fetch(`/api/admin/products/${productId}`);
+                        if (!response.ok) throw new Error('Товар не найден');
+                        const productData = await response.json();
+                        
+                        // Заполняем форму данными
+                        productForm.querySelector('[name="productId"]').value = productData.productId;
+                        productForm.querySelector('[name="sku"]').value = productData.sku;
+                        productForm.querySelector('[name="name"]').value = productData.name;
+                        // ... и так далее для всех полей
+                        // Пример для вложенных полей:
+                        productForm.querySelector('[name="price.value"]').value = productData.price.value;
+                        productForm.querySelector('[name="stock.initialQuantity"]').value = productData.stock.initialQuantity;
+                        // Заблокированные поля
+                        productForm.querySelector('[name="stock.orderedQuantity"]').value = productData.stock.orderedQuantity || 0;
+                        productForm.querySelector('[name="stock.availableQuantity"]').value = productData.stock.availableQuantity;
+    
+    
+                        productForm.setAttribute('data-edit-id', productId);
+                        productModal.querySelector('.text-3xl').textContent = 'Редактирование товара';
+                        openProductModal();
+                    } catch (error) {
+                        console.error('Ошибка загрузки данных товара:', error);
+                        alert('Не удалось загрузить данные для редактирования.');
+                    }
+                }
+    
+                if (deleteButton) {
+                    const productId = deleteButton.dataset.id;
+                    if (confirm(`Вы уверены, что хотите удалить товар с ID: ${productId}?`)) {
+                        try {
+                            const response = await fetch(`/api/admin/products/${productId}`, {
+                                method: 'DELETE',
+                            });
+                            const result = await response.json();
+                            if (!response.ok) throw new Error(result.message);
+                            
+                            alert('Товар успешно удален!');
+                            loadProducts(); // Перезагружаем список товаров
+                        } catch(error) {
+                            console.error('Ошибка удаления товара:', error);
+                            alert(`Не удалось удалить товар: ${error.message}`);
                         }
                     }
                 }
-                return fopMap;
-            }
-            function createVenueTemplate(index) {
-                const fopOptions = getFopOptions();
-                let fopOptionsHtml = "";
-                for (const [fopId, fopName] of fopOptions) {
-                    fopOptionsHtml += `<option value="${fopId}">${fopName}</option>`;
-                }
-                return `
-      <div class="border border-gray-200 rounded-lg">
-      <div class="flex items-center justify-between p-4 cursor-pointer venue-header">
-      <div class="flex items-center space-x-4">
-      <div class="w-4 h-4 flex items-center justify-center transition-transform">
-      <i class="ri-arrow-right-s-line"></i>
-      </div>
-      <div>
-      <span class="text-sm font-medium text-gray-900">Новое заведение</span>
-      <span class="text-sm text-gray-500 ml-2">Адрес не указан</span>
-      </div>
-      </div>
-      </div>
-      <div class="venue-content px-4 pb-4 hidden">
-      <input type="hidden" name="accessibleVenues[${index}].venueId" value="venue_${Date.now()}">
-      <div class="grid grid-cols-2 gap-4 mb-4">
-      <div>
-      <label class="block text-sm font-medium text-gray-700 mb-1">Название заведения</label>
-      <input type="text" name="accessibleVenues[${index}].venueName" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
-      </div>
-      <div>
-      <label class="block text-sm font-medium text-gray-700 mb-1">ID владельца</label>
-      <input type="text" name="accessibleVenues[${index}].ownerId" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent" readonly>
-      </div>
-      </div>
-      <div class="mb-4">
-      <label class="block text-sm font-medium text-gray-700 mb-1">Привязанный ФОП</label>
-      <div class="relative">
-      <select name="accessibleVenues[${index}].linkedFopId" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent appearance-none pr-8">
-      ${fopOptionsHtml}
-      </select>
-      <div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none text-gray-500">
-      <div class="w-4 h-4 flex items-center justify-center">
-      <i class="ri-arrow-down-s-line"></i>
-      </div>
-      </div>
-      </div>
-      </div>
-      <div class="mb-4">
-      <label class="block text-sm font-medium text-gray-700 mb-1">Адрес</label>
-      <input type="text" name="accessibleVenues[${index}].address" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
-      </div>
-      <div>
-      <label class="block text-sm font-medium text-gray-700 mb-1">ID заказов</label>
-      <input type="text" name="accessibleVenues[${index}].orderIds" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent" readonly>
-      </div>
-      </div>
-      </div>
-      `;
-            }
-            function updateVenueIndexes() {
-                const venues = venuesContainer.children;
-                Array.from(venues).forEach((venue, index) => {
-                    venue.querySelectorAll('[name^="accessibleVenues["]').forEach((input) => {
-                        const fieldName = input.name.match(/\].(.+)$/)[1];
-                        input.name = `accessibleVenues[${index}].${fieldName}`;
-                    });
-                });
-            }
-            document.addEventListener("input", function (e) {
-                if (
-                    e.target.name &&
-                    e.target.name.includes("accessibleVenues[") &&
-                    e.target.name.includes("venueName")
-                ) {
-                    const venueElement = e.target.closest(".border.border-gray-200");
-                    const nameDisplay = venueElement.querySelector(
-                        ".venue-header .text-gray-900",
-                    );
-                    nameDisplay.textContent = e.target.value || "Новое заведение";
-                }
-                if (
-                    e.target.name &&
-                    e.target.name.includes("accessibleVenues[") &&
-                    e.target.name.includes("address")
-                ) {
-                    const venueElement = e.target.closest(".border.border-gray-200");
-                    const addressDisplay = venueElement.querySelector(
-                        ".venue-header .text-gray-500",
-                    );
-                    addressDisplay.textContent = e.target.value || "Адрес не указан";
-                }
             });
-        });
-    </script>
-    <script id="ingredients-counter">
-        document.addEventListener("DOMContentLoaded", function () {
-            const ingredientsTextarea = document.querySelector(
-                'textarea[name="ingredients"]',
-            );
-            const ingredientsCounter = document.querySelector(".ingredients-counter");
-            if (ingredientsTextarea && ingredientsCounter) {
-                ingredientsTextarea.addEventListener("input", function () {
-                    ingredientsCounter.textContent = this.value.length;
-                });
-            }
-        });
-    </script>
-    <script id="modal-handler">
-        document.addEventListener("DOMContentLoaded", function () {
-            const modal = document.getElementById("editUserModal");
-            const addProductButton = document.getElementById("add-product-button");
-            const addProductModal = document.getElementById("addProductModal");
-            function openAddProductModal() {
-                addProductModal.classList.remove("hidden");
-                addProductModal.classList.add("flex");
-                // Set current timestamp
-                const now = new Date().toISOString().slice(0, 19).replace("T", " ");
-                document.querySelector('[name="timestamps.createdAt"]').value = now;
-                document.querySelector('[name="timestamps.updatedAt"]').value = now;
-                // Generate unique product ID
-                document.querySelector('[name="productId"]').value = "prod_" + Date.now();
-                document.querySelector('[name="images.imageId"]').value =
-                    "img_" + Date.now();
-            }
-            function closeAddProductModal() {
-                addProductModal.classList.add("hidden");
-                addProductModal.classList.remove("flex");
-            }
-            addProductButton.addEventListener("click", openAddProductModal);
-            addProductModal.addEventListener("click", function (e) {
-                if (e.target === addProductModal) {
-                    closeAddProductModal();
-                }
-            });
-            // Handle add product form submission
-            const addProductForm = document.getElementById("addProductForm");
-            if (addProductForm) {
-                const initialQuantityInput = addProductForm.querySelector(
-                    '[name="stock.initialQuantity"]',
-                );
-                const orderedQuantityInput = addProductForm.querySelector(
-                    '[name="stock.orderedQuantity"]',
-                );
-                const availableQuantityInput = addProductForm.querySelector(
-                    '[name="stock.availableQuantity"]',
-                );
-                initialQuantityInput.addEventListener("input", function () {
-                    const ordered = parseInt(orderedQuantityInput.value) || 0;
-                    const initial = parseInt(this.value) || 0;
-                    availableQuantityInput.value = initial - ordered;
-                });
-                addProductForm.addEventListener("submit", function (e) {
-                    e.preventDefault();
-                    const formData = new FormData(addProductForm);
-                    const data = Object.fromEntries(formData);
-                    console.log("Form data:", data);
-                    closeAddProductModal();
-                });
-            }
-            const editButtons = document.querySelectorAll(".edit-user-btn");
-            const closeButtons = document.querySelectorAll(".close-modal");
-            const editForm = document.getElementById("editUserForm");
-            const addFopButton = document.getElementById("addFopButton");
-            const addOwnedVenueButton = document.getElementById("addOwnedVenueButton");
-            const fopsContainer = document.getElementById("fopsContainer");
-            const ownedVenuesContainer = document.getElementById("ownedVenuesContainer");
-            let fopCounter = document.querySelectorAll(".fop-header").length;
-            let ownedVenueCounter = ownedVenuesContainer.children.length;
-            function createOwnedVenueTemplate(index) {
-                const fopOptions = getFopOptions();
-                let fopOptionsHtml = "";
-                for (const [fopId, fopName] of fopOptions) {
-                    fopOptionsHtml += `<option value="${fopId}">${fopName}</option>`;
-                }
-                return `
-      <div class="p-4 border border-gray-200 rounded-lg">
-      <input type="hidden" name="ownedVenues[${index}].venueId" value="venue_${Date.now()}">
-      <div class="grid grid-cols-2 gap-4 mb-4">
-      <div>
-      <label class="block text-sm font-medium text-gray-700 mb-1">Название</label>
-      <input type="text" name="ownedVenues[${index}].venueName" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
-      </div>
-      <div>
-      <label class="block text-sm font-medium text-gray-700 mb-1">Город</label>
-      <input type="text" name="ownedVenues[${index}].city" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
-      </div>
-      </div>
-      <div class="grid grid-cols-3 gap-4 mb-4">
-      <div>
-      <label class="block text-sm font-medium text-gray-700 mb-1">Улица</label>
-      <input type="text" name="ownedVenues[${index}].street" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
-      </div>
-      <div>
-      <label class="block text-sm font-medium text-gray-700 mb-1">Дом</label>
-      <input type="text" name="ownedVenues[${index}].building" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
-      </div>
-      <div>
-      <label class="block text-sm font-medium text-gray-700 mb-1">Помещение</label>
-      <input type="text" name="ownedVenues[${index}].department" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
-      </div>
-      </div>
-      <div class="grid grid-cols-2 gap-4">
-      <div>
-      <label class="block text-sm font-medium text-gray-700 mb-1">Статус</label>
-      <select name="ownedVenues[${index}].status" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent pr-8">
-      <option value="active">Активно</option>
-      <option value="closed">Закрыто</option>
-      <option value="temporary_closed">Временно закрыто</option>
-      </select>
-      </div>
-      <div>
-      <label class="block text-sm font-medium text-gray-700 mb-1">Привязанный ФОП</label>
-      <div class="relative">
-      <select name="ownedVenues[${index}].linkedFopId" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent appearance-none pr-8">
-      ${fopOptionsHtml}
-      </select>
-      <div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none text-gray-500">
-      <div class="w-4 h-4 flex items-center justify-center">
-      <i class="ri-arrow-down-s-line"></i>
-      </div>
-      </div>
-      </div>
-      </div>
-      </div>
-      </div>
-      `;
-            }
-            function updateOwnedVenueIndexes() {
-                const venues = ownedVenuesContainer.children;
-                Array.from(venues).forEach((venue, index) => {
-                    venue.querySelectorAll('[name^="ownedVenues["]').forEach((input) => {
-                        const fieldName = input.name.match(/\].(.+)$/)[1];
-                        input.name = `ownedVenues[${index}].${fieldName}`;
-                    });
-                });
-            }
-            addOwnedVenueButton.addEventListener("click", function () {
-                const newVenueElement = document.createElement("div");
-                newVenueElement.innerHTML = createOwnedVenueTemplate(ownedVenueCounter++);
-                ownedVenuesContainer.appendChild(newVenueElement.firstElementChild);
-                updateOwnedVenueIndexes();
-            });
-            document.addEventListener("click", function (e) {
-                if (e.target.closest(".order-header")) {
-                    const header = e.target.closest(".order-header");
-                    const content = header.nextElementSibling;
-                    const arrow = header.querySelector(".ri-arrow-right-s-line");
-                    content.classList.toggle("hidden");
-                    arrow.style.transform = content.classList.contains("hidden")
-                        ? ""
-                        : "rotate(90deg)";
-                }
-            });
-            document.addEventListener("click", function (e) {
-                if (
-                    e.target.closest(".venue-header") ||
-                    e.target.closest(".order-header")
-                ) {
-                    const header =
-                        e.target.closest(".venue-header") || e.target.closest(".order-header");
-                    const content = header.nextElementSibling;
-                    const arrow = header.querySelector(".ri-arrow-right-s-line");
-                    content.classList.toggle("hidden");
-                    arrow.style.transform = content.classList.contains("hidden")
-                        ? ""
-                        : "rotate(90deg)";
-                }
-            });
-            function openModal() {
-                modal.classList.remove("hidden");
-                modal.classList.add("flex");
-            }
-            function closeModal() {
-                modal.classList.add("hidden");
-                modal.classList.remove("flex");
-            }
-            function createFopTemplate(index) {
-                return `
-      <div class="border border-gray-200 rounded-lg">
-      <div class="flex items-center justify-between p-4 cursor-pointer fop-header">
-      <div class="flex items-center space-x-4">
-      <div class="w-4 h-4 flex items-center justify-center transition-transform">
-      <i class="ri-arrow-right-s-line"></i>
-      </div>
-      <div>
-      <span class="text-sm font-medium text-gray-900">Новый ФОП</span>
-      <span class="text-sm text-gray-500 ml-2">ИНН: -</span>
-      </div>
-      </div>
-      <div class="flex items-center space-x-2">
-      <button type="button" class="remove-fop text-gray-400 hover:text-red-600 transition-colors p-1">
-      <div class="w-4 h-4 flex items-center justify-center">
-      <i class="ri-delete-bin-line"></i>
-      </div>
-      </button>
-      </div>
-      </div>
-      <div class="fop-content hidden px-4 pb-4">
-      <input type="hidden" name="fops[${index}].fopId" value="fop_${Date.now()}">
-      <div class="grid grid-cols-2 gap-4 mb-4">
-      <div>
-      <label class="block text-sm font-medium text-gray-700 mb-1">Имя плательщика</label>
-      <input type="text" name="fops[${index}].payerName" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
-      </div>
-      <div>
-      <label class="block text-sm font-medium text-gray-700 mb-1">ИНН</label>
-      <input type="text" name="fops[${index}].inn" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
-      </div>
-      </div>
-      <div class="grid grid-cols-3 gap-4">
-      <div>
-      <label class="block text-sm font-medium text-gray-700 mb-1">Банк</label>
-      <input type="text" name="fops[${index}].bank" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
-      </div>
-      <div>
-      <label class="block text-sm font-medium text-gray-700 mb-1">МФО</label>
-      <input type="text" name="fops[${index}].mfo" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
-      </div>
-      <div>
-      <label class="block text-sm font-medium text-gray-700 mb-1">IBAN</label>
-      <input type="text" name="fops[${index}].iban" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
-      </div>
-      </div>
-      </div>
-      </div>
-      `;
-            }
-            function addNewFop() {
-                const newFopElement = document.createElement("div");
-                newFopElement.innerHTML = createFopTemplate(fopCounter++);
-                fopsContainer.appendChild(newFopElement);
-                updateFopIndexes();
-            }
-            function removeFop(button) {
-                const fopElement = button.closest(".border.border-gray-200");
-                if (fopsContainer.children.length > 1) {
-                    fopElement.remove();
-                    updateFopIndexes();
-                }
-            }
-            function updateFopIndexes() {
-                const fops = fopsContainer.children;
-                Array.from(fops).forEach((fop, index) => {
-                    fop.querySelectorAll('[name^="fops["]').forEach((input) => {
-                        const fieldName = input.name.match(/\].(.+)$/)[1];
-                        input.name = `fops[${index}].${fieldName}`;
-                    });
-                });
-            }
-            addFopButton.addEventListener("click", addNewFop);
-            fopsContainer.addEventListener("click", function (e) {
-                if (e.target.closest(".remove-fop")) {
-                    removeFop(e.target.closest(".remove-fop"));
-                } else if (e.target.closest(".fop-header")) {
-                    const header = e.target.closest(".fop-header");
-                    const content = header.nextElementSibling;
-                    const arrow = header.querySelector(".ri-arrow-right-s-line");
-                    content.classList.toggle("hidden");
-                    arrow.style.transform = content.classList.contains("hidden")
-                        ? ""
-                        : "rotate(90deg)";
-                }
-            });
-            document.addEventListener("input", function (e) {
-                if (
-                    e.target.name &&
-                    e.target.name.includes("fops[") &&
-                    (e.target.name.includes("payerName") || e.target.name.includes("inn"))
-                ) {
-                    const fopElement = e.target.closest(".border.border-gray-200");
-                    const nameDisplay = fopElement.querySelector(
-                        ".fop-header .text-gray-900",
-                    );
-                    const innDisplay = fopElement.querySelector(".fop-header .text-gray-500");
-                    const payerNameInput = fopElement.querySelector('[name$="payerName"]');
-                    const innInput = fopElement.querySelector('[name$="inn"]');
-                    if (payerNameInput && innInput) {
-                        nameDisplay.textContent = payerNameInput.value || "Новый ФОП";
-                        innDisplay.textContent = `ИНН: ${innInput.value || "-"}`;
-                        // Update all venue FOP selects
-                        const venueSelects = document.querySelectorAll('[name$="linkedFopId"]');
-                        const fopOptions = getFopOptions();
-                        venueSelects.forEach((select) => {
-                            const selectedValue = select.value;
-                            select.innerHTML = "";
-                            for (const [fopId, fopName] of fopOptions) {
-                                const option = document.createElement("option");
-                                option.value = fopId;
-                                option.textContent = fopName;
-                                select.appendChild(option);
-                            }
-                            if (Array.from(fopOptions.keys()).includes(selectedValue)) {
-                                select.value = selectedValue;
-                            }
-                        });
-                    }
-                }
-            });
-            editButtons.forEach((button) => {
-                button.addEventListener("click", openModal);
-            });
-            closeButtons.forEach((button) => {
-                button.addEventListener("click", closeModal);
-            });
-            modal.addEventListener("click", function (e) {
-                if (e.target === modal) {
-                    closeModal();
-                }
-            });
-            editForm.addEventListener("submit", function (e) {
+    
+            // 5. Логика отправки формы (создание/обновление)
+            productForm.addEventListener('submit', async (e) => {
                 e.preventDefault();
-                const formData = new FormData(editForm);
-                const data = Object.fromEntries(formData);
-                console.log("Form data:", data);
-                closeModal();
+                const formData = new FormData(productForm);
+                
+                // Преобразуем FormData в нужный нам JSON объект
+                const productData = {
+                    // Здесь нужно собрать объект, соответствующий структуре в products.json
+                    // Это пример, его нужно адаптировать под вашу форму и структуру!
+                    name: formData.get('name'),
+                    sku: formData.get('sku'),
+                    description: formData.get('description'),
+                    price: {
+                        value: parseFloat(formData.get('price.value')),
+                        currency: "₽" // или брать из формы
+                    },
+                    stock: {
+                        initialQuantity: parseInt(formData.get('stock.initialQuantity')),
+                    },
+                     images: [{ // Пример для изображений
+                        url: formData.get('images.url'),
+                        alt: formData.get('images.alt')
+                    }],
+                    // ... и т.д.
+                };
+    
+                const editId = productForm.dataset.editId;
+                const url = editId ? `/api/admin/products/${editId}` : '/api/admin/products';
+                const method = editId ? 'PUT' : 'POST';
+    
+                try {
+                    const response = await fetch(url, {
+                        method: method,
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(productData),
+                    });
+    
+                    const result = await response.json();
+                    if (!response.ok) {
+                        throw new Error(result.message || 'Произошла ошибка');
+                    }
+                    
+                    alert(`Товар успешно ${editId ? 'обновлен' : 'создан'}!`);
+                    closeProductModal();
+                    loadProducts(); // Обновляем таблицу
+                } catch (error) {
+                    console.error('Ошибка сохранения товара:', error);
+                    alert(`Ошибка: ${error.message}`);
+                }
             });
+    
         });
     </script>
 </body>
