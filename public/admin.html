@@ -1628,155 +1628,132 @@
         </div>
     </div>
 
-<!-- Конфигурация и глобальные переменные -->
-<script>
-    (() => {
-        window.AppConfig = {
-            API_PUBLIC_URL: '/api/products',
-            API_ADMIN_URL: '/api/admin/products',
-        };
-    })();
-    </script>
-    
-    <!-- DOM элементы -->
-    <script>
-    (() => {
-        window.AppDOM = {
-            productsTableBody: document.getElementById('products-table-body'),
-            productModal: document.getElementById('ProductModal'),
-            productForm: document.getElementById('product-form'),
-            imagesContainer: document.getElementById('images-container'),
-            addProductButton: document.getElementById('add-product-button'),
-            navItems: document.querySelectorAll('.nav-item'),
-            sections: {
-                users: document.getElementById('users-section'),
-                orders: document.getElementById('orders-section'),
-                products: document.getElementById('products-section'),
-            },
-            sectionTitle: document.getElementById('section-title'),
-            sectionDescription: document.getElementById('section-description'),
-        };
-    })();
-    </script>
-    
-    <!-- UI функции (модалки и т.п.) -->
-    <script>
-    (() => {
-        const { productModal, imagesContainer } = window.AppDOM;
-    
-        window.UI = {
-            openModal: () => productModal.classList.remove('hidden'),
-            closeModal: () => {
-                productModal.classList.add('hidden');
-                if (imagesContainer) imagesContainer.innerHTML = '';
-            }
-        };
-    })();
-    </script>
-    
-    <!-- Загрузка и отрисовка товаров -->
-    <script>
-    (() => {
-        const { API_PUBLIC_URL } = window.AppConfig;
-        const { productsTableBody } = window.AppDOM;
-    
-        window.Products = {
-            async loadProducts() {
-                if (!productsTableBody) return;
-                try {
-                    const response = await fetch(API_PUBLIC_URL);
-                    if (!response.ok) throw new Error('Ошибка сети');
-                    const products = await response.json();
-                    productsTableBody.innerHTML = '';
-                    // Тут вставляется шаблон строки таблицы...
-                } catch (e) {
-                    productsTableBody.innerHTML = `<tr><td colspan="6">Ошибка загрузки</td></tr>`;
-                }
-            }
-        };
-    })();
-    </script>
-    
-    <!-- Работа с формой -->
-    <script>
-    (() => {
-        const { productForm, imagesContainer } = window.AppDOM;
-        const { closeModal } = window.UI;
-        const { loadProducts } = window.Products;
-        const { API_ADMIN_URL } = window.AppConfig;
-    
-        window.ProductForm = {
-            populateForm(product) {
-                // Заполнение формы
-            },
-            setupSubmit() {
-                productForm.addEventListener('submit', async (e) => {
-                    e.preventDefault();
-                    // Обработка отправки формы
-                });
-            }
-        };
-    })();
-    </script>
-    
-    <!-- Навигация и события -->
-    <script>
-    (() => {
-        const {
-            navItems, sections, sectionTitle, sectionDescription,
-            addProductButton, productsTableBody, productModal
-        } = window.AppDOM;
-        const { openModal } = window.UI;
-        const { loadProducts } = window.Products;
-        const { populateForm, setupSubmit } = window.ProductForm;
-        const { API_ADMIN_URL } = window.AppConfig;
-    
-        const sectionConfig = {
-            users: { title: "Управление пользователями", description: "Просмотр и редактирование данных пользователей", buttonText: "Добавить пользователя" },
-            orders: { title: "Управление заказами", description: "Просмотр и редактирование заказов", buttonText: "Создать заказ" },
-            products: { title: "Управление товарами", description: "Просмотр и редактирование товаров", buttonText: "Добавить товар" },
-        };
-    
-        function switchSection(name) {
-            const config = sectionConfig[name];
-            if (config) {
-                sectionTitle.textContent = config.title;
-                sectionDescription.textContent = config.description;
-                addProductButton.innerHTML = `<div class="w-4 h-4 flex items-center justify-center mr-2"><i class="ri-add-line"></i></div> ${config.buttonText}`;
-                addProductButton.dataset.actionFor = name;
-            }
-            navItems.forEach(item => item.classList.toggle('active', item.dataset.section === name));
-            Object.values(sections).forEach(s => s?.classList.add('hidden'));
-            sections[name]?.classList.remove('hidden');
-            if (name === 'products') loadProducts();
-        }
-    
-        window.AppMain = {
-            init() {
-                navItems.forEach(item => item.addEventListener('click', () => switchSection(item.dataset.section)));
-                switchSection('users');
-    
-                addProductButton.addEventListener('click', () => {
-                    if (addProductButton.dataset.actionFor === 'products') {
-                        productForm.reset();
-                        productForm.querySelector('[name="productId"]').value = '';
-                        openModal();
-                    }
-                });
-    
-                // обработка кнопок и других событий
-                setupSubmit();
-            }
-        };
-    })();
-    </script>
-    
-    <!-- Старт -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            window.AppMain.init();
+            const API_PUBLIC_URL = '/api/products';
+            const API_ADMIN_URL = '/api/admin/products';
+        
+            // --- DOM Elements ---
+            const productsTableBody = document.getElementById('products-table-body');
+            const addProductButton = document.getElementById('add-product-button');
+            const productModal = document.getElementById('ProductModal');
+            const productForm = document.getElementById('product-form');
+            const imagesContainer = document.getElementById('images-container');
+        
+            // --- Load & render products ---
+            async function loadProducts() {
+                try {
+                    const res = await fetch(API_PUBLIC_URL);
+                    const products = await res.json();
+                    renderProductTable(products);
+                } catch (err) {
+                    console.error('Ошибка загрузки товаров:', err);
+                }
+            }
+        
+            function renderProductTable(products) {
+                productsTableBody.innerHTML = '';
+                products.forEach(product => {
+                    const stock = product.stock || {};
+                    const available = (stock.initialQuantity || 0) - (stock.orderedQuantity || 0);
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="flex items-center">
+                                <div class="flex-shrink-0 h-10 w-10">
+                                    <img class="h-10 w-10 rounded-md object-cover" src="${product.images?.[0]?.url || 'https://placehold.co/40x40/e2e8f0/64748b?text=?'}" alt="${product.name}">
+                                </div>
+                                <div class="ml-4">
+                                    <div class="text-sm font-medium text-gray-900">${product.name}</div>
+                                    <div class="text-sm text-gray-500">${product.category}</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${product.sku}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${product.price} грн</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${stock.initialQuantity || 0}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm ${available <= 5 ? 'text-red-600' : 'text-gray-900'}">${available}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                            <button data-id="${product.productId}" class="edit-product-btn text-blue-600 hover:text-blue-800 p-1">
+                                <i class="ri-edit-line text-lg"></i>
+                            </button>
+                        </td>
+                    `;
+                    productsTableBody.appendChild(row);
+                });
+            }
+        
+            // --- Modal logic ---
+            function openModal() {
+                productModal.classList.remove('hidden');
+            }
+        
+            function closeModal() {
+                productModal.classList.add('hidden');
+                imagesContainer.innerHTML = '';
+            }
+        
+            function populateForm(product) {
+                productForm.reset();
+                productForm.querySelector('[name="productId"]').value = product.productId || '';
+                productForm.querySelector('[name="sku"]').value = product.sku || '';
+                productForm.querySelector('[name="name"]').value = product.name || '';
+                productForm.querySelector('[name="price"]').value = product.price || '';
+                productForm.querySelector('[name="description"]').value = product.description || '';
+                productForm.querySelector('[name="ingredients"]').value = Array.isArray(product.ingredients) ? product.ingredients.join(', ') : '';
+                productForm.querySelector('[name="initialQuantity"]').value = product.stock?.initialQuantity || 0;
+                productForm.querySelector('[name="orderedQuantity"]').value = product.stock?.orderedQuantity || 0;
+                productForm.querySelector('[name="availableQuantity"]').value = (product.stock?.initialQuantity || 0) - (product.stock?.orderedQuantity || 0);
+                productForm.querySelector('[name="weight"]').value = product.specifications?.weight || '';
+                productForm.querySelector('[name="shelfLife"]').value = product.specifications?.shelfLife || '';
+                productForm.querySelector('[name="storageConditions"]').value = product.specifications?.storageConditions || '';
+        
+                // изображения
+                imagesContainer.innerHTML = '';
+                (product.images || []).forEach(img => {
+                    const imgElem = document.createElement('div');
+                    imgElem.className = 'mb-2';
+                    imgElem.innerHTML = `
+                        <input type="text" value="${img.url}" class="w-full px-2 py-1 border rounded" readonly />
+                    `;
+                    imagesContainer.appendChild(imgElem);
+                });
+            }
+        
+            // --- Event handlers ---
+            addProductButton.addEventListener('click', () => {
+                productForm.reset();
+                productForm.querySelector('[name="productId"]').value = '';
+                imagesContainer.innerHTML = '';
+                openModal();
+            });
+        
+            productModal.querySelectorAll('.cancel-button').forEach(btn => {
+                btn.addEventListener('click', closeModal);
+            });
+            productModal.addEventListener('click', e => {
+                if (e.target === productModal) closeModal();
+            });
+        
+            productsTableBody.addEventListener('click', async (e) => {
+                const btn = e.target.closest('.edit-product-btn');
+                if (!btn) return;
+                const productId = btn.dataset.id;
+                try {
+                    const res = await fetch(`${API_ADMIN_URL}/${productId}`);
+                    const product = await res.json();
+                    populateForm(product);
+                    openModal();
+                } catch (err) {
+                    alert('Ошибка загрузки товара');
+                }
+            });
+        
+            // --- Init ---
+            loadProducts();
         });
-    </script>
+        </script>
+        
     
 
 
