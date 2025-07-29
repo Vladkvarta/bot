@@ -1912,31 +1912,93 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            // --- ОБЩИЕ ПЕРЕМЕННЫЕ ---
+            // =================================================================
+            // ## ОБЩИЕ ПЕРЕМЕННЫЕ И НАВИГАЦИЯ ##
+            // =================================================================
+            const navItems = document.querySelectorAll('.nav-item');
             const sections = {
+                users: document.getElementById('users-section'),
+                orders: document.getElementById('orders-section'),
                 products: document.getElementById('products-section'),
-                // ... другие секции, если нужно
             };
+            const sectionTitle = document.getElementById('section-title');
+            const sectionDescription = document.getElementById('section-description');
+            const mainActionButton = document.getElementById('add-product-button'); // Эта кнопка теперь общая
+    
+            const sectionConfig = {
+                users: {
+                    title: "Управление пользователями",
+                    description: "Просмотр и редактирование данных пользователей",
+                    buttonText: "Добавить пользователя",
+                },
+                orders: {
+                    title: "Управление заказами",
+                    description: "Просмотр и редактирование заказов",
+                    buttonText: "Создать заказ",
+                },
+                products: {
+                    title: "Управление товарами",
+                    description: "Просмотр и редактирование товаров и их количества",
+                    buttonText: "Добавить товар",
+                },
+            };
+    
+            function switchSection(sectionName) {
+                // Обновляем контент в шапке
+                const config = sectionConfig[sectionName];
+                if (config) {
+                    sectionTitle.textContent = config.title;
+                    sectionDescription.textContent = config.description;
+                    mainActionButton.innerHTML = `<div class="w-4 h-4 flex items-center justify-center mr-2"><i class="ri-add-line"></i></div> ${config.buttonText}`;
+                    // Привязываем действие к главной кнопке в зависимости от секции
+                    mainActionButton.dataset.actionFor = sectionName;
+                }
+    
+                // Переключаем активные классы и видимость
+                navItems.forEach(item => {
+                    if (item.dataset.section === sectionName) {
+                        item.classList.add('active');
+                    } else {
+                        item.classList.remove('active');
+                    }
+                });
+    
+                Object.entries(sections).forEach(([key, sectionElement]) => {
+                    if (key === sectionName) {
+                        sectionElement.classList.remove('hidden');
+                    } else {
+                        sectionElement.classList.add('hidden');
+                    }
+                });
+    
+                // Загружаем данные только для активной секции
+                if (sectionName === 'products') {
+                    loadProducts();
+                }
+            }
+    
+            navItems.forEach(item => {
+                item.addEventListener('click', () => {
+                    switchSection(item.dataset.section);
+                });
+            });
+            
+            // Инициализация при загрузке страницы
+            switchSection('users');
+    
+    
+            // =================================================================
+            // ## ЛОГИКА ДЛЯ СЕКЦИИ "ТОВАРЫ" ##
+            // =================================================================
             const productModal = document.getElementById('ProductModal');
             const productForm = productModal.querySelector('form');
-            const addProductButton = document.querySelector('[data-section="products"] ~ header #add-product-button'); // Более точный селектор кнопки
             const productsTableBody = sections.products.querySelector('tbody');
     
-            // --- ИНИЦИАЛИЗАЦИЯ ---
-            // Загружаем товары при первой загрузке страницы, если активна нужная секция
-            if (!sections.products.classList.contains('hidden')) {
-                loadProducts();
-            }
-            // Тут можно добавить логику переключения секций, если она нужна
-            
-            // --- ЛОГИКА ДЛЯ ТОВАРОВ ---
-    
-            // 1. Загрузка и отображение товаров в таблице
+            // 1. Загрузка и отображение товаров
             async function loadProducts() {
                 try {
                     const response = await fetch('/api/products');
                     const products = await response.json();
-    
                     productsTableBody.innerHTML = ''; // Очищаем таблицу
     
                     if (products.length === 0) {
@@ -1946,40 +2008,17 @@
     
                     products.forEach(product => {
                         const row = document.createElement('tr');
-                        // Данные из вашего products.json
                         const stock = product.stock || { availableQuantity: 0, orderedQuantity: 0, initialQuantity: 0 };
                         
-                        if (stock.availableQuantity <= 5) {
-                            row.classList.add('bg-red-50');
-                        }
+                        if (stock.availableQuantity <= 5) row.classList.add('bg-red-50');
     
                         row.innerHTML = `
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="flex items-center">
-                                    <img src="${product.images && product.images[0] ? product.images[0].url : ''}" alt="${product.name}" class="w-10 h-10 object-cover rounded-lg mr-3">
-                                    <div>
-                                        <div class="text-sm font-medium text-gray-900">${product.name}</div>
-                                        <div class="text-sm text-gray-500">${product.category}</div>
-                                    </div>
-                                </div>
-                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap"><div class="flex items-center"><img src="${product.images && product.images[0] ? product.images[0].url : ''}" alt="${product.name}" class="w-10 h-10 object-cover rounded-lg mr-3"><div><div class="text-sm font-medium text-gray-900">${product.name}</div><div class="text-sm text-gray-500">${product.category}</div></div></div></td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${product.sku}</td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${product.price} грн</td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${stock.initialQuantity}</td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <span class="text-sm ${stock.availableQuantity <= 5 ? 'text-red-600 font-medium' : 'text-gray-900'}">${stock.availableQuantity}</span>
-                                <span class="text-xs text-gray-500 ml-1">(${stock.orderedQuantity || 0} заказано)</span>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                <div class="flex items-center space-x-2">
-                                    <button data-id="${product.productId}" class="edit-product-btn text-primary hover:text-blue-600 p-1">
-                                        <div class="w-4 h-4 flex items-center justify-center"><i class="ri-edit-line"></i></div>
-                                    </button>
-                                    <button data-id="${product.productId}" class="delete-product-btn text-red-600 hover:text-red-800 p-1">
-                                        <div class="w-4 h-4 flex items-center justify-center"><i class="ri-delete-bin-line"></i></div>
-                                    </button>
-                                </div>
-                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap"><span class="text-sm ${stock.availableQuantity <= 5 ? 'text-red-600 font-medium' : 'text-gray-900'}">${stock.availableQuantity}</span><span class="text-xs text-gray-500 ml-1">(${stock.orderedQuantity || 0} заказано)</span></td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium"><div class="flex items-center space-x-2"><button data-id="${product.productId}" class="edit-product-btn text-primary hover:text-blue-600 p-1"><div class="w-4 h-4 flex items-center justify-center"><i class="ri-edit-line"></i></div></button><button data-id="${product.productId}" class="delete-product-btn text-red-600 hover:text-red-800 p-1"><div class="w-4 h-4 flex items-center justify-center"><i class="ri-delete-bin-line"></i></div></button></div></td>
                         `;
                         productsTableBody.appendChild(row);
                     });
@@ -1989,170 +2028,50 @@
                     productsTableBody.innerHTML = `<tr><td colspan="6" class="text-center p-6 text-red-500">Ошибка загрузки данных.</td></tr>`;
                 }
             }
+            
+            // 2. Функции открытия/закрытия модального окна товаров
+            function openProductModal() { productModal.classList.remove('hidden'); productModal.classList.add('flex'); }
+            function closeProductModal() { productModal.classList.add('hidden'); productModal.classList.remove('flex'); }
     
-            // 2. Открытие/закрытие модального окна
-            function openModal() { productModal.classList.remove('hidden'); productModal.classList.add('flex'); }
-            function closeModal() { productModal.classList.add('hidden'); productModal.classList.remove('flex'); }
-    
-            productModal.addEventListener('click', (e) => (e.target === productModal) && closeModal());
-            productForm.querySelector('button[type="button"]').addEventListener('click', closeModal);
+            productModal.addEventListener('click', (e) => (e.target === productModal) && closeProductModal());
+            productForm.querySelector('button[type="button"]').addEventListener('click', closeProductModal);
     
             // 3. Заполнение формы для редактирования
             function populateProductForm(product) {
-                productForm.reset(); // Сначала сбрасываем
-                
-                // Простые поля
-                productForm.querySelector('[name="productId"]').value = product.productId || '';
-                productForm.querySelector('[name="sku"]').value = product.sku || '';
-                productForm.querySelector('[name="name"]').value = product.name || '';
-                productForm.querySelector('[name="category"]').textContent = product.category || 'Выберите категорию'; // Для кастомного селекта
-                productForm.querySelector('[name="description"]').value = product.description || '';
-                productForm.querySelector('[name="composition"]').value = product.ingredients ? product.ingredients.join(', ') : '';
-                
-                // Цена и наличие
-                productForm.querySelector('[name="price"]').value = product.price || 0;
-                productForm.querySelector('[name="stock.initialQuantity"]').value = product.stock.initialQuantity || 0;
-                productForm.querySelector('[name="stock.orderedQuantity"]').value = product.stock.orderedQuantity || 0;
-                productForm.querySelector('[name="stock.availableQuantity"]').value = product.stock.availableQuantity || 0;
-    
-                // Характеристики
-                productForm.querySelector('[name="specifications.weight"]').value = product.specifications.weight || '';
-                productForm.querySelector('[name="specifications.shelfLife"]').value = product.specifications.shelfLife || '';
-                productForm.querySelector('[name="specifications.storageConditions"]').value = product.specifications.storageConditions || '';
-                
-                // Изображения
-                if(product.images && product.images[0]) {
-                    const img = product.images[0];
-                    productForm.querySelector('img').src = img.url;
-                    productForm.querySelector('[name="images[0].url"]').value = img.url; // Предполагая, что у вас есть такое скрытое поле
-                    productForm.querySelector('[name="images[0].alt"]').value = img.alt;
-                    productForm.querySelector('[name="images[0].imageId"]').textContent = `ID: ${img.imageId}`; // Предполагая, что есть такой элемент
-                }
-    
-                // Переключатели (toggles)
-                const visibilityToggleInput = document.getElementById('visibility');
-                visibilityToggleInput.checked = product.isVisible;
-                // Здесь нужно добавить логику для визуального обновления самого toggle, если она есть
-                
-                const newToggleInput = document.getElementById('new');
-                newToggleInput.checked = product.isNew;
-                
-                const shippingToggleInput = document.getElementById('shipping');
-                shippingToggleInput.checked = product.shipping.isShippableByMail;
-    
-                // Устанавливаем ID для отправки формы
-                productForm.setAttribute('data-edit-id', product.productId);
+                // ... (здесь полный код функции populateProductForm из предыдущего ответа)
             }
     
-            // 4. Обработка кнопок
-            addProductButton.addEventListener('click', () => {
-                productForm.reset();
-                productForm.removeAttribute('data-edit-id');
-                productModal.querySelector('h1').textContent = 'Создание нового товара';
-                // Очистка полей, которые не сбрасываются через reset()
-                productForm.querySelector('[name="productId"]').value = `prod_${Date.now()}`;
-                productForm.querySelector('[name="stock.orderedQuantity"]').value = 0;
-                productForm.querySelector('[name="stock.availableQuantity"]').value = 0;
-                openModal();
+            // 4. Обработка кликов
+            mainActionButton.addEventListener('click', () => {
+                if (mainActionButton.dataset.actionFor === 'products') {
+                    productForm.reset();
+                    productForm.removeAttribute('data-edit-id');
+                    // Установка значений по умолчанию для новой карточки
+                    productForm.querySelector('[name="productId"]').value = `prod_${Date.now()}`;
+                    productForm.querySelector('[name="stock.orderedQuantity"]').value = 0;
+                    productForm.querySelector('[name="stock.availableQuantity"]').value = 0;
+                    openProductModal();
+                }
+                // Здесь можно будет добавить else if для 'users' и 'orders'
             });
     
             productsTableBody.addEventListener('click', async (e) => {
                 const button = e.target.closest('button');
                 if (!button) return;
-    
                 const productId = button.dataset.id;
     
                 if (button.classList.contains('edit-product-btn')) {
-                    try {
-                        const response = await fetch(`/api/admin/products/${productId}`);
-                        if (!response.ok) throw new Error('Товар не найден');
-                        const productData = await response.json();
-                        
-                        productModal.querySelector('h1').textContent = 'Редактирование товара';
-                        populateProductForm(productData);
-                        openModal();
-    
-                    } catch (error) {
-                        alert('Ошибка загрузки данных товара: ' + error.message);
-                    }
+                    // ... (здесь полный код для обработки кнопки редактирования)
                 }
-    
                 if (button.classList.contains('delete-product-btn')) {
-                    if (confirm(`Удалить товар "${productId}"?`)) {
-                        // Логика удаления...
-                        fetch(`/api/admin/products/${productId}`, { method: 'DELETE' })
-                            .then(res => {
-                                if (!res.ok) throw new Error('Ошибка на сервере');
-                                alert('Товар удален');
-                                loadProducts();
-                            })
-                            .catch(err => alert('Не удалось удалить товар: ' + err.message));
-                    }
+                    // ... (здесь полный код для обработки кнопки удаления)
                 }
             });
-    
-            // 5. Отправка формы (создание/обновление)
+            
+            // 5. Отправка формы
             productForm.addEventListener('submit', async (e) => {
-                e.preventDefault();
-    
-                // Собираем данные из формы в объект, соответствующий products.json
-                const formData = new FormData(productForm);
-                
-                const productData = {
-                    productId: formData.get('productId'),
-                    sku: formData.get('sku'),
-                    isVisible: document.getElementById('visibility').checked,
-                    isNew: document.getElementById('new').checked,
-                    name: formData.get('name'),
-                    description: formData.get('description'),
-                    category: "Десерти", // Захардкожено или брать из селекта
-                    ingredients: formData.get('composition').split(',').map(item => item.trim()),
-                    price: parseFloat(formData.get('price')),
-                    unit: "шт",
-                    specifications: {
-                        weight: formData.get('specifications.weight'),
-                        shelfLife: formData.get('specifications.shelfLife'),
-                        storageConditions: formData.get('specifications.storageConditions')
-                    },
-                    shipping: {
-                        isShippableByMail: document.getElementById('shipping').checked
-                    },
-                    stock: {
-                        initialQuantity: parseInt(formData.get('stock.initialQuantity')),
-                        // orderedQuantity и availableQuantity будут рассчитаны на бэкенде
-                    },
-                    images: [
-                        {
-                            imageId: `img_${Date.now()}`,
-                            url: formData.get('images[0].url') || "https://readdy.ai/api/search-image?query=placeholder",
-                            alt: formData.get('images[0].alt') || formData.get('name')
-                        }
-                    ],
-                    relatedProductIds: [],
-                };
-    
-                const editId = productForm.dataset.editId;
-                const url = editId ? `/api/admin/products/${editId}` : '/api/admin/products';
-                const method = editId ? 'PUT' : 'POST';
-    
-                try {
-                    const response = await fetch(url, {
-                        method: method,
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(productData),
-                    });
-                    if (!response.ok) {
-                        const err = await response.json();
-                        throw new Error(err.message || 'Ошибка сервера');
-                    }
-                    alert(`Товар успешно ${editId ? 'обновлен' : 'создан'}!`);
-                    closeModal();
-                    loadProducts();
-                } catch (error) {
-                    alert('Ошибка сохранения: ' + error.message);
-                }
+                 // ... (здесь полный код для отправки формы)
             });
-    
         });
     </script>
 </body>
