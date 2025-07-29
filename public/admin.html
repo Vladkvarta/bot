@@ -956,7 +956,189 @@
             -moz-appearance: textfield;
         }
     </style>
-    <div id="addProductModal" class="fixed inset-0 bg-gray-500 bg-opacity-75 hidden items-center justify-center">
+    <div id="OrderModal" class="fixed inset-0 bg-gray-500 bg-opacity-75 hidden items-center justify-center">
+        <div class="bg-white rounded-lg w-[800px] max-h-[90vh] overflow-y-auto">
+            <div class="bg-white rounded-lg shadow-sm p-8">
+                <h1 class="text-3xl font-bold text-gray-900 mb-8">Формирование заказа</h1>
+                <div class="space-y-8">
+                    <div class="bg-white border border-gray-200 rounded-lg p-6">
+                        <h2 class="text-xl font-semibold text-gray-900 mb-6">Список товаров</h2>
+                        <div class="overflow-x-auto">
+                            <table class="w-full">
+                                <thead>
+                                    <tr class="border-b border-gray-200">
+                                        <th class="text-left py-3 px-4 font-medium text-gray-700">Название товара</th>
+                                        <th class="text-left py-3 px-4 font-medium text-gray-700">Цена за единицу</th>
+                                        <th class="text-left py-3 px-4 font-medium text-gray-700">Доступно</th>
+                                        <th class="text-left py-3 px-4 font-medium text-gray-700">Количество</th>
+                                        <th class="text-left py-3 px-4 font-medium text-gray-700">Сумма</th>
+                                        <th class="text-left py-3 px-4 font-medium text-gray-700"></th>
+                                    </tr>
+                                </thead>
+                                <tbody id="order-items">
+                                    <tr class="border-b border-gray-100">
+                                        <td class="py-3 px-4">
+                                            <div class="relative">
+                                                <select
+                                                    class="w-full appearance-none bg-white border border-gray-300 rounded px-3 py-2.5 pr-10 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent hover:border-gray-400 transition-colors product-select">
+                                                    <option value="">Выберите товар</option>
+                                                    <option value="laptop" data-price="32000" data-stock="15">Ноутбук
+                                                        ASUS VivoBook</option>
+                                                    <option value="mouse" data-price="950" data-stock="50">Беспроводная
+                                                        мышь Logitech</option>
+                                                    <option value="keyboard" data-price="1600" data-stock="30">
+                                                        Клавиатура механическая</option>
+                                                    <option value="monitor" data-price="9500" data-stock="8">Монитор
+                                                        Samsung 24"</option>
+                                                    <option value="webcam" data-price="2800" data-stock="20">Веб-камера
+                                                        HD</option>
+                                                    <option value="headphones" data-price="4500" data-stock="25">
+                                                        Наушники Sony WH-1000XM4</option>
+                                                </select>
+                                                <div
+                                                    class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-500">
+                                                    <i class="ri-arrow-down-s-line"></i>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="py-3 px-4">
+                                            <span class="price-display text-gray-900 font-medium">0 ₴</span>
+                                        </td>
+                                        <td class="py-3 px-4">
+                                            <span class="stock-display text-gray-600">0 шт.</span>
+                                        </td>
+                                        <td class="py-3 px-4">
+                                            <input type="number" min="1"
+                                                class="w-20 border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent quantity-input"
+                                                placeholder="0">
+                                        </td>
+                                        <td class="py-3 px-4">
+                                            <span class="total-display text-gray-900 font-medium">0 ₴</span>
+                                        </td>
+                                        <td class="py-3 px-4">
+                                            <button
+                                                class="w-8 h-8 flex items-center justify-center text-red-500 hover:bg-red-50 rounded remove-item">
+                                                <i class="ri-delete-bin-line ri-lg"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="flex justify-between items-center mt-6">
+                            <button id="add-item"
+                                class="bg-primary text-white px-4 py-2 rounded-button hover:bg-blue-600 transition-colors whitespace-nowrap !rounded-button">
+                                <i class="ri-add-line mr-2"></i>Добавить товар
+                            </button>
+                            <div class="text-right">
+                                <div class="text-lg font-semibold text-gray-900">
+                                    Итого: <span id="order-total">0 ₽</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                        <div class="bg-white border border-gray-200 rounded-lg p-6">
+                            <h2 class="text-xl font-semibold text-gray-900 mb-6">Личные данные</h2>
+                            <div class="space-y-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Имя</label>
+                                    <select id="customer-name"
+                                        class="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+                                        <option value="">Выберите имя</option>
+                                        <option value="ivan" data-addresses="home,office">Иван Петров</option>
+                                        <option value="maria" data-addresses="home,work">Мария Сидорова</option>
+                                        <option value="alex" data-addresses="office,warehouse">Александр Козлов</option>
+                                        <option value="elena" data-addresses="home,office,work">Елена Морозова</option>
+                                        <option value="dmitry" data-addresses="warehouse,home">Дмитрий Волков</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Адрес</label>
+                                    <select id="customer-address"
+                                        class="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+                                        <option value="">Выберите адрес</option>
+                                        <option value="home" data-customers="ivan,maria,elena,dmitry">ул. Ленина, д. 15,
+                                            кв. 42</option>
+                                        <option value="office" data-customers="ivan,alex,elena">пр. Мира, д. 88, оф. 301
+                                        </option>
+                                        <option value="work" data-customers="maria,elena">ул. Гагарина, д. 7, эт. 3
+                                        </option>
+                                        <option value="warehouse" data-customers="alex,dmitry">ул. Промышленная, д. 25
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-white border border-gray-200 rounded-lg p-6">
+                            <h2 class="text-xl font-semibold text-gray-900 mb-6">Способ доставки</h2>
+                            <div class="space-y-3">
+                                <label class="flex items-center cursor-pointer">
+                                    <div class="relative">
+                                        <input type="radio" name="delivery" value="pickup"
+                                            class="sr-only delivery-radio">
+                                        <div
+                                            class="w-5 h-5 border-2 border-gray-300 rounded-full flex items-center justify-center radio-custom">
+                                            <div class="w-2.5 h-2.5 bg-primary rounded-full hidden radio-dot"></div>
+                                        </div>
+                                    </div>
+                                    <span class="ml-3 text-gray-700">Самовывоз</span>
+                                    <span class="ml-auto text-sm text-gray-500">Бесплатно</span>
+                                </label>
+                                <label class="flex items-center cursor-pointer">
+                                    <div class="relative">
+                                        <input type="radio" name="delivery" value="delivery"
+                                            class="sr-only delivery-radio">
+                                        <div
+                                            class="w-5 h-5 border-2 border-gray-300 rounded-full flex items-center justify-center radio-custom">
+                                            <div class="w-2.5 h-2.5 bg-primary rounded-full hidden radio-dot"></div>
+                                        </div>
+                                    </div>
+                                    <span class="ml-3 text-gray-700">Доставка курьером</span>
+                                    <span class="ml-auto text-sm text-gray-500">200 ₴</span>
+                                </label>
+                                <label class="flex items-center cursor-pointer">
+                                    <div class="relative">
+                                        <input type="radio" name="delivery" value="mail" class="sr-only delivery-radio">
+                                        <div
+                                            class="w-5 h-5 border-2 border-gray-300 rounded-full flex items-center justify-center radio-custom">
+                                            <div class="w-2.5 h-2.5 bg-primary rounded-full hidden radio-dot"></div>
+                                        </div>
+                                    </div>
+                                    <span class="ml-3 text-gray-700">Почтовая доставка</span>
+                                    <span class="ml-auto text-sm text-gray-500">120 ₴</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-white border border-gray-200 rounded-lg p-6">
+                        <h2 class="text-xl font-semibold text-gray-900 mb-6">Итоговая информация</h2>
+                        <div class="space-y-3">
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-700">Сумма заказа:</span>
+                                <span class="font-medium" id="subtotal">0 ₴</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-700">Стоимость доставки:</span>
+                                <span class="font-medium" id="delivery-cost">0 ₴</span>
+                            </div>
+                            <div class="border-t border-gray-200 pt-3">
+                                <div class="flex justify-between items-center">
+                                    <span class="text-lg font-semibold text-gray-900">Итого к оплате:</span>
+                                    <span class="text-lg font-bold text-primary" id="final-total">0 ₴</span>
+                                </div>
+                            </div>
+                        </div>
+                        <button id="save-order"
+                            class="w-full bg-primary text-white py-3 px-6 rounded-button hover:bg-blue-600 transition-colors mt-6 whitespace-nowrap !rounded-button">
+                            Сохранить
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="ProductModal" class="fixed inset-0 bg-gray-500 bg-opacity-75 hidden items-center justify-center">
         <div class="bg-white rounded-lg w-[800px] max-h-[90vh] overflow-y-auto">
             <div class="bg-white rounded-lg shadow-sm">
                 <form class="p-6 space-y-8">
@@ -1349,7 +1531,7 @@
             </div>
         </div>
     </div>
-    <div id="editUserModal" class="fixed inset-0 bg-gray-500 bg-opacity-75 hidden items-center justify-center">
+    <div id="UserModal" class="fixed inset-0 bg-gray-500 bg-opacity-75 hidden items-center justify-center">
         <div class="bg-white rounded-lg w-[800px] max-h-[90vh] overflow-y-auto">
             <form class="space-y-8">
                 <!-- Основная информация -->
