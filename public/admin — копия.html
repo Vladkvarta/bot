@@ -223,7 +223,7 @@
                                                         Мария Иванова
                                                     </div>
                                                     <div class="text-sm text-gray-500">
-                                                        +38 (096) 234-56-78
+                                                        +7 (999) 234-56-78
                                                     </div>
                                                 </div>
                                             </div>
@@ -1056,52 +1056,85 @@
                 <form class="p-6 space-y-8">
                     <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
                         <div class="lg:col-span-2 space-y-8">
-                            <!-- ОСНОВНАЯ ИНФОРМАЦИЯ -->
                             <div class="bg-gray-50 rounded-lg p-6">
                                 <h2 class="text-lg font-semibold text-gray-900 mb-4">Основная информация</h2>
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                     <div>
                                         <label class="block text-sm font-medium text-gray-700 mb-2">ID товара</label>
-                                        <input type="text" name="productId" class="w-full px-3 py-2 bg-gray-100 border border-gray-300 rounded-lg text-sm text-gray-500" readonly>
+                                        <input type="text" value="PROD-2024-001" name="productId"
+                                            class="w-full px-3 py-2 bg-gray-100 border border-gray-300 rounded-lg text-sm text-gray-500"
+                                            readonly="">
                                     </div>
                                     <div>
-                                        <label class="block text-sm font-medium text-gray-700 mb-2">Артикул <span class="text-red-500">*</span></label>
-                                        <input type="text" name="sku" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-sm">
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Артикул <span
+                                                class="text-red-500">*</span></label>
+                                        <input type="text" value="APL-IP15PM-256" name="sku"
+                                            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-sm">
                                     </div>
                                     <div class="md:col-span-2">
-                                        <label class="block text-sm font-medium text-gray-700 mb-2">Название товара <span class="text-red-500">*</span></label>
-                                        <input type="text" name="name" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-sm">
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Название товара
+                                            <span class="text-red-500">*</span></label>
+                                        <input type="text" value="iPhone 15 Pro Max" name="name"
+                                            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-sm">
                                     </div>
                                     <div>
-                                        <label class="block text-sm font-medium text-gray-700 mb-2">Категория <span class="text-red-500">*</span></label>
-                                        <input type="hidden" name="category" value="Десерти"> <!-- Значение по умолчанию -->
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Категория <span
+                                                class="text-red-500">*</span></label>
+                                        <!-- Этот input будет хранить и отправлять значение. Он не виден пользователю. -->
+                                        <input type="hidden" name="category" value="electronics">
                                         <div class="relative">
-                                            <button type="button" class="category-select w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-sm text-left bg-white flex items-center justify-between">
-                                                <span>Десерти</span>
-                                                <i class="ri-arrow-down-s-line"></i>
+                                            <button type="button"
+                                                class="category-select w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-sm text-left bg-white flex items-center justify-between">
+                                                <span>Электроника</span>
+                                                <div class="w-4 h-4 flex items-center justify-center">
+                                                    <i class="ri-arrow-down-s-line"></i>
+                                                </div>
                                             </button>
-                                            <div class="category-dropdown absolute top-full left-0 w-full bg-white border border-gray-300 rounded-lg shadow-lg z-10 hidden">
+                                            <div
+                                                class="category-dropdown absolute top-full left-0 w-full bg-white border border-gray-300 rounded-lg shadow-lg z-10 hidden">
                                                 <div class="py-1">
-                                                    <button type="button" class="category-option w-full px-3 py-2 text-left text-sm hover:bg-gray-50" data-value="Десерти">Десерти</button>
-                                                    <button type="button" class="category-option w-full px-3 py-2 text-left text-sm hover:bg-gray-50" data-value="Напитки">Напитки</button>
-                                                    <button type="button" class="category-option w-full px-3 py-2 text-left text-sm hover:bg-gray-50" data-value="Торты">Торты</button>
+                                                    <button type="button"
+                                                        class="category-option w-full px-3 py-2 text-left text-sm hover:bg-gray-50"
+                                                        data-value="electronics">Электроника</button>
+                                                    <button type="button"
+                                                        class="category-option w-full px-3 py-2 text-left text-sm hover:bg-gray-50"
+                                                        data-value="clothing">Одежда</button>
+                                                    <button type="button"
+                                                        class="category-option w-full px-3 py-2 text-left text-sm hover:bg-gray-50"
+                                                        data-value="home">Дом и сад</button>
+                                                    <button type="button"
+                                                        class="category-option w-full px-3 py-2 text-left text-sm hover:bg-gray-50"
+                                                        data-value="sports">Спорт</button>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                     <div>
-                                        <label class="block text-sm font-medium text-gray-700 mb-2">Единица измерения</label>
-                                         <input type="hidden" name="unit" value="шт"> <!-- Значение по умолчанию -->
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Единица
+                                            измерения</label>
                                         <div class="relative">
-                                            <button type="button" class="unit-select w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-sm text-left bg-white flex items-center justify-between">
+                                            <button type="button"
+                                                class="unit-select w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-sm text-left bg-white flex items-center justify-between">
                                                 <span>шт</span>
-                                                <i class="ri-arrow-down-s-line"></i>
+                                                <div class="w-4 h-4 flex items-center justify-center">
+                                                    <i class="ri-arrow-down-s-line"></i>
+                                                </div>
                                             </button>
-                                            <div class="unit-dropdown absolute top-full left-0 w-full bg-white border border-gray-300 rounded-lg shadow-lg z-10 hidden">
+                                            <div
+                                                class="unit-dropdown absolute top-full left-0 w-full bg-white border border-gray-300 rounded-lg shadow-lg z-10 hidden">
                                                 <div class="py-1">
-                                                    <button type="button" class="unit-option w-full px-3 py-2 text-left text-sm hover:bg-gray-50" data-value="шт">шт</button>
-                                                    <button type="button" class="unit-option w-full px-3 py-2 text-left text-sm hover:bg-gray-50" data-value="кг">кг</button>
-                                                    <button type="button" class="unit-option w-full px-3 py-2 text-left text-sm hover:bg-gray-50" data-value="л">л</button>
+                                                    <button type="button"
+                                                        class="unit-option w-full px-3 py-2 text-left text-sm hover:bg-gray-50"
+                                                        data-value="pcs">шт</button>
+                                                    <button type="button"
+                                                        class="unit-option w-full px-3 py-2 text-left text-sm hover:bg-gray-50"
+                                                        data-value="kg">кг</button>
+                                                    <button type="button"
+                                                        class="unit-option w-full px-3 py-2 text-left text-sm hover:bg-gray-50"
+                                                        data-value="l">л</button>
+                                                    <button type="button"
+                                                        class="unit-option w-full px-3 py-2 text-left text-sm hover:bg-gray-50"
+                                                        data-value="m">м</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -1109,128 +1142,302 @@
                                 </div>
                                 <div class="flex items-center space-x-6 mt-6">
                                     <div class="flex items-center">
-                                        <label class="block text-sm font-medium text-gray-700 mr-3">Видимость</label>
-                                        <input type="checkbox" name="isVisible" id="visibility" class="sr-only">
-                                        <div class="toggle-switch" data-for="visibility">
-                                            <div class="toggle-bg bg-gray-300 w-12 h-6 rounded-full relative cursor-pointer">
-                                                <div class="toggle-dot absolute top-0.5 left-0.5 bg-white w-5 h-5 rounded-full transition-transform"></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="flex items-center">
-                                        <label class="block text-sm font-medium text-gray-700 mr-3">Новинка</label>
-                                        <input type="checkbox" name="isNew" id="new" class="sr-only">
-                                        <div class="toggle-switch" data-for="new">
-                                            <div class="toggle-bg bg-gray-300 w-12 h-6 rounded-full relative cursor-pointer">
-                                                <div class="toggle-dot absolute top-0.5 left-0.5 bg-white w-5 h-5 rounded-full transition-transform"></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- ОПИСАНИЕ И СОСТАВ -->
-                            <div class="bg-gray-50 rounded-lg p-6">
-                                <h2 class="text-lg font-semibold text-gray-900 mb-4">Описание и состав</h2>
-                                <div class="space-y-4">
-                                    <div>
-                                        <label class="block text-sm font-medium text-gray-700 mb-2">Описание товара</label>
-                                        <textarea name="description" rows="4" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-sm" placeholder="Введите описание товара..."></textarea>
-                                    </div>
-                                    <div>
-                                        <label class="block text-sm font-medium text-gray-700 mb-2">Состав/Комплектация</label>
-                                        <textarea name="ingredients" rows="3" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-sm" placeholder="Ингредиенты через запятую..."></textarea>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- ЦЕНА И НАЛИЧИЕ -->
-                            <div class="bg-gray-50 rounded-lg p-6">
-                                <h2 class="text-lg font-semibold text-gray-900 mb-4">Цена и наличие</h2>
-                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                    <div>
-                                        <label class="block text-sm font-medium text-gray-700 mb-2">Цена <span class="text-red-500">*</span></label>
-                                        <div class="relative">
-                                            <input type="number" name="price" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-sm pr-8">
-                                            <span class="absolute right-3 top-2 text-sm text-gray-500">грн</span>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <label class="block text-sm font-medium text-gray-700 mb-2">Начальное количество</label>
-                                        <input type="number" name="initialQuantity" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-sm">
-                                    </div>
-                                    <div>
-                                        <label class="block text-sm font-medium text-gray-700 mb-2">Заказано</label>
-                                        <input type="number" name="orderedQuantity" class="w-full px-3 py-2 bg-gray-100 border border-gray-300 rounded-lg text-sm text-gray-500" readonly>
-                                    </div>
-                                    <div>
-                                        <label class="block text-sm font-medium text-gray-700 mb-2">Доступно</label>
-                                        <input type="number" name="availableQuantity" class="w-full px-3 py-2 bg-gray-100 border border-gray-300 rounded-lg text-sm text-gray-500" readonly>
-                                    </div>
-                                    <div>
-                                        <label class="block text-sm font-medium text-gray-700 mb-2">Статус склада</label>
-                                        <input type="hidden" name="status" value="in_stock"> <!-- Значение по умолчанию -->
-                                        <div class="relative">
-                                            <button type="button" class="status-select w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-sm text-left bg-white flex items-center justify-between">
-                                                <span>В наличии</span>
-                                                <i class="ri-arrow-down-s-line"></i>
-                                            </button>
-                                            <div class="status-dropdown absolute top-full left-0 w-full bg-white border border-gray-300 rounded-lg shadow-lg z-10 hidden">
-                                                <div class="py-1">
-                                                    <button type="button" class="status-option w-full px-3 py-2 text-left text-sm hover:bg-gray-50" data-value="in_stock">В наличии</button>
-                                                    <button type="button" class="status-option w-full px-3 py-2 text-left text-sm hover:bg-gray-50" data-value="out_of_stock">Нет в наличии</button>
+                                        <label class="block text-sm font-medium text-gray-700 mr-3">Видимость
+                                            товара</label>
+                                        <div class="toggle-switch" data-field="visibility">
+                                            <input type="checkbox" id="visibility" checked="" class="sr-only">
+                                            <div
+                                                class="toggle-bg bg-primary w-12 h-6 rounded-full relative cursor-pointer">
+                                                <div
+                                                    class="toggle-dot absolute top-0.5 left-0.5 bg-white w-5 h-5 rounded-full transition-transform transform translate-x-6">
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="flex items-center">
-                                        <label class="block text-sm font-medium text-gray-700 mr-3">Почтовая доставка</label>
-                                        <input type="checkbox" name="isShippableByMail" id="shipping" class="sr-only">
-                                        <div class="toggle-switch" data-for="shipping">
-                                            <div class="toggle-bg bg-gray-300 w-12 h-6 rounded-full relative cursor-pointer">
-                                                <div class="toggle-dot absolute top-0.5 left-0.5 bg-white w-5 h-5 rounded-full transition-transform"></div>
+                                        <label class="block text-sm font-medium text-gray-700 mr-3">Новинка</label>
+                                        <div class="toggle-switch" data-field="new">
+                                            <input type="checkbox" id="new" class="sr-only">
+                                            <div
+                                                class="toggle-bg bg-gray-300 w-12 h-6 rounded-full relative cursor-pointer">
+                                                <div
+                                                    class="toggle-dot absolute top-0.5 left-0.5 bg-white w-5 h-5 rounded-full transition-transform">
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <!-- ХАРАКТЕРИСТИКИ -->
+                            <div class="bg-gray-50 rounded-lg p-6">
+                                <h2 class="text-lg font-semibold text-gray-900 mb-4">Описание и состав</h2>
+                                <div class="space-y-4">
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Описание
+                                            товара</label>
+                                        <textarea rows="4"
+                                            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-sm"
+                                            placeholder="Введите описание товара...">Флагманский смартфон Apple с 6.7-дюймовым дисплеем Super Retina XDR, процессором A17 Pro, системой камер Pro и поддержкой 5G. Доступен в различных цветах и объемах памяти.</textarea>
+                                    </div>
+                                    <div>
+                                        <label
+                                            class="block text-sm font-medium text-gray-700 mb-2">Состав/Комплектация</label>
+                                        <textarea rows="3"
+                                            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-sm"
+                                            placeholder="Введите состав или комплектацию...">iPhone 15 Pro Max, кабель USB-C для зарядки, документация</textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="bg-gray-50 rounded-lg p-6">
+                                <h2 class="text-lg font-semibold text-gray-900 mb-4">Цена и наличие</h2>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Цена <span
+                                                class="text-red-500">*</span></label>
+                                        <div class="relative">
+                                            <input type="number" value="119990"
+                                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-sm pr-8">
+                                            <span class="absolute right-3 top-2 text-sm text-gray-500">₽</span>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Начальное
+                                            количество</label>
+                                        <input type="number" value="50"
+                                            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-sm">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Заказано</label>
+                                        <input type="number" value="3"
+                                            class="w-full px-3 py-2 bg-gray-100 border border-gray-300 rounded-lg text-sm text-gray-500"
+                                            readonly="">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Доступно</label>
+                                        <input type="number" value="47"
+                                            class="w-full px-3 py-2 bg-gray-100 border border-gray-300 rounded-lg text-sm text-gray-500"
+                                            readonly="">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Статус
+                                            склада</label>
+                                        <div class="relative">
+                                            <button type="button"
+                                                class="status-select w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-sm text-left bg-white flex items-center justify-between">
+                                                <span>В наличии</span>
+                                                <div class="w-4 h-4 flex items-center justify-center">
+                                                    <i class="ri-arrow-down-s-line"></i>
+                                                </div>
+                                            </button>
+                                            <div
+                                                class="status-dropdown absolute top-full left-0 w-full bg-white border border-gray-300 rounded-lg shadow-lg z-10 hidden">
+                                                <div class="py-1">
+                                                    <button type="button"
+                                                        class="status-option w-full px-3 py-2 text-left text-sm hover:bg-gray-50"
+                                                        data-value="available">В наличии</button>
+                                                    <button type="button"
+                                                        class="status-option w-full px-3 py-2 text-left text-sm hover:bg-gray-50"
+                                                        data-value="low">Мало</button>
+                                                    <button type="button"
+                                                        class="status-option w-full px-3 py-2 text-left text-sm hover:bg-gray-50"
+                                                        data-value="out">Нет в наличии</button>
+                                                    <button type="button"
+                                                        class="status-option w-full px-3 py-2 text-left text-sm hover:bg-gray-50"
+                                                        data-value="discontinued">Снят с производства</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <label class="block text-sm font-medium text-gray-700 mr-3">Почтовая
+                                            доставка</label>
+                                        <div class="toggle-switch" data-field="shipping">
+                                            <input type="checkbox" id="shipping" checked="" class="sr-only">
+                                            <div
+                                                class="toggle-bg bg-primary w-12 h-6 rounded-full relative cursor-pointer">
+                                                <div
+                                                    class="toggle-dot absolute top-0.5 left-0.5 bg-white w-5 h-5 rounded-full transition-transform transform translate-x-6">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                             <div class="bg-gray-50 rounded-lg p-6">
                                 <h2 class="text-lg font-semibold text-gray-900 mb-4">Характеристики товара</h2>
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                     <div>
-                                        <label class="block text-sm font-medium text-gray-700 mb-2">Вес</label>
-                                        <input type="text" name="weight" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-sm" placeholder="≈ 125г ±5%">
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Вес (г)</label>
+                                        <input type="number" value="221"
+                                            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-sm">
                                     </div>
                                     <div>
-                                        <label class="block text-sm font-medium text-gray-700 mb-2">Срок годности</label>
-                                        <input type="text" name="shelfLife" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-sm" placeholder="до 3-х діб">
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Срок
+                                            годности</label>
+                                        <input type="text" value="Не ограничен"
+                                            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-sm">
                                     </div>
                                     <div class="md:col-span-2">
-                                        <label class="block text-sm font-medium text-gray-700 mb-2">Условия хранения</label>
-                                        <input type="text" name="storageConditions" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-sm" placeholder="Тільки в холодильній вітрині">
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Условия
+                                            хранения</label>
+                                        <input type="text"
+                                            value="Хранить в сухом месте при температуре от -20°C до +45°C"
+                                            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-sm">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="bg-gray-50 rounded-lg p-6">
+                                <h2 class="text-lg font-semibold text-gray-900 mb-4">Связанные товары</h2>
+                                <div class="space-y-3">
+                                    <div
+                                        class="flex items-center justify-between p-3 bg-white rounded-lg border border-gray-200">
+                                        <div class="flex items-center">
+                                            <div
+                                                class="w-8 h-8 bg-gray-200 rounded flex items-center justify-center mr-3">
+                                                <div class="w-4 h-4 flex items-center justify-center text-gray-400">
+                                                    <i class="ri-macbook-line"></i>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <div class="text-sm font-medium text-gray-900">MacBook Pro 14"</div>
+                                                <div class="text-xs text-gray-500">APL-MBP14-M3</div>
+                                            </div>
+                                        </div>
+                                        <button type="button" class="text-red-600 hover:text-red-800 p-1">
+                                            <div class="w-4 h-4 flex items-center justify-center">
+                                                <i class="ri-close-line"></i>
+                                            </div>
+                                        </button>
+                                    </div>
+                                    <div
+                                        class="flex items-center justify-between p-3 bg-white rounded-lg border border-gray-200">
+                                        <div class="flex items-center">
+                                            <div
+                                                class="w-8 h-8 bg-gray-200 rounded flex items-center justify-center mr-3">
+                                                <div class="w-4 h-4 flex items-center justify-center text-gray-400">
+                                                    <i class="ri-headphone-line"></i>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <div class="text-sm font-medium text-gray-900">AirPods Pro 2</div>
+                                                <div class="text-xs text-gray-500">APL-APP2-USB</div>
+                                            </div>
+                                        </div>
+                                        <button type="button" class="text-red-600 hover:text-red-800 p-1">
+                                            <div class="w-4 h-4 flex items-center justify-center">
+                                                <i class="ri-close-line"></i>
+                                            </div>
+                                        </button>
+                                    </div>
+                                    <button type="button"
+                                        class="w-full p-3 border-2 border-dashed border-gray-300 rounded-lg text-gray-500 hover:border-primary hover:text-primary transition-colors">
+                                        <div class="w-5 h-5 flex items-center justify-center mx-auto mb-1">
+                                            <i class="ri-add-line"></i>
+                                        </div>
+                                        <span class="text-sm">Добавить связанный товар</span>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="bg-gray-50 rounded-lg p-6">
+                                <h2 class="text-lg font-semibold text-gray-900 mb-4">Информация о времени</h2>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Время
+                                            создания</label>
+                                        <input type="text" value="15.03.2024 14:30:25"
+                                            class="w-full px-3 py-2 bg-gray-100 border border-gray-300 rounded-lg text-sm text-gray-500"
+                                            readonly="">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Время
+                                            обновления</label>
+                                        <input type="text" value="26.07.2024 16:45:12"
+                                            class="w-full px-3 py-2 bg-gray-100 border border-gray-300 rounded-lg text-sm text-gray-500"
+                                            readonly="">
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <!-- ИЗОБРАЖЕНИЯ -->
                         <div class="space-y-6">
                             <div class="bg-gray-50 rounded-lg p-6">
                                 <h2 class="text-lg font-semibold text-gray-900 mb-4">Изображения товара</h2>
-                                <div id="images-container" class="space-y-4 mb-4">
-                                    <!-- Сюда JS будет добавлять поля для изображений -->
+                                <div class="grid grid-cols-2 gap-4 mb-4">
+                                    <div class="relative group">
+                                        <img src="https://readdy.ai/api/search-image?query=iPhone%2015%20Pro%20Max%20smartphone%20product%20photography%20on%20white%20background%2C%20professional%20studio%20lighting%2C%20high%20quality%20commercial%20product%20shot%2C%20modern%20sleek%20design&amp;width=300&amp;height=300&amp;seq=1&amp;orientation=squarish"
+                                            alt="iPhone 15 Pro Max"
+                                            class="w-full h-32 object-cover rounded-lg border border-gray-200">
+                                        <div
+                                            class="absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity rounded-lg flex items-center justify-center">
+                                            <div class="flex space-x-2">
+                                                <button type="button"
+                                                    class="p-2 bg-white rounded-full text-gray-700 hover:text-primary">
+                                                    <div class="w-4 h-4 flex items-center justify-center">
+                                                        <i class="ri-eye-line"></i>
+                                                    </div>
+                                                </button>
+                                                <button type="button"
+                                                    class="p-2 bg-white rounded-full text-gray-700 hover:text-red-600">
+                                                    <div class="w-4 h-4 flex items-center justify-center">
+                                                        <i class="ri-delete-bin-line"></i>
+                                                    </div>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div class="mt-2">
+                                            <input type="text" value="iPhone 15 Pro Max основное изображение"
+                                                class="w-full px-2 py-1 border border-gray-300 rounded text-xs focus:ring-1 focus:ring-primary focus:border-transparent"
+                                                placeholder="Alt-текст">
+                                            <div class="text-xs text-gray-500 mt-1">ID: IMG-2024-001</div>
+                                        </div>
+                                    </div>
+                                    <div class="relative group">
+                                        <img src="https://readdy.ai/api/search-image?query=iPhone%2015%20Pro%20Max%20back%20view%20product%20photography%20on%20white%20background%2C%20professional%20studio%20lighting%2C%20high%20quality%20commercial%20product%20shot%2C%20showing%20camera%20system&amp;width=300&amp;height=300&amp;seq=2&amp;orientation=squarish"
+                                            alt="iPhone 15 Pro Max задняя панель"
+                                            class="w-full h-32 object-cover rounded-lg border border-gray-200">
+                                        <div
+                                            class="absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity rounded-lg flex items-center justify-center">
+                                            <div class="flex space-x-2">
+                                                <button type="button"
+                                                    class="p-2 bg-white rounded-full text-gray-700 hover:text-primary">
+                                                    <div class="w-4 h-4 flex items-center justify-center">
+                                                        <i class="ri-eye-line"></i>
+                                                    </div>
+                                                </button>
+                                                <button type="button"
+                                                    class="p-2 bg-white rounded-full text-gray-700 hover:text-red-600">
+                                                    <div class="w-4 h-4 flex items-center justify-center">
+                                                        <i class="ri-delete-bin-line"></i>
+                                                    </div>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div class="mt-2">
+                                            <input type="text" value="iPhone 15 Pro Max задняя панель"
+                                                class="w-full px-2 py-1 border border-gray-300 rounded text-xs focus:ring-1 focus:ring-primary focus:border-transparent"
+                                                placeholder="Alt-текст">
+                                            <div class="text-xs text-gray-500 mt-1">ID: IMG-2024-002</div>
+                                        </div>
+                                    </div>
                                 </div>
-                                <button type="button" id="add-image-button" class="w-full p-4 border-2 border-dashed border-gray-300 rounded-lg text-gray-500 hover:border-primary hover:text-primary transition-colors">
-                                    <i class="ri-image-add-line mx-auto mb-2 text-2xl"></i>
+                                <button type="button"
+                                    class="w-full p-4 border-2 border-dashed border-gray-300 rounded-lg text-gray-500 hover:border-primary hover:text-primary transition-colors">
+                                    <div class="w-6 h-6 flex items-center justify-center mx-auto mb-2">
+                                        <i class="ri-image-add-line"></i>
+                                    </div>
                                     <span class="text-sm">Добавить изображение</span>
                                 </button>
                             </div>
                         </div>
                     </div>
-                    <!-- КНОПКИ УПРАВЛЕНИЯ -->
                     <div class="flex items-center justify-end space-x-4 pt-6 border-t border-gray-200">
-                        <button type="button" class="cancel-button px-6 py-2 border border-gray-300 rounded-button hover:bg-gray-50 transition-colors text-sm whitespace-nowrap !rounded-button">
-                            Отмена
-                        </button>
-                        <button type="submit" class="px-6 py-2 bg-primary text-white rounded-button hover:bg-blue-600 transition-colors text-sm whitespace-nowrap !rounded-button">
+                        <a href="https://readdy.ai/home/cb9458f8-9101-4315-a4f7-32608dd27b3b/d28fa445-1240-493c-a708-465a8aa4de71"
+                            data-readdy="true">
+                            <button type="button"
+                                class="px-6 py-2 border border-gray-300 rounded-button hover:bg-gray-50 transition-colors text-sm whitespace-nowrap !rounded-button">
+                                Отмена
+                            </button>
+                        </a>
+                        <button type="submit"
+                            class="px-6 py-2 bg-primary text-white rounded-button hover:bg-blue-600 transition-colors text-sm whitespace-nowrap !rounded-button">
                             Сохранить изменения
                         </button>
                     </div>
