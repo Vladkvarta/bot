@@ -1708,8 +1708,6 @@
                 form.querySelector('[name="sku"]').value = product.sku || '';
                 form.querySelector('[name="name"]').value = product.name || '';
                 form.querySelector('[name="price"]').value = product.price || '';
-                form.querySelector('[name="category"]').value = product.category || 'Десерти';
-                form.querySelector('[name="unit"]').value = product.unit || 'шт';
                 form.querySelector('[name="description"]').value = product.description || '';
                 form.querySelector('[name="ingredients"]').value = Array.isArray(product.ingredients) ? product.ingredients.join(', ') : (product.ingredients || '');
                 form.querySelector('[name="initialQuantity"]').value = product.stock?.initialQuantity || 0;
@@ -1717,6 +1715,8 @@
                 form.querySelector('[name="shelfLife"]').value = product.specifications?.shelfLife || '';
                 form.querySelector('[name="storageConditions"]').value = product.specifications?.storageConditions || '';
 
+                this.setCustomDropdownValue('category', product.category || 'Десерти');
+                this.setCustomDropdownValue('unit', product.unit || 'шт');
                 this.updateToggle('visibility', product.isVisible !== false);
                 this.updateToggle('new', product.isNew === true);
                 this.updateToggle('shipping', product.shipping?.isShippableByMail || false);
