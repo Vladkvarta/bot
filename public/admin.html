@@ -911,7 +911,7 @@
         <div class="bg-white rounded-lg w-[800px] max-h-[90vh] overflow-y-auto">
             <div class="bg-white rounded-lg shadow-sm">
                 <form id="product-form" class="p-6 space-y-8">
-                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
                         <div class="lg:col-span-2 space-y-8">
                             <!-- ИЗОБРАЖЕНИЯ -->
                             <div class="bg-gray-50 rounded-lg p-6">
@@ -1632,7 +1632,7 @@
                 container.className = 'space-y-2';
     
                 const preview = document.createElement('img');
-                preview.className = 'w-full h-32 object-cover rounded-lg bg-gray-100';
+                preview.className = 'w-full h-50 object-cover rounded-lg bg-gray-100';
                 preview.src = url || 'https://placehold.co/300x150/e2e8f0/64748b?text=Preview';
                 preview.onerror = () => { preview.src = 'https://placehold.co/300x150/e2e8f0/64748b?text=Error'; };
                 
