@@ -1688,13 +1688,13 @@
                     const row = document.createElement('tr');
                     row.dataset.productId = product.productId;
                     row.innerHTML = `
-                        <td class="px-6 py-4 whitespace-nowrap"><div class="flex items-center"><div class="flex-shrink-0 h-10 w-10"><img class="h-10 w-10 rounded-md object-cover" src="${product.images?.[0]?.url || 'https://placehold.co/40x40/e2e8f0/64748b?text=?'}" alt="${product.name}"></div><div class="ml-4"><div class="text-sm font-medium text-gray-900">${product.name}</div><div class="text-sm text-gray-500">${product.category}</div></div></div></td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${product.sku}</td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${product.price} грн</td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900"><input type="number" class="quantity-input w-24 border border-gray-300 rounded-md px-2 py-1 text-center" value="${stock.initialQuantity || 0}"></td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm ${available <= 5 ? 'text-red-600' : 'text-gray-900'}">${available}</td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium"><button class="visibility-toggle-btn p-1 ${isVisible ? 'text-gray-400 hover:text-green-600' : 'text-red-600 hover:text-red-800'}"><i class="text-lg ${isVisible ? 'ri-eye-line' : 'ri-eye-off-line'}"></i></button><button class="edit-product-btn text-blue-600 hover:text-blue-800 p-1"><i class="ri-edit-line text-lg"></i></button></td>
-                    `;
+                            <td class="px-6 py-4 whitespace-nowrap"><div class="flex items-center"><div class="flex-shrink-0 h-10 w-10"><img class="h-10 w-10 rounded-md object-cover" src="${product.images?.[0]?.url || 'https://placehold.co/40x40/e2e8f0/64748b?text=?'}" alt="${product.name}"></div><div class="ml-4"><div class="text-sm font-medium text-gray-900">${product.name}</div><div class="text-sm text-gray-500">${product.category}</div></div></div></td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${product.sku}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${product.price} грн</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900"><input type="number" class="quantity-input w-24 border border-gray-300 rounded-md px-2 py-1 text-center" value="${stock.initialQuantity || 0}"></td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm ${available <= 5 ? 'text-red-600' : 'text-gray-900'}">${available}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium"><button class="visibility-toggle-btn p-1 ${isVisible ? 'text-green-600' : 'text-red-600'}"><i class="text-lg ${isVisible ? 'ri-eye-line' : 'ri-eye-off-line'}"></i></button><button class="edit-product-btn text-blue-600 hover:text-blue-800 p-1"><i class="ri-edit-line text-lg"></i></button></td>
+                                    `;
                     this.elements.productsTableBody.appendChild(row);
                 });
             },
