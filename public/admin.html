@@ -944,6 +944,7 @@
                                             <button type="button"
                                                 class="category-select w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-sm text-left bg-white flex items-center justify-between">
                                                 <span>Десерти</span>
+                                        
                                                 <i class="ri-arrow-down-s-line"></i>
                                             </button>
                                             <div
@@ -1674,6 +1675,7 @@
                     const orderedQuantity = stock.orderedQuantity || 0;
                     const initialQuantity = stock.initialQuantity || 0;
                     const available = initialQuantity - orderedQuantity;
+                    const isVisible = product.isVisible !== false; // Считаем видимым по умолчанию
                     
                     const row = document.createElement('tr');
                     row.innerHTML = `
@@ -1690,9 +1692,14 @@
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${product.sku}</td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${product.price} грн</td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${initialQuantity}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                            <input type="number" class="quantity-input w-24 border border-gray-300 rounded-md px-2 py-1 text-center" value="${initialQuantity}" data-id="${product.productId}">
+                        </td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm ${available <= 5 ? 'text-red-600' : 'text-gray-900'}">${available}</td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                            <button data-id="${product.productId}" class="visibility-toggle-btn p-1 ${isVisible ? 'text-gray-400 hover:text-green-600' : 'text-red-600 hover:text-red-800'}">
+                                <i class="text-lg ${isVisible ? 'ri-eye-line' : 'ri-eye-off-line'}"></i>
+                            </button>
                             <button data-id="${product.productId}" class="edit-product-btn text-blue-600 hover:text-blue-800 p-1">
                                 <i class="ri-edit-line text-lg"></i>
                             </button>
@@ -1756,6 +1763,39 @@
                 imagesContainer.appendChild(imgElem);
                  imgElem.querySelector('.remove-image-btn').addEventListener('click', () => imgElem.remove());
             }
+    
+            // --- Generic Update Function ---
+            async function updateProductOnServer(productId, updateFunction) {
+                try {
+                    // 1. Get current product data
+                    const res = await fetch(`${API_ADMIN_URL}/${productId}`);
+                    if (!res.ok) throw new Error('Не удалось получить данные товара для обновления.');
+                    const product = await res.json();
+    
+                    // 2. Apply the update
+                    updateFunction(product);
+    
+                    // 3. Send the full updated object back
+                    const putResponse = await fetch(`${API_ADMIN_URL}/${productId}`, {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(product)
+                    });
+    
+                    if (!putResponse.ok) {
+                        const errorData = await putResponse.json();
+                        throw new Error(errorData.message || 'Ошибка сохранения на сервере.');
+                    }
+    
+                    // 4. Refresh the table to show changes
+                    await loadProducts();
+    
+                } catch (error) {
+                    console.error('Ошибка обновления товара:', error);
+                    alert(`Не удалось обновить товар: ${error.message}`);
+                    await loadProducts(); // Reload to revert optimistic UI changes if any
+                }
+            }
         
             // --- Event handlers ---
             addProductButton.addEventListener('click', () => {
@@ -1768,18 +1808,44 @@
             productModal.addEventListener('click', e => { if (e.target === productModal) closeModal(); });
         
             productsTableBody.addEventListener('click', async (e) => {
-                const btn = e.target.closest('.edit-product-btn');
-                if (!btn) return;
-                const productId = btn.dataset.id;
-                try {
-                    const res = await fetch(`${API_ADMIN_URL}/${productId}`);
-                    if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
-                    const product = await res.json();
-                    populateForm(product);
-                    openModal();
-                } catch (err) {
-                    console.error('Ошибка загрузки товара:', err);
-                    alert('Ошибка загрузки данных о товаре.');
+                const editBtn = e.target.closest('.edit-product-btn');
+                const visibilityBtn = e.target.closest('.visibility-toggle-btn');
+    
+                if (editBtn) {
+                    const productId = editBtn.dataset.id;
+                    try {
+                        const res = await fetch(`${API_ADMIN_URL}/${productId}`);
+                        if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+                        const product = await res.json();
+                        populateForm(product);
+                        openModal();
+                    } catch (err) {
+                        console.error('Ошибка загрузки товара:', err);
+                        alert('Ошибка загрузки данных о товаре.');
+                    }
+                }
+    
+                if (visibilityBtn) {
+                    const productId = visibilityBtn.dataset.id;
+                    await updateProductOnServer(productId, (product) => {
+                        product.isVisible = !(product.isVisible !== false);
+                    });
+                }
+            });
+    
+            productsTableBody.addEventListener('change', async (e) => {
+                if (e.target.classList.contains('quantity-input')) {
+                    const productId = e.target.dataset.id;
+                    const newQuantity = parseInt(e.target.value, 10);
+                    if (isNaN(newQuantity) || newQuantity < 0) {
+                         alert('Пожалуйста, введите корректное число.');
+                         loadProducts(); // Revert
+                         return;
+                    }
+                    await updateProductOnServer(productId, (product) => {
+                        if (!product.stock) product.stock = {};
+                        product.stock.initialQuantity = newQuantity;
+                    });
                 }
             });
     
