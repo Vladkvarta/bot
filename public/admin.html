@@ -911,95 +911,46 @@
         <div class="bg-white rounded-lg w-[800px] max-h-[90vh] overflow-y-auto">
             <div class="bg-white rounded-lg shadow-sm">
                 <form id="product-form" class="p-6 space-y-8">
-                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
                         <div class="lg:col-span-2 space-y-8">
-                            <!-- ИЗОБРАЖЕНИЯ -->
-                            <div class="bg-gray-50 rounded-lg p-6">
-                                <h2 class="text-lg font-semibold text-gray-900 mb-4">Изображения товара</h2>
-                                <div id="images-container" class="space-y-4 mb-4">
-                                    <!-- Сюда JS будет добавлять поля для изображений -->
-                                </div>
-                                <button type="button" id="add-image-button"
-                                    class="w-full p-4 border-2 border-dashed border-gray-300 rounded-lg text-gray-500 hover:border-primary hover:text-primary transition-colors">
-                                    <i class="ri-image-add-line mx-auto mb-2 text-2xl"></i>
-                                    <span class="text-sm">Добавить изображение</span>
-                                </button>
-                            </div>
                             <!-- ОСНОВНАЯ ИНФОРМАЦИЯ -->
                             <div class="bg-gray-50 rounded-lg p-6">
                                 <h2 class="text-lg font-semibold text-gray-900 mb-4">Основная информация</h2>
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                    <div>
-                                        <label class="block text-sm font-medium text-gray-700 mb-2">ID товара</label>
-                                        <input type="text" name="productId"
-                                            class="w-full px-3 py-2 bg-gray-100 border border-gray-300 rounded-lg text-sm text-gray-500"
-                                            readonly>
-                                    </div>
+                                    <input type="hidden" name="productId">
                                     <div>
                                         <label class="block text-sm font-medium text-gray-700 mb-2">Артикул <span
                                                 class="text-red-500">*</span></label>
                                         <input type="text" name="sku"
-                                            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-sm">
+                                            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-sm"
+                                            required>
                                     </div>
                                     <div class="md:col-span-2">
                                         <label class="block text-sm font-medium text-gray-700 mb-2">Название товара
                                             <span class="text-red-500">*</span></label>
                                         <input type="text" name="name"
-                                            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-sm">
+                                            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-sm"
+                                            required>
                                     </div>
                                     <div>
                                         <label class="block text-sm font-medium text-gray-700 mb-2">Категория <span
                                                 class="text-red-500">*</span></label>
-                                        <input type="hidden" name="category" value="Десерти">
-                                        <!-- Значение по умолчанию -->
-                                        <div class="relative">
-                                            <button type="button"
-                                                class="category-select w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-sm text-left bg-white flex items-center justify-between">
-                                                <span>Десерти</span>
-
-                                                <i class="ri-arrow-down-s-line"></i>
-                                            </button>
-                                            <div
-                                                class="category-dropdown absolute top-full left-0 w-full bg-white border border-gray-300 rounded-lg shadow-lg z-10 hidden">
-                                                <div class="py-1">
-                                                    <button type="button"
-                                                        class="category-option w-full px-3 py-2 text-left text-sm hover:bg-gray-50"
-                                                        data-value="Десерти">Десерти</button>
-                                                    <button type="button"
-                                                        class="category-option w-full px-3 py-2 text-left text-sm hover:bg-gray-50"
-                                                        data-value="Напитки">Напитки</button>
-                                                    <button type="button"
-                                                        class="category-option w-full px-3 py-2 text-left text-sm hover:bg-gray-50"
-                                                        data-value="Торты">Торты</button>
-                                                </div>
-                                            </div>
-                                        </div>
+                                        <select name="category"
+                                            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-sm">
+                                            <option>Десерти</option>
+                                            <option>Напитки</option>
+                                            <option>Торты</option>
+                                        </select>
                                     </div>
                                     <div>
                                         <label class="block text-sm font-medium text-gray-700 mb-2">Единица
                                             измерения</label>
-                                        <input type="hidden" name="unit" value="шт"> <!-- Значение по умолчанию -->
-                                        <div class="relative">
-                                            <button type="button"
-                                                class="unit-select w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-sm text-left bg-white flex items-center justify-between">
-                                                <span>шт</span>
-                                                <i class="ri-arrow-down-s-line"></i>
-                                            </button>
-                                            <div
-                                                class="unit-dropdown absolute top-full left-0 w-full bg-white border border-gray-300 rounded-lg shadow-lg z-10 hidden">
-                                                <div class="py-1">
-                                                    <button type="button"
-                                                        class="unit-option w-full px-3 py-2 text-left text-sm hover:bg-gray-50"
-                                                        data-value="шт">шт</button>
-                                                    <button type="button"
-                                                        class="unit-option w-full px-3 py-2 text-left text-sm hover:bg-gray-50"
-                                                        data-value="кг">кг</button>
-                                                    <button type="button"
-                                                        class="unit-option w-full px-3 py-2 text-left text-sm hover:bg-gray-50"
-                                                        data-value="л">л</button>
-                                                </div>
-                                            </div>
-                                        </div>
+                                        <select name="unit"
+                                            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-sm">
+                                            <option value="шт">шт</option>
+                                            <option value="кг">кг</option>
+                                            <option value="л">л</option>
+                                        </select>
                                     </div>
                                 </div>
                                 <div class="flex items-center space-x-6 mt-6">
@@ -1037,116 +988,33 @@
                                         <label class="block text-sm font-medium text-gray-700 mb-2">Описание
                                             товара</label>
                                         <textarea name="description" rows="4"
-                                            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-sm"
+                                            class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm"
                                             placeholder="Введите описание товара..."></textarea>
                                     </div>
                                     <div>
                                         <label
                                             class="block text-sm font-medium text-gray-700 mb-2">Состав/Комплектация</label>
                                         <textarea name="ingredients" rows="3"
-                                            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-sm"
+                                            class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm"
                                             placeholder="Ингредиенты через запятую..."></textarea>
                                     </div>
                                 </div>
                             </div>
-                            <!-- ЦЕНА И НАЛИЧИЕ -->
+                        </div>
+                        <!-- ИЗОБРАЖЕНИЯ -->
+                        <div class="space-y-6">
                             <div class="bg-gray-50 rounded-lg p-6">
-                                <h2 class="text-lg font-semibold text-gray-900 mb-4">Цена и наличие</h2>
-                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                    <div>
-                                        <label class="block text-sm font-medium text-gray-700 mb-2">Цена <span
-                                                class="text-red-500">*</span></label>
-                                        <div class="relative">
-                                            <input type="number" name="price"
-                                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-sm pr-8">
-                                            <span class="absolute right-3 top-2 text-sm text-gray-500">грн</span>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <label class="block text-sm font-medium text-gray-700 mb-2">Начальное
-                                            количество</label>
-                                        <input type="number" name="initialQuantity"
-                                            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-sm">
-                                    </div>
-                                    <div>
-                                        <label class="block text-sm font-medium text-gray-700 mb-2">Заказано</label>
-                                        <input type="number" name="orderedQuantity"
-                                            class="w-full px-3 py-2 bg-gray-100 border border-gray-300 rounded-lg text-sm text-gray-500"
-                                            readonly>
-                                    </div>
-                                    <div>
-                                        <label class="block text-sm font-medium text-gray-700 mb-2">Доступно</label>
-                                        <input type="number" name="availableQuantity"
-                                            class="w-full px-3 py-2 bg-gray-100 border border-gray-300 rounded-lg text-sm text-gray-500"
-                                            readonly>
-                                    </div>
-                                    <div>
-                                        <label class="block text-sm font-medium text-gray-700 mb-2">Статус
-                                            склада</label>
-                                        <input type="hidden" name="status" value="in_stock">
-                                        <!-- Значение по умолчанию -->
-                                        <div class="relative">
-                                            <button type="button"
-                                                class="status-select w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-sm text-left bg-white flex items-center justify-between">
-                                                <span>В наличии</span>
-                                                <i class="ri-arrow-down-s-line"></i>
-                                            </button>
-                                            <div
-                                                class="status-dropdown absolute top-full left-0 w-full bg-white border border-gray-300 rounded-lg shadow-lg z-10 hidden">
-                                                <div class="py-1">
-                                                    <button type="button"
-                                                        class="status-option w-full px-3 py-2 text-left text-sm hover:bg-gray-50"
-                                                        data-value="in_stock">В наличии</button>
-                                                    <button type="button"
-                                                        class="status-option w-full px-3 py-2 text-left text-sm hover:bg-gray-50"
-                                                        data-value="out_of_stock">Нет в наличии</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="flex items-center">
-                                        <label class="block text-sm font-medium text-gray-700 mr-3">Почтовая
-                                            доставка</label>
-                                        <input type="checkbox" name="isShippableByMail" id="shipping" class="sr-only">
-                                        <div class="toggle-switch" data-for="shipping">
-                                            <div
-                                                class="toggle-bg bg-gray-300 w-12 h-6 rounded-full relative cursor-pointer">
-                                                <div
-                                                    class="toggle-dot absolute top-0.5 left-0.5 bg-white w-5 h-5 rounded-full transition-transform">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                                <h2 class="text-lg font-semibold text-gray-900 mb-4">Изображения товара</h2>
+                                <div id="images-container" class="space-y-4 mb-4">
+                                    <!-- Сюда JS будет добавлять поля для изображений -->
                                 </div>
-                            </div>
-                            <!-- ХАРАКТЕРИСТИКИ -->
-                            <div class="bg-gray-50 rounded-lg p-6">
-                                <h2 class="text-lg font-semibold text-gray-900 mb-4">Характеристики товара</h2>
-                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                    <div>
-                                        <label class="block text-sm font-medium text-gray-700 mb-2">Вес</label>
-                                        <input type="text" name="weight"
-                                            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-sm"
-                                            placeholder="≈ 125г ±5%">
-                                    </div>
-                                    <div>
-                                        <label class="block text-sm font-medium text-gray-700 mb-2">Срок
-                                            годности</label>
-                                        <input type="text" name="shelfLife"
-                                            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-sm"
-                                            placeholder="до 3-х діб">
-                                    </div>
-                                    <div class="md:col-span-2">
-                                        <label class="block text-sm font-medium text-gray-700 mb-2">Условия
-                                            хранения</label>
-                                        <input type="text" name="storageConditions"
-                                            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-sm"
-                                            placeholder="Тільки в холодильній вітрині">
-                                    </div>
-                                </div>
+                                <button type="button" id="add-image-button"
+                                    class="w-full p-4 border-2 border-dashed border-gray-300 rounded-lg text-gray-500 hover:border-primary hover:text-primary transition-colors">
+                                    <i class="ri-image-add-line mx-auto mb-2 text-2xl"></i>
+                                    <span class="text-sm">Добавить изображение</span>
+                                </button>
                             </div>
                         </div>
-
                     </div>
                     <!-- КНОПКИ УПРАВЛЕНИЯ -->
                     <div class="flex items-center justify-between pt-6 border-t border-gray-200">
@@ -1696,7 +1564,7 @@
                 imagesContainer: document.getElementById('images-container'),
                 deleteProductButton: document.getElementById('delete-product-button'),
             },
-
+    
             renderProductTable(products) {
                 this.elements.productsTableBody.innerHTML = '';
                 if (products.length === 0) {
@@ -1707,25 +1575,25 @@
                     const stock = product.stock || {};
                     const available = (stock.initialQuantity || 0) - (stock.orderedQuantity || 0);
                     const isVisible = product.isVisible !== false;
-
+                    
                     const row = document.createElement('tr');
                     row.dataset.productId = product.productId;
                     row.innerHTML = `
-                    <td class="px-6 py-4 whitespace-nowrap"><div class="flex items-center"><div class="flex-shrink-0 h-10 w-10"><img class="h-10 w-10 rounded-md object-cover" src="${product.images?.[0]?.url || 'https://placehold.co/40x40/e2e8f0/64748b?text=?'}" alt="${product.name}"></div><div class="ml-4"><div class="text-sm font-medium text-gray-900">${product.name}</div><div class="text-sm text-gray-500">${product.category}</div></div></div></td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${product.sku}</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${product.price} грн</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900"><input type="number" class="quantity-input w-24 border border-gray-300 rounded-md px-2 py-1 text-center" value="${stock.initialQuantity || 0}"></td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm ${available <= 5 ? 'text-red-600' : 'text-gray-900'}">${available}</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium"><button class="visibility-toggle-btn p-1 ${isVisible ? 'text-gray-400 hover:text-green-600' : 'text-red-600 hover:text-red-800'}"><i class="text-lg ${isVisible ? 'ri-eye-line' : 'ri-eye-off-line'}"></i></button><button class="edit-product-btn text-blue-600 hover:text-blue-800 p-1"><i class="ri-edit-line text-lg"></i></button></td>
-                `;
+                        <td class="px-6 py-4 whitespace-nowrap"><div class="flex items-center"><div class="flex-shrink-0 h-10 w-10"><img class="h-10 w-10 rounded-md object-cover" src="${product.images?.[0]?.url || 'https://placehold.co/40x40/e2e8f0/64748b?text=?'}" alt="${product.name}"></div><div class="ml-4"><div class="text-sm font-medium text-gray-900">${product.name}</div><div class="text-sm text-gray-500">${product.category}</div></div></div></td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${product.sku}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${product.price} грн</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900"><input type="number" class="quantity-input w-24 border border-gray-300 rounded-md px-2 py-1 text-center" value="${stock.initialQuantity || 0}"></td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm ${available <= 5 ? 'text-red-600' : 'text-gray-900'}">${available}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium"><button class="visibility-toggle-btn p-1 ${isVisible ? 'text-gray-400 hover:text-green-600' : 'text-red-600 hover:text-red-800'}"><i class="text-lg ${isVisible ? 'ri-eye-line' : 'ri-eye-off-line'}"></i></button><button class="edit-product-btn text-blue-600 hover:text-blue-800 p-1"><i class="ri-edit-line text-lg"></i></button></td>
+                    `;
                     this.elements.productsTableBody.appendChild(row);
                 });
             },
-
+    
             populateForm(product) {
                 this.elements.productForm.reset();
                 this.elements.imagesContainer.innerHTML = '';
-
+                
                 const form = this.elements.productForm;
                 form.querySelector('[name="productId"]').value = product.productId || '';
                 form.querySelector('[name="sku"]').value = product.sku || '';
@@ -1736,31 +1604,53 @@
                 form.querySelector('[name="description"]').value = product.description || '';
                 form.querySelector('[name="ingredients"]').value = Array.isArray(product.ingredients) ? product.ingredients.join(', ') : (product.ingredients || '');
                 form.querySelector('[name="initialQuantity"]').value = product.stock?.initialQuantity || 0;
-                form.querySelector('[name="weight"]').value = product.specifications?.weight || '';
-                form.querySelector('[name="shelfLife"]').value = product.specifications?.shelfLife || '';
-                form.querySelector('[name="storageConditions"]').value = product.specifications?.storageConditions || '';
-
+                
                 this.updateToggle('visibility', product.isVisible !== false);
                 this.updateToggle('new', product.isNew === true);
                 this.updateToggle('shipping', product.shipping?.isShippableByMail || false);
-
+    
                 (product.images || []).forEach(img => this.addImageField(img.url));
                 this.elements.deleteProductButton.style.display = product.productId ? 'block' : 'none';
             },
-
+    
             addImageField(url = '') {
-                const imgElem = document.createElement('div');
-                imgElem.className = 'relative mb-2';
-                imgElem.innerHTML = `<input type="text" value="${url}" name="imageUrl" class="w-full px-2 py-1 border rounded text-sm" placeholder="https://example.com/image.jpg" /><button type="button" class="remove-image-btn absolute right-1 top-1 text-red-500 hover:text-red-700"><i class="ri-close-circle-fill"></i></button>`;
-                this.elements.imagesContainer.appendChild(imgElem);
-                imgElem.querySelector('.remove-image-btn').addEventListener('click', () => imgElem.remove());
+                const container = document.createElement('div');
+                container.className = 'space-y-2';
+    
+                const preview = document.createElement('img');
+                preview.className = 'w-full h-32 object-cover rounded-lg bg-gray-100';
+                preview.src = url || 'https://placehold.co/300x150/e2e8f0/64748b?text=Preview';
+                preview.onerror = () => { preview.src = 'https://placehold.co/300x150/e2e8f0/64748b?text=Error'; };
+                
+                const inputGroup = document.createElement('div');
+                inputGroup.className = 'relative';
+                
+                const input = document.createElement('input');
+                input.type = 'text';
+                input.name = 'imageUrl';
+                input.value = url;
+                input.className = 'w-full px-2 py-1 border rounded text-sm pr-8';
+                input.placeholder = 'https://example.com/image.jpg';
+                input.addEventListener('input', () => {
+                    preview.src = input.value || 'https://placehold.co/300x150/e2e8f0/64748b?text=Preview';
+                });
+    
+                const removeBtn = document.createElement('button');
+                removeBtn.type = 'button';
+                removeBtn.className = 'remove-image-btn absolute right-1 top-1/2 -translate-y-1/2 text-red-500 hover:text-red-700 p-1';
+                removeBtn.innerHTML = '<i class="ri-close-circle-fill"></i>';
+                removeBtn.addEventListener('click', () => container.remove());
+    
+                inputGroup.append(input, removeBtn);
+                container.append(preview, inputGroup);
+                this.elements.imagesContainer.appendChild(container);
             },
-
+    
             getFormData() {
                 const form = this.elements.productForm;
                 const formData = new FormData(form);
                 const imageUrls = Array.from(form.querySelectorAll('[name="imageUrl"]')).map(input => input.value.trim()).filter(url => url);
-
+    
                 return {
                     productId: formData.get('productId'),
                     sku: formData.get('sku'),
@@ -1778,16 +1668,24 @@
                     images: imageUrls.map((url, index) => ({ imageId: `img_${Date.now()}_${index}`, url: url, alt: formData.get('name') })),
                 };
             },
-
+            
             openModal() { this.elements.productModal.classList.remove('hidden'); this.elements.productModal.classList.add('flex'); },
             closeModal() { this.elements.productModal.classList.add('hidden'); this.elements.productModal.classList.remove('flex'); },
-
+            
             updateToggle(id, isChecked) {
                 const checkbox = document.getElementById(id);
                 const toggleBg = document.querySelector(`.toggle-switch[data-for="${id}"] .toggle-bg`);
-                if (checkbox && toggleBg) {
+                if(checkbox && toggleBg) {
                     checkbox.checked = isChecked;
-                    if (isChecked) { toggleBg.classList.add('toggled'); } else { toggleBg.classList.remove('toggled'); }
+                    if(isChecked) { 
+                        toggleBg.classList.add('bg-primary');
+                        toggleBg.classList.remove('bg-gray-300');
+                        toggleBg.firstElementChild.style.transform = 'translateX(1.5rem)';
+                    } else { 
+                        toggleBg.classList.remove('bg-primary');
+                        toggleBg.classList.add('bg-gray-300');
+                        toggleBg.firstElementChild.style.transform = 'translateX(0)';
+                    }
                 }
             }
         };
