@@ -919,7 +919,8 @@
                                 <div id="images-container" class="space-y-4 mb-4">
                                     <!-- Сюда JS будет добавлять поля для изображений -->
                                 </div>
-                                <button type="button" id="add-image-button" class="w-full p-4 border-2 border-dashed border-gray-300 rounded-lg text-gray-500 hover:border-primary hover:text-primary transition-colors">
+                                <button type="button" id="add-image-button"
+                                    class="w-full p-4 border-2 border-dashed border-gray-300 rounded-lg text-gray-500 hover:border-primary hover:text-primary transition-colors">
                                     <i class="ri-image-add-line mx-auto mb-2 text-2xl"></i>
                                     <span class="text-sm">Добавить изображение</span>
                                 </button>
@@ -930,58 +931,96 @@
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                     <input type="hidden" name="productId">
                                     <div>
-                                        <label class="block text-sm font-medium text-gray-700 mb-2">Артикул <span class="text-red-500">*</span></label>
-                                        <input type="text" name="sku" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-sm" required>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Артикул <span
+                                                class="text-red-500">*</span></label>
+                                        <input type="text" name="sku"
+                                            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-sm"
+                                            required>
                                     </div>
                                     <div class="md:col-span-2">
-                                        <label class="block text-sm font-medium text-gray-700 mb-2">Название товара <span class="text-red-500">*</span></label>
-                                        <input type="text" name="name" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-sm" required>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Название товара
+                                            <span class="text-red-500">*</span></label>
+                                        <input type="text" name="name"
+                                            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-sm"
+                                            required>
                                     </div>
                                     <div>
-                                        <label class="block text-sm font-medium text-gray-700 mb-2">Категория <span class="text-red-500">*</span></label>
-                                        <select name="category" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-sm">
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Категория <span
+                                                class="text-red-500">*</span></label>
+                                        <select name="category"
+                                            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-sm">
                                             <option>Десерти</option>
                                             <option>Напитки</option>
                                             <option>Торты</option>
                                         </select>
                                     </div>
-                                    <div>
-                                        <label class="block text-sm font-medium text-gray-700 mb-2">Единица измерения</label>
+                                    <!-- <div> -->
+                                    <!-- <label class="block text-sm font-medium text-gray-700 mb-2">Единица измерения</label>
                                          <select name="unit" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-sm">
                                             <option value="шт">шт</option>
                                             <option value="кг">кг</option>
                                             <option value="л">л</option>
-                                        </select>
+                                        </select> -->
+                                    <div
+                                        class="unit-dropdown absolute top-full left-0 w-full bg-white border border-gray-300 rounded-lg shadow-lg z-10 hidden">
+                                        <div class="py-1">
+                                            <button type="button"
+                                                class="unit-option w-full px-3 py-2 text-left text-sm hover:bg-gray-50"
+                                                data-value="pcs">шт</button>
+                                            <button type="button"
+                                                class="unit-option w-full px-3 py-2 text-left text-sm hover:bg-gray-50"
+                                                data-value="kg">кг</button>
+                                            <button type="button"
+                                                class="unit-option w-full px-3 py-2 text-left text-sm hover:bg-gray-50"
+                                                data-value="l">л</button>
+                                        </div>
                                     </div>
+                                    <!-- </div> -->
                                 </div>
                                 <div class="flex items-center space-x-6 mt-6">
                                     <div class="flex items-center">
                                         <label class="block text-sm font-medium text-gray-700 mr-3">Видимость</label>
                                         <input type="checkbox" name="isVisible" id="visibility" class="sr-only">
                                         <div class="toggle-switch" data-for="visibility">
-                                            <div class="toggle-bg bg-gray-300 w-12 h-6 rounded-full relative cursor-pointer"><div class="toggle-dot absolute top-0.5 left-0.5 bg-white w-5 h-5 rounded-full transition-transform"></div></div>
+                                            <div
+                                                class="toggle-bg bg-gray-300 w-12 h-6 rounded-full relative cursor-pointer">
+                                                <div
+                                                    class="toggle-dot absolute top-0.5 left-0.5 bg-white w-5 h-5 rounded-full transition-transform">
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="flex items-center">
                                         <label class="block text-sm font-medium text-gray-700 mr-3">Новинка</label>
                                         <input type="checkbox" name="isNew" id="new" class="sr-only">
                                         <div class="toggle-switch" data-for="new">
-                                            <div class="toggle-bg bg-gray-300 w-12 h-6 rounded-full relative cursor-pointer"><div class="toggle-dot absolute top-0.5 left-0.5 bg-white w-5 h-5 rounded-full transition-transform"></div></div>
+                                            <div
+                                                class="toggle-bg bg-gray-300 w-12 h-6 rounded-full relative cursor-pointer">
+                                                <div
+                                                    class="toggle-dot absolute top-0.5 left-0.5 bg-white w-5 h-5 rounded-full transition-transform">
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <!-- ОПИСАНИЕ И СОСТАВ -->
                             <div class="bg-gray-50 rounded-lg p-6">
-                                 <h2 class="text-lg font-semibold text-gray-900 mb-4">Описание и состав</h2>
+                                <h2 class="text-lg font-semibold text-gray-900 mb-4">Описание и состав</h2>
                                 <div class="space-y-4">
                                     <div>
-                                        <label class="block text-sm font-medium text-gray-700 mb-2">Описание товара</label>
-                                        <textarea name="description" rows="4" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm" placeholder="Введите описание товара..."></textarea>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Описание
+                                            товара</label>
+                                        <textarea name="description" rows="4"
+                                            class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm"
+                                            placeholder="Введите описание товара..."></textarea>
                                     </div>
                                     <div>
-                                        <label class="block text-sm font-medium text-gray-700 mb-2">Состав/Комплектация</label>
-                                        <textarea name="ingredients" rows="3" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm" placeholder="Ингредиенты через запятую..."></textarea>
+                                        <label
+                                            class="block text-sm font-medium text-gray-700 mb-2">Состав/Комплектация</label>
+                                        <textarea name="ingredients" rows="3"
+                                            class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm"
+                                            placeholder="Ингредиенты через запятую..."></textarea>
                                     </div>
                                 </div>
                             </div>
@@ -990,21 +1029,32 @@
                                 <h2 class="text-lg font-semibold text-gray-900 mb-4">Цена и наличие</h2>
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                     <div>
-                                        <label class="block text-sm font-medium text-gray-700 mb-2">Цена <span class="text-red-500">*</span></label>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Цена <span
+                                                class="text-red-500">*</span></label>
                                         <div class="relative">
-                                            <input type="number" name="price" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm pr-8" required>
+                                            <input type="number" name="price"
+                                                class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm pr-8"
+                                                required>
                                             <span class="absolute right-3 top-2 text-sm text-gray-500">грн</span>
                                         </div>
                                     </div>
                                     <div>
-                                        <label class="block text-sm font-medium text-gray-700 mb-2">Начальное количество</label>
-                                        <input type="number" name="initialQuantity" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm">
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Начальное
+                                            количество</label>
+                                        <input type="number" name="initialQuantity"
+                                            class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm">
                                     </div>
-                                     <div class="flex items-center mt-6">
-                                        <label class="block text-sm font-medium text-gray-700 mr-3">Почтовая доставка</label>
+                                    <div class="flex items-center mt-6">
+                                        <label class="block text-sm font-medium text-gray-700 mr-3">Почтовая
+                                            доставка</label>
                                         <input type="checkbox" name="isShippableByMail" id="shipping" class="sr-only">
                                         <div class="toggle-switch" data-for="shipping">
-                                            <div class="toggle-bg bg-gray-300 w-12 h-6 rounded-full relative cursor-pointer"><div class="toggle-dot absolute top-0.5 left-0.5 bg-white w-5 h-5 rounded-full transition-transform"></div></div>
+                                            <div
+                                                class="toggle-bg bg-gray-300 w-12 h-6 rounded-full relative cursor-pointer">
+                                                <div
+                                                    class="toggle-dot absolute top-0.5 left-0.5 bg-white w-5 h-5 rounded-full transition-transform">
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -1015,31 +1065,43 @@
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                     <div>
                                         <label class="block text-sm font-medium text-gray-700 mb-2">Вес</label>
-                                        <input type="text" name="weight" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm" placeholder="≈ 125г ±5%">
+                                        <input type="text" name="weight"
+                                            class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm"
+                                            placeholder="≈ 125г ±5%">
                                     </div>
                                     <div>
-                                        <label class="block text-sm font-medium text-gray-700 mb-2">Срок годности</label>
-                                        <input type="text" name="shelfLife" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm" placeholder="до 3-х діб">
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Срок
+                                            годности</label>
+                                        <input type="text" name="shelfLife"
+                                            class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm"
+                                            placeholder="до 3-х діб">
                                     </div>
                                     <div class="md:col-span-2">
-                                        <label class="block text-sm font-medium text-gray-700 mb-2">Условия хранения</label>
-                                        <input type="text" name="storageConditions" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm" placeholder="Тільки в холодильній вітрині">
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Условия
+                                            хранения</label>
+                                        <input type="text" name="storageConditions"
+                                            class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm"
+                                            placeholder="Тільки в холодильній вітрині">
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        
+
                     </div>
                     <!-- КНОПКИ УПРАВЛЕНИЯ -->
-                    <div class="sticky bottom-0 z-10 -mx-6 -mb-6 flex items-center justify-between border-t border-gray-200 bg-white px-6 py-4">
-                        <button type="button" id="delete-product-button" class="px-6 py-2 bg-red-600 text-white rounded-button hover:bg-red-700 transition-colors text-sm whitespace-nowrap !rounded-button">
+                    <div
+                        class="sticky bottom-0 z-10 -mx-6 -mb-6 flex items-center justify-between border-t border-gray-200 bg-white px-6 py-4">
+                        <button type="button" id="delete-product-button"
+                            class="px-6 py-2 bg-red-600 text-white rounded-button hover:bg-red-700 transition-colors text-sm whitespace-nowrap !rounded-button">
                             Удалить товар
                         </button>
                         <div class="flex items-center space-x-4">
-                            <button type="button" class="cancel-button px-6 py-2 border border-gray-300 rounded-button hover:bg-gray-50 transition-colors text-sm whitespace-nowrap !rounded-button">
+                            <button type="button"
+                                class="cancel-button px-6 py-2 border border-gray-300 rounded-button hover:bg-gray-50 transition-colors text-sm whitespace-nowrap !rounded-button">
                                 Отмена
                             </button>
-                            <button type="submit" class="px-6 py-2 bg-primary text-white rounded-button hover:bg-blue-600 transition-colors text-sm whitespace-nowrap !rounded-button">
+                            <button type="submit"
+                                class="px-6 py-2 bg-primary text-white rounded-button hover:bg-blue-600 transition-colors text-sm whitespace-nowrap !rounded-button">
                                 Сохранить изменения
                             </button>
                         </div>
@@ -1575,7 +1637,7 @@
                 imagesContainer: document.getElementById('images-container'),
                 deleteProductButton: document.getElementById('delete-product-button'),
             },
-    
+
             renderProductTable(products) {
                 this.elements.productsTableBody.innerHTML = '';
                 if (products.length === 0) {
@@ -1586,7 +1648,7 @@
                     const stock = product.stock || {};
                     const available = (stock.initialQuantity || 0) - (stock.orderedQuantity || 0);
                     const isVisible = product.isVisible !== false;
-                    
+
                     const row = document.createElement('tr');
                     row.dataset.productId = product.productId;
                     row.innerHTML = `
@@ -1600,11 +1662,11 @@
                     this.elements.productsTableBody.appendChild(row);
                 });
             },
-    
+
             populateForm(product) {
                 this.elements.productForm.reset();
                 this.elements.imagesContainer.innerHTML = '';
-                
+
                 const form = this.elements.productForm;
                 form.querySelector('[name="productId"]').value = product.productId || '';
                 form.querySelector('[name="sku"]').value = product.sku || '';
@@ -1618,27 +1680,27 @@
                 form.querySelector('[name="weight"]').value = product.specifications?.weight || '';
                 form.querySelector('[name="shelfLife"]').value = product.specifications?.shelfLife || '';
                 form.querySelector('[name="storageConditions"]').value = product.specifications?.storageConditions || '';
-                
+
                 this.updateToggle('visibility', product.isVisible !== false);
                 this.updateToggle('new', product.isNew === true);
                 this.updateToggle('shipping', product.shipping?.isShippableByMail || false);
-    
+
                 (product.images || []).forEach(img => this.addImageField(img.url));
                 this.elements.deleteProductButton.style.display = product.productId ? 'block' : 'none';
             },
-    
+
             addImageField(url = '') {
                 const container = document.createElement('div');
                 container.className = 'space-y-2';
-    
+
                 const preview = document.createElement('img');
                 preview.className = 'w-full h-45 object-cover rounded-lg bg-gray-100';
                 preview.src = url || 'https://placehold.co/300x150/e2e8f0/64748b?text=Preview';
                 preview.onerror = () => { preview.src = 'https://placehold.co/300x150/e2e8f0/64748b?text=Error'; };
-                
+
                 const inputGroup = document.createElement('div');
                 inputGroup.className = 'relative';
-                
+
                 const input = document.createElement('input');
                 input.type = 'text';
                 input.name = 'imageUrl';
@@ -1648,23 +1710,23 @@
                 input.addEventListener('input', () => {
                     preview.src = input.value || 'https://placehold.co/300x150/e2e8f0/64748b?text=Preview';
                 });
-    
+
                 const removeBtn = document.createElement('button');
                 removeBtn.type = 'button';
                 removeBtn.className = 'remove-image-btn absolute right-1 top-1/2 -translate-y-1/2 text-red-500 hover:text-red-700 p-1';
                 removeBtn.innerHTML = '<i class="ri-close-circle-fill"></i>';
                 removeBtn.addEventListener('click', () => container.remove());
-    
+
                 inputGroup.append(input, removeBtn);
                 container.append(preview, inputGroup);
                 this.elements.imagesContainer.appendChild(container);
             },
-    
+
             getFormData() {
                 const form = this.elements.productForm;
                 const formData = new FormData(form);
                 const imageUrls = Array.from(form.querySelectorAll('[name="imageUrl"]')).map(input => input.value.trim()).filter(url => url);
-    
+
                 return {
                     productId: formData.get('productId'),
                     sku: formData.get('sku'),
@@ -1682,21 +1744,21 @@
                     images: imageUrls.map((url, index) => ({ imageId: `img_${Date.now()}_${index}`, url: url, alt: formData.get('name') })),
                 };
             },
-            
+
             openModal() { this.elements.productModal.classList.remove('hidden'); this.elements.productModal.classList.add('flex'); },
             closeModal() { this.elements.productModal.classList.add('hidden'); this.elements.productModal.classList.remove('flex'); },
-            
+
             updateToggle(id, isChecked) {
                 const checkbox = document.getElementById(id);
                 const toggleBg = document.querySelector(`.toggle-switch[data-for="${id}"] .toggle-bg`);
-                if(checkbox && toggleBg) {
+                if (checkbox && toggleBg) {
                     checkbox.checked = isChecked;
                     const dot = toggleBg.firstElementChild;
-                    if(isChecked) { 
+                    if (isChecked) {
                         toggleBg.classList.add('bg-primary');
                         toggleBg.classList.remove('bg-gray-300');
                         dot.style.transform = 'translateX(1.5rem)';
-                    } else { 
+                    } else {
                         toggleBg.classList.remove('bg-primary');
                         toggleBg.classList.add('bg-gray-300');
                         dot.style.transform = 'translateX(0)';
