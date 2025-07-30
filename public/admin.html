@@ -944,29 +944,57 @@
                                             class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-sm"
                                             required>
                                     </div>
+                                    <!-- ОБНОВЛЕННЫЙ БЛОК: Категория -->
                                     <div>
-                                        <label class="block text-sm font-medium text-gray-700 mb-2">Категория <span class="text-red-500">*</span></label>
-                                        <div class="relative">
-                                            <select name="category" class="appearance-none w-full bg-white px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-sm pr-8">
-                                                <option>Десерти</option>
-                                                <option>Напитки</option>
-                                                <option>Торты</option>
-                                            </select>
-                                            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-500">
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Категория <span
+                                                class="text-red-500">*</span></label>
+                                        <div class="relative" data-custom-dropdown>
+                                            <input type="hidden" name="category" value="Десерти">
+                                            <button type="button"
+                                                class="custom-select-trigger relative w-full bg-white px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-sm text-left flex justify-between items-center">
+                                                <span class="selected-value">Десерти</span>
                                                 <i class="ri-arrow-down-s-line"></i>
+                                            </button>
+                                            <div
+                                                class="custom-select-options hidden absolute top-full left-0 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg z-20">
+                                                <div class="py-1">
+                                                    <button type="button"
+                                                        class="custom-select-option w-full px-3 py-2 text-left text-sm hover:bg-gray-50"
+                                                        data-value="Десерти">Десерти</button>
+                                                    <button type="button"
+                                                        class="custom-select-option w-full px-3 py-2 text-left text-sm hover:bg-gray-50"
+                                                        data-value="Напитки">Напитки</button>
+                                                    <button type="button"
+                                                        class="custom-select-option w-full px-3 py-2 text-left text-sm hover:bg-gray-50"
+                                                        data-value="Торты">Торты</button>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
+                                    <!-- ОБНОВЛЕННЫЙ БЛОК: Единица измерения -->
                                     <div>
-                                        <label class="block text-sm font-medium text-gray-700 mb-2">Единица измерения</label>
-                                         <div class="relative">
-                                            <select name="unit" class="appearance-none w-full bg-white px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-sm pr-8">
-                                                <option value="шт">шт</option>
-                                                <option value="кг">кг</option>
-                                                <option value="л">л</option>
-                                            </select>
-                                            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-500">
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Единица
+                                            измерения</label>
+                                        <div class="relative" data-custom-dropdown>
+                                            <input type="hidden" name="unit" value="шт">
+                                            <button type="button"
+                                                class="custom-select-trigger relative w-full bg-white px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-sm text-left flex justify-between items-center">
+                                                <span class="selected-value">шт</span>
                                                 <i class="ri-arrow-down-s-line"></i>
+                                            </button>
+                                            <div
+                                                class="custom-select-options hidden absolute top-full left-0 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg z-20">
+                                                <div class="py-1">
+                                                    <button type="button"
+                                                        class="custom-select-option w-full px-3 py-2 text-left text-sm hover:bg-gray-50"
+                                                        data-value="шт">шт</button>
+                                                    <button type="button"
+                                                        class="custom-select-option w-full px-3 py-2 text-left text-sm hover:bg-gray-50"
+                                                        data-value="кг">кг</button>
+                                                    <button type="button"
+                                                        class="custom-select-option w-full px-3 py-2 text-left text-sm hover:bg-gray-50"
+                                                        data-value="л">л</button>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
