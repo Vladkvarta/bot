@@ -913,6 +913,17 @@
                 <form id="product-form" class="p-6 space-y-8">
                     <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
                         <div class="lg:col-span-2 space-y-8">
+                            <!-- ИЗОБРАЖЕНИЯ -->
+                            <div class="bg-gray-50 rounded-lg p-6">
+                                <h2 class="text-lg font-semibold text-gray-900 mb-4">Изображения товара</h2>
+                                <div id="images-container" class="space-y-4 mb-4">
+                                    <!-- Сюда JS будет добавлять поля для изображений -->
+                                </div>
+                                <button type="button" id="add-image-button" class="w-full p-4 border-2 border-dashed border-gray-300 rounded-lg text-gray-500 hover:border-primary hover:text-primary transition-colors">
+                                    <i class="ri-image-add-line mx-auto mb-2 text-2xl"></i>
+                                    <span class="text-sm">Добавить изображение</span>
+                                </button>
+                            </div>
                             <!-- ОСНОВНАЯ ИНФОРМАЦИЯ -->
                             <div class="bg-gray-50 rounded-lg p-6">
                                 <h2 class="text-lg font-semibold text-gray-900 mb-4">Основная информация</h2>
@@ -1017,19 +1028,7 @@
                                 </div>
                             </div>
                         </div>
-                        <!-- ИЗОБРАЖЕНИЯ -->
-                        <div class="space-y-6">
-                            <div class="bg-gray-50 rounded-lg p-6">
-                                <h2 class="text-lg font-semibold text-gray-900 mb-4">Изображения товара</h2>
-                                <div id="images-container" class="space-y-4 mb-4">
-                                    <!-- Сюда JS будет добавлять поля для изображений -->
-                                </div>
-                                <button type="button" id="add-image-button" class="w-full p-4 border-2 border-dashed border-gray-300 rounded-lg text-gray-500 hover:border-primary hover:text-primary transition-colors">
-                                    <i class="ri-image-add-line mx-auto mb-2 text-2xl"></i>
-                                    <span class="text-sm">Добавить изображение</span>
-                                </button>
-                            </div>
-                        </div>
+                        
                     </div>
                     <!-- КНОПКИ УПРАВЛЕНИЯ -->
                     <div class="flex items-center justify-between pt-6 border-t border-gray-200">
