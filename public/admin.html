@@ -1663,6 +1663,17 @@
                 deleteProductButton: document.getElementById('delete-product-button'),
             },
 
+            setCustomDropdownValue(inputName, value) {
+                const input = this.elements.productForm.querySelector(`input[name="${inputName}"]`);
+                if (input) {
+                    input.value = value;
+                    const dropdown = input.closest('[data-custom-dropdown]');
+                    if (dropdown) {
+                        dropdown.querySelector('.selected-value').textContent = value;
+                    }
+                }
+            },
+
             renderProductTable(products) {
                 this.elements.productsTableBody.innerHTML = '';
                 if (products.length === 0) {
