@@ -1802,7 +1802,7 @@
                     this.setupEventListeners();
                     this.setupNavigation();
                 },
-
+    
                 async loadAndRenderProducts() {
                     try {
                         const products = await apiService.getProducts();
@@ -1812,7 +1812,7 @@
                         uiService.elements.productsTableBody.innerHTML = `<tr><td colspan="6" class="text-center py-4">${error.message}</td></tr>`;
                     }
                 },
-
+    
                 async updateProductPart(productId, updateFunction) {
                     try {
                         const product = await apiService.getProduct(productId);
@@ -1825,20 +1825,20 @@
                         this.loadAndRenderProducts();
                     }
                 },
-
+    
                 setupEventListeners() {
                     document.getElementById('add-product-button').addEventListener('click', () => {
                         uiService.populateForm({});
                         uiService.addImageField();
                         uiService.openModal();
                     });
-
+    
                     uiService.elements.productModal.addEventListener('click', e => {
                         if (e.target === uiService.elements.productModal || e.target.closest('.cancel-button')) {
                             uiService.closeModal();
                         }
                     });
-
+    
                     uiService.elements.productForm.addEventListener('submit', async (e) => {
                         e.preventDefault();
                         const productData = uiService.getFormData();
@@ -1854,7 +1854,7 @@
                             alert(error.message);
                         }
                     });
-
+    
                     uiService.elements.deleteProductButton.addEventListener('click', async () => {
                         const productId = uiService.elements.productForm.querySelector('[name="productId"]').value;
                         if (productId && confirm('Вы уверены, что хотите удалить товар?')) {
@@ -1867,11 +1867,11 @@
                             }
                         }
                     });
-
+    
                     uiService.elements.productsTableBody.addEventListener('click', async (e) => {
                         const target = e.target.closest('.edit-product-btn, .visibility-toggle-btn');
                         if (!target) return;
-
+                        
                         const productId = target.closest('tr').dataset.productId;
                         if (target.matches('.edit-product-btn')) {
                             try {
@@ -1887,7 +1887,7 @@
                             });
                         }
                     });
-
+                    
                     uiService.elements.productsTableBody.addEventListener('change', (e) => {
                         if (e.target.matches('.quantity-input')) {
                             const productId = e.target.closest('tr').dataset.productId;
@@ -1903,9 +1903,9 @@
                             });
                         }
                     });
-
+    
                     document.getElementById('add-image-button').addEventListener('click', () => uiService.addImageField());
-
+                    
                     document.querySelectorAll('.toggle-switch').forEach(toggle => {
                         toggle.addEventListener('click', () => {
                             const checkboxId = toggle.dataset.for;
@@ -1914,8 +1914,36 @@
                             uiService.updateToggle(checkboxId, checkbox.checked);
                         });
                     });
+    
+                    // --- ИСПРАВЛЕННАЯ ЛОГИКА ДЛЯ КАСТОМНЫХ ВЫПАДАЮЩИХ СПИСКОВ ---
+                    document.addEventListener('click', e => {
+                        const dropdownTrigger = e.target.closest('.custom-select-trigger');
+                        const dropdownOption = e.target.closest('.custom-select-option');
+                        
+                        // Закрываем все списки, если клик был не по триггеру
+                        if (!dropdownTrigger) {
+                            document.querySelectorAll('.custom-select-options').forEach(options => {
+                                options.classList.add('hidden');
+                            });
+                        }
+    
+                        // Если кликнули по триггеру, открываем/закрываем его список
+                        if (dropdownTrigger) {
+                            const optionsPanel = dropdownTrigger.nextElementSibling;
+                            optionsPanel.classList.toggle('hidden');
+                        }
+    
+                        // Если кликнули по опции
+                        if (dropdownOption) {
+                            const dropdown = dropdownOption.closest('[data-custom-dropdown]');
+                            const value = dropdownOption.dataset.value;
+                            uiService.setCustomDropdownValue(dropdown.querySelector('input').name, value);
+                            // Закрываем панель после выбора
+                            dropdownOption.closest('.custom-select-options').classList.add('hidden');
+                        }
+                    });
                 },
-
+    
                 setupNavigation() {
                     const navItems = document.querySelectorAll('.nav-item');
                     const sections = document.querySelectorAll('.section');
@@ -1941,7 +1969,7 @@
                     document.querySelector('.nav-item.active')?.click();
                 }
             };
-
+    
             app.init();
         });
     </script>
