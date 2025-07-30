@@ -659,7 +659,9 @@
                                         </th>
                                     </tr>
                                 </thead>
-
+                                <tbody id="products-table-body" class="bg-white divide-y divide-gray-200">
+                                    <!-- Сюда JavaScript будет загружать товары -->
+                                </tbody>
                             </table>
                         </div>
                         <!-- Пагинация -->
@@ -908,7 +910,7 @@
     <div id="ProductModal" class="fixed inset-0 bg-gray-500 bg-opacity-75 hidden items-center justify-center">
         <div class="bg-white rounded-lg w-[800px] max-h-[90vh] overflow-y-auto">
             <div class="bg-white rounded-lg shadow-sm">
-                <form class="p-6 space-y-8">
+                <form id="product-form" class="p-6 space-y-8">
                     <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
                         <div class="lg:col-span-2 space-y-8">
                             <!-- ОСНОВНАЯ ИНФОРМАЦИЯ -->
@@ -942,6 +944,7 @@
                                             <button type="button"
                                                 class="category-select w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-sm text-left bg-white flex items-center justify-between">
                                                 <span>Десерти</span>
+                                        
                                                 <i class="ri-arrow-down-s-line"></i>
                                             </button>
                                             <div
@@ -1147,15 +1150,21 @@
                         </div>
                     </div>
                     <!-- КНОПКИ УПРАВЛЕНИЯ -->
-                    <div class="flex items-center justify-end space-x-4 pt-6 border-t border-gray-200">
-                        <button type="button"
-                            class="cancel-button px-6 py-2 border border-gray-300 rounded-button hover:bg-gray-50 transition-colors text-sm whitespace-nowrap !rounded-button">
-                            Отмена
+                    <div class="flex items-center justify-between pt-6 border-t border-gray-200">
+                        <button type="button" id="delete-product-button"
+                            class="px-6 py-2 bg-red-600 text-white rounded-button hover:bg-red-700 transition-colors text-sm whitespace-nowrap !rounded-button">
+                            Удалить товар
                         </button>
-                        <button type="submit"
-                            class="px-6 py-2 bg-primary text-white rounded-button hover:bg-blue-600 transition-colors text-sm whitespace-nowrap !rounded-button">
-                            Сохранить изменения
-                        </button>
+                        <div class="flex items-center space-x-4">
+                            <button type="button"
+                                class="cancel-button px-6 py-2 border border-gray-300 rounded-button hover:bg-gray-50 transition-colors text-sm whitespace-nowrap !rounded-button">
+                                Отмена
+                            </button>
+                            <button type="submit"
+                                class="px-6 py-2 bg-primary text-white rounded-button hover:bg-blue-600 transition-colors text-sm whitespace-nowrap !rounded-button">
+                                Сохранить изменения
+                            </button>
+                        </div>
                     </div>
                 </form>
             </div>
@@ -1639,23 +1648,35 @@
             const productModal = document.getElementById('ProductModal');
             const productForm = document.getElementById('product-form');
             const imagesContainer = document.getElementById('images-container');
+            const addImageButton = document.getElementById('add-image-button');
+            const deleteProductButton = document.getElementById('delete-product-button');
         
             // --- Load & render products ---
             async function loadProducts() {
                 try {
                     const res = await fetch(API_PUBLIC_URL);
+                    if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
                     const products = await res.json();
                     renderProductTable(products);
                 } catch (err) {
                     console.error('Ошибка загрузки товаров:', err);
+                    productsTableBody.innerHTML = `<tr><td colspan="6" class="text-center py-4">Не удалось загрузить товары.</td></tr>`;
                 }
             }
         
             function renderProductTable(products) {
                 productsTableBody.innerHTML = '';
+                 if (products.length === 0) {
+                    productsTableBody.innerHTML = `<tr><td colspan="6" class="text-center py-4">Товары не найдены.</td></tr>`;
+                    return;
+                }
                 products.forEach(product => {
                     const stock = product.stock || {};
-                    const available = (stock.initialQuantity || 0) - (stock.orderedQuantity || 0);
+                    const orderedQuantity = stock.orderedQuantity || 0;
+                    const initialQuantity = stock.initialQuantity || 0;
+                    const available = initialQuantity - orderedQuantity;
+                    const isVisible = product.isVisible !== false; // Считаем видимым по умолчанию
+                    
                     const row = document.createElement('tr');
                     row.innerHTML = `
                         <td class="px-6 py-4 whitespace-nowrap">
@@ -1671,9 +1692,14 @@
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${product.sku}</td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${product.price} грн</td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${stock.initialQuantity || 0}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                            <input type="number" class="quantity-input w-24 border border-gray-300 rounded-md px-2 py-1 text-center" value="${initialQuantity}" data-id="${product.productId}">
+                        </td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm ${available <= 5 ? 'text-red-600' : 'text-gray-900'}">${available}</td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                            <button data-id="${product.productId}" class="visibility-toggle-btn p-1 ${isVisible ? 'text-gray-400 hover:text-green-600' : 'text-red-600 hover:text-red-800'}">
+                                <i class="text-lg ${isVisible ? 'ri-eye-line' : 'ri-eye-off-line'}"></i>
+                            </button>
                             <button data-id="${product.productId}" class="edit-product-btn text-blue-600 hover:text-blue-800 p-1">
                                 <i class="ri-edit-line text-lg"></i>
                             </button>
@@ -1686,76 +1712,280 @@
             // --- Modal logic ---
             function openModal() {
                 productModal.classList.remove('hidden');
+                productModal.classList.add('flex');
             }
         
             function closeModal() {
                 productModal.classList.add('hidden');
-                imagesContainer.innerHTML = '';
+                productModal.classList.remove('flex');
             }
         
             function populateForm(product) {
                 productForm.reset();
+                imagesContainer.innerHTML = '';
+                
                 productForm.querySelector('[name="productId"]').value = product.productId || '';
                 productForm.querySelector('[name="sku"]').value = product.sku || '';
                 productForm.querySelector('[name="name"]').value = product.name || '';
                 productForm.querySelector('[name="price"]').value = product.price || '';
+                productForm.querySelector('[name="category"]').value = product.category || 'Десерти';
+                productForm.querySelector('[name="unit"]').value = product.unit || 'шт';
                 productForm.querySelector('[name="description"]').value = product.description || '';
-                productForm.querySelector('[name="ingredients"]').value = Array.isArray(product.ingredients) ? product.ingredients.join(', ') : '';
+                productForm.querySelector('[name="ingredients"]').value = Array.isArray(product.ingredients) ? product.ingredients.join(', ') : (product.ingredients || '');
                 productForm.querySelector('[name="initialQuantity"]').value = product.stock?.initialQuantity || 0;
-                productForm.querySelector('[name="orderedQuantity"]').value = product.stock?.orderedQuantity || 0;
-                productForm.querySelector('[name="availableQuantity"]').value = (product.stock?.initialQuantity || 0) - (product.stock?.orderedQuantity || 0);
+                
+                const isVisible = product.isVisible !== false;
+                const isNew = product.isNew === true;
+                const isShippable = product.shipping?.isShippableByMail || false;
+    
+                updateToggle('visibility', isVisible);
+                updateToggle('new', isNew);
+                updateToggle('shipping', isShippable);
+    
                 productForm.querySelector('[name="weight"]').value = product.specifications?.weight || '';
                 productForm.querySelector('[name="shelfLife"]').value = product.specifications?.shelfLife || '';
                 productForm.querySelector('[name="storageConditions"]').value = product.specifications?.storageConditions || '';
         
-                // изображения
-                imagesContainer.innerHTML = '';
-                (product.images || []).forEach(img => {
-                    const imgElem = document.createElement('div');
-                    imgElem.className = 'mb-2';
-                    imgElem.innerHTML = `
-                        <input type="text" value="${img.url}" class="w-full px-2 py-1 border rounded" readonly />
-                    `;
-                    imagesContainer.appendChild(imgElem);
-                });
+                (product.images || []).forEach(img => addImageField(img.url));
+                
+                deleteProductButton.style.display = product.productId ? 'block' : 'none';
+            }
+    
+            function addImageField(url = '') {
+                const imgElem = document.createElement('div');
+                imgElem.className = 'relative mb-2';
+                imgElem.innerHTML = `
+                    <input type="text" value="${url}" name="imageUrl" class="w-full px-2 py-1 border rounded text-sm" placeholder="https://example.com/image.jpg" />
+                    <button type="button" class="remove-image-btn absolute right-1 top-1 text-red-500 hover:text-red-700">
+                        <i class="ri-close-circle-fill"></i>
+                    </button>
+                `;
+                imagesContainer.appendChild(imgElem);
+                 imgElem.querySelector('.remove-image-btn').addEventListener('click', () => imgElem.remove());
+            }
+    
+            // --- Generic Update Function ---
+            async function updateProductOnServer(productId, updateFunction) {
+                try {
+                    // 1. Get current product data
+                    const res = await fetch(`${API_ADMIN_URL}/${productId}`);
+                    if (!res.ok) throw new Error('Не удалось получить данные товара для обновления.');
+                    const product = await res.json();
+    
+                    // 2. Apply the update
+                    updateFunction(product);
+    
+                    // 3. Send the full updated object back
+                    const putResponse = await fetch(`${API_ADMIN_URL}/${productId}`, {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(product)
+                    });
+    
+                    if (!putResponse.ok) {
+                        const errorData = await putResponse.json();
+                        throw new Error(errorData.message || 'Ошибка сохранения на сервере.');
+                    }
+    
+                    // 4. Refresh the table to show changes
+                    await loadProducts();
+    
+                } catch (error) {
+                    console.error('Ошибка обновления товара:', error);
+                    alert(`Не удалось обновить товар: ${error.message}`);
+                    await loadProducts(); // Reload to revert optimistic UI changes if any
+                }
             }
         
             // --- Event handlers ---
             addProductButton.addEventListener('click', () => {
-                productForm.reset();
-                productForm.querySelector('[name="productId"]').value = '';
-                imagesContainer.innerHTML = '';
+                populateForm({});
+                addImageField();
                 openModal();
             });
         
-            productModal.querySelectorAll('.cancel-button').forEach(btn => {
-                btn.addEventListener('click', closeModal);
-            });
-            productModal.addEventListener('click', e => {
-                if (e.target === productModal) closeModal();
-            });
+            productModal.querySelectorAll('.cancel-button').forEach(btn => btn.addEventListener('click', closeModal));
+            productModal.addEventListener('click', e => { if (e.target === productModal) closeModal(); });
         
             productsTableBody.addEventListener('click', async (e) => {
-                const btn = e.target.closest('.edit-product-btn');
-                if (!btn) return;
-                const productId = btn.dataset.id;
-                try {
-                    const res = await fetch(`${API_ADMIN_URL}/${productId}`);
-                    const product = await res.json();
-                    populateForm(product);
-                    openModal();
-                } catch (err) {
-                    alert('Ошибка загрузки товара');
+                const editBtn = e.target.closest('.edit-product-btn');
+                const visibilityBtn = e.target.closest('.visibility-toggle-btn');
+    
+                if (editBtn) {
+                    const productId = editBtn.dataset.id;
+                    try {
+                        const res = await fetch(`${API_ADMIN_URL}/${productId}`);
+                        if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+                        const product = await res.json();
+                        populateForm(product);
+                        openModal();
+                    } catch (err) {
+                        console.error('Ошибка загрузки товара:', err);
+                        alert('Ошибка загрузки данных о товаре.');
+                    }
+                }
+    
+                if (visibilityBtn) {
+                    const productId = visibilityBtn.dataset.id;
+                    await updateProductOnServer(productId, (product) => {
+                        product.isVisible = !(product.isVisible !== false);
+                    });
                 }
             });
+    
+            productsTableBody.addEventListener('change', async (e) => {
+                if (e.target.classList.contains('quantity-input')) {
+                    const productId = e.target.dataset.id;
+                    const newQuantity = parseInt(e.target.value, 10);
+                    if (isNaN(newQuantity) || newQuantity < 0) {
+                         alert('Пожалуйста, введите корректное число.');
+                         loadProducts(); // Revert
+                         return;
+                    }
+                    await updateProductOnServer(productId, (product) => {
+                        if (!product.stock) product.stock = {};
+                        product.stock.initialQuantity = newQuantity;
+                    });
+                }
+            });
+    
+            addImageButton.addEventListener('click', () => addImageField());
+    
+            productForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const formData = new FormData(productForm);
+                const productId = formData.get('productId');
+                
+                const imageUrls = Array.from(productForm.querySelectorAll('[name="imageUrl"]'))
+                                       .map(input => input.value.trim())
+                                       .filter(url => url);
+    
+                const productData = {
+                    sku: formData.get('sku'),
+                    isVisible: productForm.querySelector('[name="isVisible"]').checked,
+                    isNew: productForm.querySelector('[name="isNew"]').checked,
+                    name: formData.get('name'),
+                    description: formData.get('description'),
+                    category: formData.get('category'),
+                    ingredients: formData.get('ingredients').split(',').map(s => s.trim()).filter(Boolean),
+                    price: parseFloat(formData.get('price')),
+                    unit: formData.get('unit'),
+                    specifications: {
+                        weight: formData.get('weight'),
+                        shelfLife: formData.get('shelfLife'),
+                        storageConditions: formData.get('storageConditions'),
+                    },
+                    shipping: {
+                        isShippableByMail: productForm.querySelector('[name="isShippableByMail"]').checked,
+                    },
+                    stock: {
+                        initialQuantity: parseInt(formData.get('initialQuantity'), 10) || 0,
+                        status: 'in_stock', // Default value
+                    },
+                    images: imageUrls.map((url, index) => ({
+                        imageId: `img_${Date.now()}_${index}`,
+                        url: url,
+                        alt: formData.get('name')
+                    })),
+                };
+                
+                if (productId) {
+                    productData.productId = productId;
+                }
+    
+                const url = productId ? `${API_ADMIN_URL}/${productId}` : API_ADMIN_URL;
+                const method = productId ? 'PUT' : 'POST';
+    
+                try {
+                    const response = await fetch(url, {
+                        method: method,
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(productData)
+                    });
+                    if (!response.ok) {
+                        const errorData = await response.json();
+                        throw new Error(errorData.message || 'Ошибка сервера');
+                    }
+                    closeModal();
+                    loadProducts();
+                } catch (error) {
+                    console.error('Ошибка сохранения товара:', error);
+                    alert(`Не удалось сохранить товар: ${error.message}`);
+                }
+            });
+    
+            deleteProductButton.addEventListener('click', async () => {
+                const productId = productForm.querySelector('[name="productId"]').value;
+                if (!productId) return;
+    
+                if (confirm(`Вы уверены, что хотите удалить товар?`)) {
+                    try {
+                        const response = await fetch(`${API_ADMIN_URL}/${productId}`, {
+                            method: 'DELETE'
+                        });
+                        if (!response.ok) {
+                             const errorData = await response.json();
+                             throw new Error(errorData.message || 'Ошибка сервера');
+                        }
+                        closeModal();
+                        loadProducts();
+                    } catch (error) {
+                         console.error('Ошибка удаления товара:', error);
+                         alert(`Не удалось удалить товар: ${error.message}`);
+                    }
+                }
+            });
+            
+            function updateToggle(id, isChecked) {
+                const checkbox = document.getElementById(id);
+                const toggleBg = document.querySelector(`.toggle-switch[data-for="${id}"] .toggle-bg`);
+                if(checkbox && toggleBg) {
+                    checkbox.checked = isChecked;
+                    if(isChecked) {
+                        toggleBg.classList.add('toggled');
+                    } else {
+                        toggleBg.classList.remove('toggled');
+                    }
+                }
+            }
+    
+            document.querySelectorAll('.toggle-switch').forEach(toggle => {
+                toggle.addEventListener('click', () => {
+                    const checkboxId = toggle.dataset.for;
+                    const checkbox = document.getElementById(checkboxId);
+                    checkbox.checked = !checkbox.checked;
+                    updateToggle(checkboxId, checkbox.checked);
+                });
+            });
+    
+            // Navigation logic...
+            const navItems = document.querySelectorAll('.nav-item');
+            const sections = document.querySelectorAll('.section');
+            const sectionTitle = document.getElementById('section-title');
+            const sectionDescription = document.getElementById('section-description');
+            const sectionInfo = {
+                users: { title: "Управление пользователями", desc: "Просмотр и редактирование данных пользователей" },
+                orders: { title: "Управление заказами", desc: "Просмотр и обработка заказов" },
+                products: { title: "Каталог товаров", desc: "Добавление, редактирование и удаление товаров" }
+            };
+            navItems.forEach(item => {
+                item.addEventListener('click', () => {
+                    const sectionName = item.dataset.section;
+                    navItems.forEach(i => i.classList.remove('active'));
+                    item.classList.add('active');
+                    sections.forEach(s => s.classList.add('hidden'));
+                    document.getElementById(`${sectionName}-section`).classList.remove('hidden');
+                    sectionTitle.textContent = sectionInfo[sectionName].title;
+                    sectionDescription.textContent = sectionInfo[sectionName].desc;
+                    document.getElementById('add-product-button').style.display = (sectionName === 'products') ? 'flex' : 'none';
+                });
+            });
+            document.querySelector('.nav-item.active')?.click();
         
             // --- Init ---
             loadProducts();
         });
-        </script>
-        
-    
-
+    </script>
 
 </body>
 
