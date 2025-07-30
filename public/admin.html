@@ -945,37 +945,31 @@
                                             required>
                                     </div>
                                     <div>
-                                        <label class="block text-sm font-medium text-gray-700 mb-2">Категория <span
-                                                class="text-red-500">*</span></label>
-                                        <select name="category"
-                                            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-sm">
-                                            <option>Десерти</option>
-                                            <option>Напитки</option>
-                                            <option>Торты</option>
-                                        </select>
-                                    </div>
-                                    <!-- <div> -->
-                                    <!-- <label class="block text-sm font-medium text-gray-700 mb-2">Единица измерения</label>
-                                         <select name="unit" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-sm">
-                                            <option value="шт">шт</option>
-                                            <option value="кг">кг</option>
-                                            <option value="л">л</option>
-                                        </select> -->
-                                    <div name="unit"
-                                        class="unit-dropdown absolute top-full left-0 w-full bg-white border border-gray-300 rounded-lg shadow-lg z-10 hidden">
-                                        <div class="py-1">
-                                            <button type="button"
-                                                class="unit-option w-full px-3 py-2 text-left text-sm hover:bg-gray-50"
-                                                data-value="pcs">шт</button>
-                                            <button type="button"
-                                                class="unit-option w-full px-3 py-2 text-left text-sm hover:bg-gray-50"
-                                                data-value="kg">кг</button>
-                                            <button type="button"
-                                                class="unit-option w-full px-3 py-2 text-left text-sm hover:bg-gray-50"
-                                                data-value="l">л</button>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Категория <span class="text-red-500">*</span></label>
+                                        <div class="relative">
+                                            <select name="category" class="appearance-none w-full bg-white px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-sm pr-8">
+                                                <option>Десерти</option>
+                                                <option>Напитки</option>
+                                                <option>Торты</option>
+                                            </select>
+                                            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-500">
+                                                <i class="ri-arrow-down-s-line"></i>
+                                            </div>
                                         </div>
                                     </div>
-                                    <!-- </div> -->
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Единица измерения</label>
+                                         <div class="relative">
+                                            <select name="unit" class="appearance-none w-full bg-white px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-sm pr-8">
+                                                <option value="шт">шт</option>
+                                                <option value="кг">кг</option>
+                                                <option value="л">л</option>
+                                            </select>
+                                            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-500">
+                                                <i class="ri-arrow-down-s-line"></i>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="flex items-center space-x-6 mt-6">
                                     <div class="flex items-center">
