@@ -1687,6 +1687,11 @@
 
                     const row = document.createElement('tr');
                     row.dataset.productId = product.productId;
+                    // ЕСЛИ ТОВАР - НОВИНКА, ДОБАВЛЯЕМ ФОН
+                    if (product.isNew === true) {
+                        row.classList.add('bg-yellow-50');
+                    }
+
                     row.innerHTML = `
                             <td class="px-6 py-4 whitespace-nowrap"><div class="flex items-center"><div class="flex-shrink-0 h-10 w-10"><img class="h-10 w-10 rounded-md object-cover" src="${product.images?.[0]?.url || 'https://placehold.co/40x40/e2e8f0/64748b?text=?'}" alt="${product.name}"></div><div class="ml-4"><div class="text-sm font-medium text-gray-900">${product.name}</div><div class="text-sm text-gray-500">${product.category}</div></div></div></td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${product.sku}</td>
